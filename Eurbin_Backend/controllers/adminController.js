@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
         const newAdmin = new Admin({ username, email, password });
         await newAdmin.save();
 
-        const verificationToken = jwt.sign({ id: newAdmin._id }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '300' });
+        const verificationToken = jwt.sign({ id: newAdmin._id }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1d' });
 
          // Send verification email
          const verificationLink = `http://localhost:5173/verify-email?token=${verificationToken}`;

@@ -31,7 +31,7 @@ exports.createUser = async (req, res) => {
     try {
         const maxUser = await User.findOne().sort({ userId: -1 }).exec();
         const newUserId = maxUser ? maxUser.userId + 1 : 1;
-        const { userName, password, email, smartPoints, plasticBottle, rank, co2,accumulatedSP } = req.body;
+        const { userName, password, email,department, program,yearLevel, smartPoints, plasticBottle, rank, co2,accumulatedSP } = req.body;
 
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -41,6 +41,9 @@ exports.createUser = async (req, res) => {
             userName,
             password: hashedPassword,
             email,
+            department, 
+            program,
+            yearLevel,
             smartPoints,
             plasticBottle,
             rank,
