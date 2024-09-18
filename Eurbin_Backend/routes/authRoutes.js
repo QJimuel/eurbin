@@ -1,13 +1,13 @@
 // In your adminRoutes.js
 const express = require('express');
-const { register, login, verifyEmail, updateProfile ,changePassword } = require('../controllers/adminController');
+const adminController = require('../controllers/adminController');
 const router = express.Router();
 
-router.post('/register', register);
-router.post('/login', login);
-router.patch('/update-profile', updateProfile); 
-router.patch('/change-password', changePassword);
-router.get('/verify-email', verifyEmail);
+router.post('/register', adminController.register);
+router.post('/login', adminController.login);
+router.patch('/update-profile', adminController.updateProfile); 
+router.patch('/change-password', adminController.changePassword);
+router.get('/verify-email', adminController.verifyEmail);
 // Add this route
 
 module.exports = router;
