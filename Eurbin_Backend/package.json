@@ -2,8 +2,9 @@
   "name": "eurbin_rewardmangement_backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api/index.js",
   "scripts": {
+    "start": "node api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -17,7 +18,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.8.0",
     "mongoose": "^8.3.4",
-    "moongoose": "^0.0.5",
     "nodemailer": "^6.9.14"
   }
 }
