@@ -17,7 +17,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB connection
-const Connection_String = process.env.MONGODB_URI || "mongodb+srv://JQuerel:JQuerel@eurbin.th0jg.mongodb.net/EURBin?retryWrites=true&w=majority";
+const Connection_String = "mongodb+srv://JQuerel:JQuerel@eurbin.th0jg.mongodb.net/EURBin?retryWrites=true&w=majority";
 
 mongoose.connect(Connection_String)
     .then(() => console.log('Connected to MongoDB Atlas'))
