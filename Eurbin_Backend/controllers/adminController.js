@@ -11,6 +11,16 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+
+exports.getAllAdmins = async (req, res) => {
+    try {
+        const admin = await Admin.find();
+        res.status(200).json({ message: 'Successfully retrieved data',admin  });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 exports.register = async (req, res) => {
     const { username, email, password } = req.body;
     try {
