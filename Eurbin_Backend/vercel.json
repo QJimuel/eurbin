@@ -1,9 +1,14 @@
 {
-    "functions": {
-      "api/index.js": {
-        "memory": 1024,
-        "maxDuration": 10
-      }
+  "functions": {
+    "api/server.js": {
+      "memory": 1024,
+      "maxDuration": 10
     }
-  }
-  
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/server.js"
+    }
+  ]
+}
