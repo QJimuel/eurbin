@@ -25,7 +25,7 @@ mongoose.connect(Connection_String)
     });
 
 app.get('/', (req, res) => {
-    res.send('Welcome to the EURBin Backend! This server manages user transactions, rewards, plastic bottle identification, and code redemption processes. Stay tuned for more updates.');
+    res.send('Welcome to the EURBin Backend!');
 });
 
 app.use('/rewards', rewardRoutes);
@@ -36,6 +36,7 @@ app.use('/code', redeemCodeRoutes);
 app.use('/user', userRoutes);
 app.use('/total', totalRoutes);
 
+// Export for Vercel Serverless Functions
 module.exports = (req, res) => {
     app(req, res);
 };
