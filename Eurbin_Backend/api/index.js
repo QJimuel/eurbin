@@ -8,13 +8,13 @@ const mongoose = require('mongoose');
 
 
 
-const transactionRoutes = require('./routes/transactionRoutes')
-const rewardRoutes = require('./routes/rewardRoutes');
-const plasticBottleRoutes = require('./routes/plasticBottleRoutes');
-const authRoutes = require('./routes/authRoutes'); 
-const redeemCodeRoutes = require('./routes/redeemCodeRoutes'); 
-const userRoutes = require('./routes/userRoutes'); 
-const totalRoutes =  require('./routes/totalRoutes'); 
+const transactionRoutes = require('../routes/transactionRoutes')
+const rewardRoutes = require('../routes/rewardRoutes');
+const plasticBottleRoutes = require('../routes/plasticBottleRoutes');
+const authRoutes = require('../routes/authRoutes'); 
+const redeemCodeRoutes = require('../routes/redeemCodeRoutes'); 
+const userRoutes = require('../routes/userRoutes'); 
+const totalRoutes =  require('../routes/totalRoutes'); 
 
 
 const bodyParser = require('body-parser');
