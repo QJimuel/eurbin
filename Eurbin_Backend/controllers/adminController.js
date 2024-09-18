@@ -1,7 +1,7 @@
 const Admin = require('../models/admin');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer'); 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const transporter = nodemailer.createTransport({
     service: 'Gmail', // You can use other email services

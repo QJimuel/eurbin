@@ -1,6 +1,6 @@
 // controllers/userController.js
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const updateTotal = require('../utils/updateTotal');
 
 // Get all users
