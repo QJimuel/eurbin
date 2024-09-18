@@ -4,13 +4,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 // Import routes
-const transactionRoutes = require('./routes/transactionRoutes');
-const rewardRoutes = require('./routes/rewardRoutes');
-const plasticBottleRoutes = require('./routes/plasticBottleRoutes');
-const authRoutes = require('./routes/authRoutes');
-const redeemCodeRoutes = require('./routes/redeemCodeRoutes');
-const userRoutes = require('./routes/userRoutes');
-const totalRoutes = require('./routes/totalRoutes');
+const transactionRoutes = require('../routes/transactionRoutes');
+const rewardRoutes = require('../routes/rewardRoutes');
+const plasticBottleRoutes = require('../routes/plasticBottleRoutes');
+const authRoutes = require('../routes/authRoutes');
+const redeemCodeRoutes = require('../routes/redeemCodeRoutes');
+const userRoutes = require('../routes/userRoutes');
+const totalRoutes = require('../routes/totalRoutes');
 
 const app = express();
 app.use(cors());
