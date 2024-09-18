@@ -28,6 +28,8 @@ app.get('/', (req, res) => {
     res.send('Welcome to the EURBin Backend! This server manages user transactions, rewards, plastic bottle identification, and code redemption processes. Stay tuned for more updates.');
 });
 
+app.use('/test', (req, res) => res.send('Test route working!'));
+
 app.use('/rewards', rewardRoutes);
 app.use('/transactions', transactionRoutes);
 app.use('/bottles', plasticBottleRoutes);
