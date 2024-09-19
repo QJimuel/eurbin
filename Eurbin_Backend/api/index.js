@@ -13,7 +13,7 @@ const userRoutes = require('../routes/userRoutes');
 const totalRoutes = require('../routes/totalRoutes');
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(bodyParser.json());
 
 // MongoDB connection
