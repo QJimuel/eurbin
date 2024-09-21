@@ -11,11 +11,12 @@ const authRoutes = require('../routes/authRoutes');
 const redeemCodeRoutes = require('../routes/redeemCodeRoutes');
 const userRoutes = require('../routes/userRoutes');
 const totalRoutes = require('../routes/totalRoutes');
+const contentRoutes = require('../routes/contentRoutes')
 
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://localhost:5173',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -54,6 +55,7 @@ app.use('/admin', authRoutes);
 app.use('/code', redeemCodeRoutes);
 app.use('/user', userRoutes);
 app.use('/total', totalRoutes);
+app.use('/contents', contentRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
