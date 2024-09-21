@@ -5,6 +5,7 @@ exports.getAllContents = async (req, res) => {
     try {
         const content = await Content.find();
         res.status(200).json({ message: 'Successfully retrieved data', content });
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
