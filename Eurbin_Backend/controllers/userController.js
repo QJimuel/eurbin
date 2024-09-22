@@ -33,6 +33,9 @@ exports.createUser = async (req, res) => {
         const newUserId = maxUser ? maxUser.userId + 1 : 1;
         const { userName, password, email,department, program,yearLevel, smartPoints, plasticBottle, rank, co2,accumulatedSP } = req.body;
 
+        const now = new Date();
+        const adjustedDate = new Date(now.getTime()+ (8 * 60 * 60 * 1000));
+
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -49,7 +52,8 @@ exports.createUser = async (req, res) => {
             rank,
             co2,
             accumulatedSP,
-            isActive: true
+            isActive: true,
+            creationDate: adjustedDate
         });
 
         await newUser.save();

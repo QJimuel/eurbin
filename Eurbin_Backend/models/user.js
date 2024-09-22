@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
    co2: Number,
    accumulatedSP: Number,
    isActive: Boolean,
+   creationDate: Date
 
    
 

@@ -44,7 +44,7 @@ exports.createTransaction = async (req, res) => {
 
     // Get the current date and adjust for timezone
     const now = new Date();
-    const adjustedDate = new Date(now.getTime() );
+    const adjustedDate = new Date(now.getTime()+ (8 * 60 * 60 * 1000));
 
     try {
         // Find the latest transaction to determine the next reference number
