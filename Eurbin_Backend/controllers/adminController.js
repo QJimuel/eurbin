@@ -38,7 +38,7 @@ exports.register = async (req, res) => {
         const verificationToken = jwt.sign({ id: newAdmin._id }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1d' });
 
          // Send verification email
-         const verificationLink = `http://localhost:5173/verify-email?token=${verificationToken}`;
+         const verificationLink = `https://eurbinadmin.vercel.app/verify-email?token=${verificationToken}`;
 
          try {
             await transporter.sendMail({
