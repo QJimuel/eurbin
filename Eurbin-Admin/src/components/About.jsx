@@ -16,8 +16,8 @@ import content from '../Images/content.png'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import EditProfileModal from "../EditProfileModal";
-import ChangePassModal from "../ChangePassModal";
+import EditProfileModal from "./EditProfileModal";
+import ChangePassModal from "./ChangePassModal";
 
 
 function About() {
