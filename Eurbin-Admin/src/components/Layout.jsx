@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, Link , Navigate} from "react-router-dom";
-import EditProfileModal from "./EditProfileModal";
-import ChangePassModal from "./ChangePassModal";
+import EditProfileModal from "../EditProfileModal";
+import ChangePassModal from "../ChangePassModal";
 
 import user from '../Images/user.png'
 import bottle from '../Images/bottle.png'

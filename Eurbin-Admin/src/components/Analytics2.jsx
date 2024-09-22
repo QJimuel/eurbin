@@ -18,8 +18,8 @@ import {
 } from 'recharts';
 import axios from 'axios';
 
-import EditProfileModal from "./EditProfileModal";
-import ChangePassModal from "./ChangePassModal";
+import EditProfileModal from "../EditProfileModal";
+import ChangePassModal from "../ChangePassModal";
 
 function Analytics2() {
   const total_API_URL = 'https://eurbin.vercel.app/total';
