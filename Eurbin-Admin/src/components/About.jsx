@@ -27,7 +27,7 @@ function About() {
         {
           window.localStorage.clear();
           console.log("Token cleared");
-          window.location.href = "./Login"
+          window.location.href = "./"
           console.log(window.localStorage.getItem('token'));
         }
   
