@@ -16,7 +16,7 @@ exports.updateTransactionStatus = async (req, res) => {
         const now = new Date();
 
     // Add 8 hours
-        const adjustedDate = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+        const adjustedDate = new Date(now.getTime());
         transaction.date = adjustedDate;
         await transaction.save(); // Save the updated transaction
 
@@ -44,7 +44,7 @@ exports.createTransaction = async (req, res) => {
 
     // Get the current date and adjust for timezone
     const now = new Date();
-    const adjustedDate = new Date(now.getTime()+ (8 * 60 * 60 * 1000));
+    const adjustedDate = new Date(now.getTime());
 
     try {
         // Find the latest transaction to determine the next reference number

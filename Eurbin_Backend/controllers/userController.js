@@ -34,7 +34,7 @@ exports.createUser = async (req, res) => {
         const { userName, password, email,department, program,yearLevel, smartPoints, plasticBottle, rank, co2,accumulatedSP } = req.body;
 
         const now = new Date();
-        const adjustedDate = new Date(now.getTime()+ (8 * 60 * 60 * 1000));
+        const adjustedDate = new Date(now.getTime());
 
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);

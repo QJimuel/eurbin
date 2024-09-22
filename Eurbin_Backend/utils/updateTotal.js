@@ -21,7 +21,7 @@ const updateTotal = async () => {
             const now = new Date();
             // Add 8 hours to the current date
 
-            now.setHours(now.getHours() + 8);
+            now.setHours(now.getHours());
     
 
 
