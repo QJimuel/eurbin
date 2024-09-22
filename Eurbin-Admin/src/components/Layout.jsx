@@ -15,6 +15,10 @@ import about from '../Images/information.png'
 import logOut from '../Images/exit.png'
 import content from '../Images/content.png'
 
+import EditProfileModal from "./EditProfileModal";
+import ChangePassModal from "./ChangePassModal";
+
+
 function Layout() {
  
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
