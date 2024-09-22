@@ -215,7 +215,7 @@ function Analytics2() {
           </Link>
         </li>
         <li style={styles.sidebarItem}>
-          <a onClick= {logout}to="/" style={styles.sidebarLink}>
+          <a onClick= {logout}to="/Login" style={styles.sidebarLink}>
             <span role="img" aria-label="logout">
             <img className="icons" src={logOut}/>  
             </span> Logout

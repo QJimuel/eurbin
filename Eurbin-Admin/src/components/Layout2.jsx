@@ -70,7 +70,7 @@ function Layout2() {
               </Link>
             </li>
             <li style={styles.sidebarItem}>
-              <Link to="/" style={styles.sidebarLink}>
+              <Link to="/Login" style={styles.sidebarLink}>
                 <span role="img" aria-label="logout">
                   🚪
                 </span>{" "}
