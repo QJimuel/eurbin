@@ -63,7 +63,7 @@ function Login() {
             <div style={styles.loginBox}>
                 <table>
                 <tbody>
-                <h1 style={styles.header}>Login</h1>
+                <h1 style={styles.header}>Login Account</h1>
                     <tr>
                     <td>
                         <input

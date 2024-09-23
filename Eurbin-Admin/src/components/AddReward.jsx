@@ -4,7 +4,7 @@ import { Outlet, Link } from "react-router-dom";
 
 function AddReward() {
 
-    const API_URL = 'https://eurbin.vercel.app//rewards';
+    const API_URL = 'https://eurbin.vercel.app/rewards';
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
     const [quantity, setQuantity] = useState('');
