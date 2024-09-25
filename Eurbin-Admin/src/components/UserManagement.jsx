@@ -2,10 +2,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Outlet, Link } from "react-router-dom";
+import ModalUser from './ModalUser';
 
 function UserManagement() {
     const API_URL = 'https://eurbin.vercel.app/user';
     const [user, setUser] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null); 
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         fetchUser();
@@ -33,6 +36,16 @@ function UserManagement() {
         const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
         return date.toLocaleString('en-US', options);
     }
+
+    const handleRowClick = (user) => {
+        setSelectedUser(user); 
+        setIsModalOpen(true);  
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedUser(null); 
+    };
 
     
     return<>
@@ -91,7 +104,7 @@ function UserManagement() {
                 </thead>
                 <tbody>
                     {user.map(item => (
-                        <tr key={user._id}>
+                        <tr key={user._id} onClick={() => handleRowClick(item)}>
         
                             <td>{item.userId}</td>
                             <td>{item.userName}</td>
@@ -108,7 +121,11 @@ function UserManagement() {
     
             </div>
 
-
+            <ModalUser 
+                isOpen={isModalOpen} 
+                onClose={closeModal} 
+                user={selectedUser} 
+            />
     
     </> ;
     
