@@ -119,9 +119,11 @@ function ContentManagement() {
                                 <td>{content.subject}</td>
                                 <td>{content.description}</td>
                                 <td>{new Date(content.date).toLocaleString()}</td>
-                                
-                                {!content.isPosted && (
+
+                                {!content.isPosted ? (
                                     <button onClick={() => updateIsPosted(content.contentId)}>Post</button>
+                                ) :(
+                                    <span>Posted</span>
                                 )}
                                             
                                 
