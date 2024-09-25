@@ -22,7 +22,7 @@ exports.createContent = async (req, res) => {
     const adjustedDate = new Date(now.getTime() + (8 * 60 * 60 * 1000));
 
 
-    const newContent = new Content({ contentId: newContentId, subject, description, date: adjustedDate  });
+    const newContent = new Content({ contentId: newContentId, subject, description,isPosted: false ,date: adjustedDate  });
     try {
         const content = await newContent.save();
         res.status(201).json(content);
