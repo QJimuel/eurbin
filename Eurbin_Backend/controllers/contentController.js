@@ -50,3 +50,23 @@ exports.updateContent = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+
+exports.disableContent = async (req, res) => {
+    const { contentId } = req.params;
+    try {
+        const content = await Content.findOneAndUpdate(
+            { contentId },
+            { isPosted: false }, // Set isPosted to false
+            { new: true }
+        );
+
+        if (!content) {
+            return res.status(404).json({ message: 'Content not found' });
+        }
+
+        res.status(200).json({ message: 'Content disabled successfully', content });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

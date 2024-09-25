@@ -45,6 +45,19 @@ function ContentManagement() {
             alert('An error occurred while updating the content');
         }
     };
+
+    const disableContent = async (contentId) => {
+        try {
+            const response = await axios.patch(`${API_URL}/disable/${contentId}`);
+    
+            if (response.status === 200) {
+                await fetchContents(); // Refresh the contents list
+            }
+        } catch (err) {
+            console.error('Error disabling content:', err);
+            alert('An error occurred while disabling the content');
+        }
+    };
     
 
     const createContent = async () => {
@@ -123,7 +136,7 @@ function ContentManagement() {
                                 {!content.isPosted ? (
                                     <button onClick={() => updateIsPosted(content.contentId)}>Post</button>
                                 ) :(
-                                    <span>Posted</span>
+                                    <button  onClick={() => disableContent(content.contentId)}>Disable</button>
                                 )}
                                             
                                 
