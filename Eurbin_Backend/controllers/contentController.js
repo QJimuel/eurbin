@@ -11,7 +11,6 @@ exports.getAllContents = async (req, res) => {
     }
 };
 
-
 // Create a new plastic bottle entry
 exports.createContent = async (req, res) => {
     const maxContent = await Content.findOne().sort({ contentId: -1 }).exec();

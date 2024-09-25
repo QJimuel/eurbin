@@ -4,6 +4,7 @@ const contentController = require('../controllers/contentController');
 
 router.get('/', contentController.getAllContents);
 router.post('/', contentController.createContent);
-router.patch('/:contentId', updateContent);
+router.patch('/:contentId', contentController.updateContent);
+
 
 module.exports = router;
