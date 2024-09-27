@@ -16,7 +16,7 @@ const contentRoutes = require('../routes/contentRoutes')
 const app = express();
 
 const corsOptions = {
-    origin: ['https://eurbinadmin.vercel.app', 'http://localhost:5173'],
+    origin:'*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -26,7 +26,7 @@ app.use(cors(corsOptions));
 
 
 app.options('*', (req, res) => {
-    res.header('Access-Control-Allow-Origin', ['https://eurbinadmin.vercel.app','http://localhost:5173','http://localhost:8081' ]);
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');
