@@ -34,6 +34,8 @@ app.options('*', (req, res) => {
 
 app.use(bodyParser.json());
 
+app.use('/uploads', express.static('uploads'));
+
 // MongoDB connection
 const Connection_String = "mongodb+srv://JQuerel:JQuerel@eurbin.th0jg.mongodb.net/EURBin?retryWrites=true&w=majority";
 
