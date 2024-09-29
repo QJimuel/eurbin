@@ -1,6 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 
-function ModalUser({ isOpen, onClose, user }) {
+function ModalUser({ isOpen, onClose, user , button}) {
     if (!isOpen || !user) return null;
 
     function formatDate(dateString) {
@@ -9,10 +10,30 @@ function ModalUser({ isOpen, onClose, user }) {
         return date.toLocaleString('en-US', options);
     };
 
+    const handleDeactivate = async () => {
+        try {
+            // Make the API request to deactivate the user
+            const response = await axios.delete(`https://eurbin.vercel.app/user/${user._id}`);
+
+            if (response.status === 200) {
+                alert('User deactivated successfully');
+                onClose();
+  // Refresh the user list after deactivation
+            } else {
+                console.error('Error deactivating user:', response);
+                alert('Error deactivating user');
+            }
+        } catch (err) {
+            console.error('Error during deactivation:', err);
+            alert('An error occurred during deactivation');
+        }
+    };
+
     return (
         <div style={modalOverlayStyle}>
             <div style={modalContentStyle}>
                 <h2 style={modalHeaderStyle}>User Details</h2>
+             
                 <div style={formGroupStyle}>
                     <strong>User ID:</strong> {user.userId}
                 </div>
@@ -52,6 +73,7 @@ function ModalUser({ isOpen, onClose, user }) {
 
                 <div style={modalButtonsStyle}>
                     <button onClick={onClose} style={closeButtonStyle}>Close</button>
+                    <button onClick={handleDeactivate} style={closeButtonStyle}>{ button }</button>
                 </div>
             </div>
         </div>

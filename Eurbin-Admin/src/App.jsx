@@ -23,6 +23,7 @@ import Layout2 from "./components/Layout2";
 import BinStatus from "./components/BinStatus";
 import About from "./components/About";
 import ContentManagement from "./components/ContentManagement";
+import DeactivatedUser from "./components/DeactivatedUser";
 
 function PrivateRoute({ element: Component, ...rest }) {
   const isAuthenticated = !!localStorage.getItem('token'); // Check if the token exists in localStorage
@@ -56,6 +57,7 @@ function App() {
             <Route path="/Recycleables" element={<RecycleableData />} />
             <Route path="/Edit" element={<EditRewards />} />
             <Route path="/ManageUser" element={<UserManagement />} />
+            <Route path="/DeactivatedUser" element={<DeactivatedUser />} />
             <Route path="/ContentManagement" element={<ContentManagement />} />
             
             <Route path="/Instruction" element={<Instruction />} />

@@ -55,6 +55,7 @@ function Layout() {
     <>
       <header className="header">
         <h1 className="header-title">EURBin</h1>
+        <h1 className="header-title">hello</h1> 
       </header>
 
       <div className="container">
@@ -167,7 +168,7 @@ const styles = {
     width: "300px",
     height: "100vh",
     backgroundColor: "#800000",
-    opacity: 0.94,
+  
     color: "white",
     padding: "20px",
   },
@@ -218,7 +219,7 @@ const styles = {
     color: "black",
   },
   main: {
-    padding: "20px",
+
   },
   title: {
     color: "darkred",

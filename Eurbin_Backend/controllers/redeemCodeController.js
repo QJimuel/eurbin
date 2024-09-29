@@ -13,10 +13,12 @@ exports.getAllCode = async (req, res) => {
 // Create a new transaction
 exports.createCode = async (req, res) => {
     const { redeemCode, smartPoints } = req.body;
+    console.log(redeemCode)
 
     const newRedeemCode = new RedeemCode({userId: null,redeemCode, smartPoints, isRedeemed: false });
     try {
         const redeemCode = await newRedeemCode.save();
+      
         res.status(201).json(redeemCode);
     } catch (err) {
         res.status(500).json({ error: err.message });

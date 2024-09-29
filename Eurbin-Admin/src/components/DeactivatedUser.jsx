@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Outlet, Link } from "react-router-dom";
 import ModalUser from './ModalUser';
 
-function UserManagement() {
+function DeactivatedUser() {
     const API_URL = 'https://eurbin.vercel.app/user';
     const [user, setUser] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null); 
@@ -19,10 +19,9 @@ function UserManagement() {
           const response = await axios.get(API_URL);
         
           if (response.status === 200 && response.data.users) {
-
-            const activeUsers = response.data.users.filter(user => user.isActive);
-                setUser(activeUsers);
-        
+            const activeUsers = response.data.users.filter(user => !user.isActive);
+            setUser(activeUsers);
+      
           } else {
             console.error('Unexpected data format:', response.data);
             alert('An error occurred: Unexpected data format');
@@ -65,7 +64,7 @@ function UserManagement() {
             <li >
                 <Link to="/DeactivatedUser" >
                 <button className={location.pathname === "/DeactivatedUser" ? "active-btn" : "inactive-btn"}>
-                        Deactivated User
+                        Deactivated Users
                     </button>
                 </Link>
             </li>
@@ -127,10 +126,10 @@ function UserManagement() {
                 isOpen={isModalOpen} 
                 onClose={closeModal} 
                 user={selectedUser} 
-                button= "Deactivate"
+                button= "Activate"
             />
     
     </> ;
     
 }
-export default UserManagement;
+export default DeactivatedUser;

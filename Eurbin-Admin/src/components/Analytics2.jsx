@@ -295,7 +295,6 @@ const styles = {
     width: '300px',
     height: '100vh',
     backgroundColor: '#800000',
-    opacity: 0.94,
     color: 'white',
     padding: '20px',
   },

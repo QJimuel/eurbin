@@ -31,40 +31,42 @@ body, h1, h2, p {
 
   .header {
     background-color: #800000; /* Dark red color */
-    padding: 1%;
+   
     padding-left: 7%;
-    opacity: 94%;
+    display: flex;
+    justify-content: space-between;
+    
   }
 
   .headings {
     color: white;
-    margin-top: 80px;
+    margin-top: 2%;
   }
   
   .header-title {
     font-family: "Manjari", system-ui;
     color: white;
     font-size: 24px;
-    padding:5px;
+    padding:1%;
   }
   
   .main-content {
     background-color: #800000; /* Slightly lighter red color */
     padding: 40px;
-    height: 200px;
+    height: 5vh;
     width: 100%;
-    border-radius: 0 0 10px 10px; /* Rounded corners for the bottom */
+    border-radius: 0 0 20px 20px; /* Rounded corners for the bottom */
   }
   
   .main-title {
-    padding-top: 8%;
+   
     color: white;
     font-size: 32px;
   }
   
 
   .table-container {
-    max-height: 27vh; 
+    max-height: 50vh; 
     overflow-y: auto;
     overflow-x: hidden;
     display: block;

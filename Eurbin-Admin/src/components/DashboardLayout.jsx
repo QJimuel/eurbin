@@ -311,7 +311,6 @@ const styles = {
     width: '257px',
     height: '100vh',
     backgroundColor: '#800000',
-    opacity: 0.94,
     color: 'white',
     padding: '20px',
   },
