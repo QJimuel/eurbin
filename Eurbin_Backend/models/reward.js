@@ -4,7 +4,8 @@ const rewardSchema = new mongoose.Schema({
    RewardName: String,
    Category: String,
    Quantity: Number,
-   Price: Number
+   Price: Number,
+   Image: String
    
    
 
