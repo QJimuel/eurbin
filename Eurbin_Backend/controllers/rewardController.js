@@ -43,7 +43,12 @@ exports.getRewardById = async (req, res) => {
 
 // Create a new reward
 exports.createReward = async (req, res) => {
+
+    
     try {
+
+        console.log("Request body:", req.body); // Log the request body
+        console.log("Uploaded file:", req.file);
         const { RewardName, Category, Quantity, Price } = req.body;
 
         // Check if image file is present and save path in reward

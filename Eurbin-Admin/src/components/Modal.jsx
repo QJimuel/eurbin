@@ -7,13 +7,19 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, modalTitle }) =>
     if (!isOpen) return null;
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setSelectedImage(URL.createObjectURL(file));
-            onChange({ target: { name: 'image', value: file } });
-        }
-    };
-
+      const files = event.target.files; // Capture the files directly
+      console.log("Files selected:", files); // Debugging log
+  
+      if (files && files.length > 0) { // Check if files are available
+          const file = files[0];
+          setSelectedImage(URL.createObjectURL(file));
+          console.log("Selected file:", file); // Log the selected file
+          onChange({ target: { name: 'image', value: file } }); // Send file to parent
+      } else {
+          console.warn("No file selected"); // Debugging log
+      }
+  };
+  
     const handlePhotoboxClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click(); // Trigger the click on the hidden input
@@ -34,6 +40,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, modalTitle }) =>
                 </div>
                 <input
                     type="file"
+                    accept="image/*" // Ensure only images can be selected
                     ref={fileInputRef} // Hidden input element
                     style={{ display: 'none' }} // Hides the input from view
                     onChange={handleImageChange} // Handles image selection

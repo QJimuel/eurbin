@@ -11,7 +11,7 @@ function ManageReward() {
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
     const [image, setImage] = useState(null); // State for the image
-  
+
     const [rewardId, setRewardId] = useState(null);
     const [rewards, setRewards] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -27,6 +27,7 @@ function ManageReward() {
     const fetchRewards = async () => {
         try {
             const response = await axios.get(API_URL);
+            console.log("Fetched rewards:", response.data); // Debugging log
             if (response.status === 200 && Array.isArray(response.data.rewards)) {
                 setRewards(response.data.rewards);
             } else {
@@ -46,17 +47,23 @@ function ManageReward() {
             formData.append('Category', category);
             formData.append('Quantity', parseInt(quantity, 10));
             formData.append('Price', parseFloat(price));
+    
+            // Check if image state has a file
             if (image) {
+                console.log("Appending image to formData:", image); // Log the image
                 formData.append('Image', image); // Append image if exists
+            } else {
+                console.warn("No image to append to formData"); // Debugging log
             }
-
+    
             const response = await axios.post(API_URL, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
+    
             if (response.status === 201) {
+                console.log("Reward created successfully:", response.data); // Debugging log
                 await fetchRewards();
                 clearInput();
                 setIsModalOpen(false);
@@ -65,7 +72,8 @@ function ManageReward() {
             console.error('Error creating reward:', err);
             alert('An error occurred while creating the reward');
         }
-    } 
+    };
+    
 
     const updateReward = async () => {
         try {
@@ -78,6 +86,8 @@ function ManageReward() {
                 formData.append('Image', image); // Append image if exists
             }
 
+            console.log("Updating reward with data:", formData); // Debugging log
+
             const response = await axios.put(`${API_URL}/${rewardId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -85,6 +95,7 @@ function ManageReward() {
             });
 
             if (response.status === 200) {
+                console.log("Reward updated successfully:", response.data); // Debugging log
                 await fetchRewards();
                 clearInput();
                 setIsModalOpen(false); // Close modal after updating
@@ -116,28 +127,29 @@ function ManageReward() {
     }
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        switch (name) {
-            case 'name':
-                setName(value);
-                break;
-            case 'category':
-                setCategory(value);
-                break;
-            case 'quantity':
-                setQuantity(value);
-                break;
-            case 'price':
-                setPrice(value);
-                break;
-            case 'image':
-                setImage(e.target.files[0]); // Update the image
-                break;
-            default:
-                break;
+        const { name, value, type, files } = e.target;
+
+        if (type === 'file' && files && files.length > 0) {
+            setImage(files[0]); // Set the selected file
+        } else {
+            switch (name) {
+                case 'name':
+                    setName(value);
+                    break;
+                case 'category':
+                    setCategory(value);
+                    break;
+                case 'quantity':
+                    setQuantity(value);
+                    break;
+                case 'price':
+                    setPrice(value);
+                    break;
+                default:
+                    break;
+            }
         }
     };
-
     return (
         <>
             <h1 className='headings'>Management</h1>
@@ -187,9 +199,9 @@ function ManageReward() {
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 onSubmit={isEditing ? updateReward : createReward}
-                formData={{ name, category, quantity, price }}
-                onChange={handleChange}
-                modalTitle={modalTitle}
+                formData={{ name, category, quantity, price }} // Pass relevant state to the modal
+                onChange={handleChange} // Pass the change handler
+                modalTitle={modalTitle} // Pass the title for the modal
             />
 
             <div className="table-container">
