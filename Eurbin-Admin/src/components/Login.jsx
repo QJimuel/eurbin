@@ -1,13 +1,17 @@
 
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  // Function to check token expiration
+ 
 
   const loginAdmin = async () => {
     if (!email || !password) {
@@ -19,20 +23,16 @@ function Login() {
         const response = await axios.post('https://eurbin.vercel.app/admin/login', { email, password });
 
         if (response.status === 200) { 
-            if (response.data.email === "admin"){
-       
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('userEmail', response.data.email); // Assuming the backend sends the email
-                localStorage.setItem('userId', response.data.userId); // Save the token in local storage
-                alert('Login successful');
-                navigate('/Dashboard2'); // Redirect to the root page
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userEmail', response.data.email);
+            localStorage.setItem('userId', response.data.userId);
 
+            alert('Login successful');
+
+            if (response.data.email === "admin") {
+                navigate('/Dashboard2');
             } else {
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('userEmail', response.data.email); // Assuming the backend sends the email
-                localStorage.setItem('userId', response.data.userId); // Save the token in local storage
-                alert('Login successful');
-                navigate('/BinStatus'); // Redirect to the root page
+                navigate('/BinStatus');
             }
         } else {
             alert('Login failed');
@@ -42,10 +42,10 @@ function Login() {
             alert('Invalid credentials');
         } else {
             console.error('Error logging in:', err);
-            alert('An error occurred during login or your account is not veified');
+            alert('An error occurred during login or your account is not verified');
         }
     }
-};
+  };
     return (
         <>
         {/* Adding <style> tag for the ::placeholder pseudo-element */}
