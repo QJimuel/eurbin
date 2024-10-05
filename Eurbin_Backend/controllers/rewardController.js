@@ -126,6 +126,30 @@ exports.updateReward = async (req, res) => {
     }
 };
 
+// Update a reward
+exports.updateReward2 = async (req, res) => {
+    try {
+        const { RewardName, Category, Quantity, Price } = req.body;
+
+        // Handle the updated image file (if any)
+       
+        const reward = await Reward.findByIdAndUpdate(
+            req.params.id,
+            { RewardName, Category, Quantity, Price },
+            { new: true }
+        );
+        
+        if (!reward) {
+            return res.status(404).json({ message: 'Reward not found' });
+        }
+
+        res.status(200).json(reward);
+    } catch (err) {
+        console.error("Error updating reward:", err);
+        res.status(500).json({ error: 'An error occurred while updating the reward.' });
+    }
+};
+
 // Delete a reward
 exports.deleteReward = async (req, res) => {
     try {

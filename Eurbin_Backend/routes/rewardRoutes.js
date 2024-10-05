@@ -8,6 +8,8 @@ router.get('/', rewardController.getAllRewards);
 
 router.get('/:id', rewardController.getRewardById);
 
+router.patch('/:id', rewardController.updateReward2)
+
 router.put('/:id', rewardController.upload, rewardController.updateReward); 
 
 
