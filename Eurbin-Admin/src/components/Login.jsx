@@ -62,47 +62,47 @@ function Login() {
             <div style={styles.redBox}>
             <div style={styles.loginBox}>
                 <table>
-                <tbody>
-                <h1 style={styles.header}>Login Account</h1>
-                    <tr>
-                    <td>
-                        <input
-                        style={styles.input}
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
-                        />
-                    </td>
-                    </tr>
-                    <tr>
-                    <td>
-                        <input
-                        style={styles.input}
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        />
-                    </td>
-                    </tr>
-                    <tr>
-                    <td>
-                        <p style={styles.forgotPass}>Forgot Password</p>
-                    </td>
-                    </tr>
-                    <button style={styles.loginBtn} onClick={loginAdmin}>Login</button>
-                    <tr>
-                    <td>
-                        <p style={styles.signUp}>
-                            Don't have an account?  
-                            <Link to="/Signup" style={{ color: '#800000', paddingLeft: '1%'}}>
-                                Sign up
-                            </Link>
-                        </p>
-                    </td>
-                    </tr>
-                </tbody>
+                    <tbody>
+                        <h1 style={styles.header}>Login Account</h1>
+                        <tr>
+                            <td>
+                                <input
+                                style={styles.input}
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Email"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input
+                                style={styles.input}
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Password"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style={styles.forgotPass}>Forgot Password</p>
+                            </td>
+                        </tr>
+                        <button style={styles.loginBtn} onClick={loginAdmin}>Login</button>
+                        <tr>
+                            <td>
+                                <p style={styles.signUp}>
+                                    Don't have an account?  
+                                    <Link to="/Signup" style={{ color: '#800000', paddingLeft: '1%'}}>
+                                        Sign up
+                                    </Link>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
             </div>
@@ -111,7 +111,6 @@ function Login() {
     );
   
   }
-  
   const styles = {
     container: {
         display: 'flex',
@@ -184,6 +183,7 @@ function Login() {
         marginLeft: '0.5%',
     }
   };
+  
   
   
 
