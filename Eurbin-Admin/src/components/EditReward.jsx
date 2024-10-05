@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import Modal from './Modal'; // Import the Modal component
 
 function EditReward() {
-    const API_URL = 'http://localhost:7000/rewards';
+    const API_URL = 'https://eurbin.vercel.app/rewards';
 
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
