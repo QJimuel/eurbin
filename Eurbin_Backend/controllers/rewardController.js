@@ -7,10 +7,10 @@ const multerS3 = require('multer-s3');
 // Configure AWS S3 Client
 // Configure AWS S3 Client
 const s3 = new S3Client({
-    region: process.env.AWS_REGION,  // Load from environment variables
+    region: 'ap-southeast-2',  // Load from environment variables
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID, // Load from environment variables
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Load from environment variables
+        accessKeyId: 'AKIAWMFUPPJEGS5A25OL', // Load from environment variables
+        secretAccessKey: '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', // Load from environment variables
     },
 });
 
