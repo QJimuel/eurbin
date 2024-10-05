@@ -6,13 +6,7 @@ const multerS3 = require('multer-s3');
 
 // Configure AWS S3 Client
 // Configure AWS S3 Client
-const s3 = new S3Client({
-    region: 'ap-southeast-2',  // Load from environment variables
-    credentials: {
-        accessKeyId: 'AKIAWMFUPPJEGS5A25OL', // Load from environment variables
-        secretAccessKey: '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', // Load from environment variables
-    },
-});
+
 
 // Set up multer to upload images to S3
 const upload = multer({
