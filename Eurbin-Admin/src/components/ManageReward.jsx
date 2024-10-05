@@ -4,31 +4,32 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import Modal from './Modal'; // Import the Modal component
 
 function ManageReward() {
-    const API_URL = 'https://eurbin.vercel.app/rewards';
+    const API_URL = 'http://localhost:7000/rewards';
 
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
-  
+    const [selectedImage, setSelectedImage] = useState(null);
     const [rewardId, setRewardId] = useState(null);
     const [Reward, setRewards] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
-    const [isEditing, setIsEditing] = useState(false); // New state to differentiate between adding and editing
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [modalTitle, setModalTitle] = useState('Add Reward');
 
     const location = useLocation();  
 
     useEffect(() => {
         fetchReward(); 
-    }, []); // Run only once on component mount
+    }, []);
     
     const fetchReward = async () => {
         try {
+            console.log('Fetching rewards...');
             const response = await axios.get(API_URL);
-
             if (response.status === 200 && Array.isArray(response.data.rewards)) {
                 setRewards(response.data.rewards);
+                console.log('Rewards fetched successfully:', response.data.rewards);
             } else {
                 console.error('Unexpected data format:', response.data);
                 alert('An error occurred: Unexpected data format');
@@ -41,12 +42,16 @@ function ManageReward() {
 
     const createReward = async () => {
         try {
+            console.log('Creating reward with data:', { name, category, quantity, price, selectedImage });
             const formData = new FormData();
             formData.append('RewardName', name);
             formData.append('Category', category);
             formData.append('Quantity', parseInt(quantity, 10));
             formData.append('Price', parseFloat(price));
-            formData.append('Image', formData.image); // Append the image file
+            if (selectedImage) {
+                formData.append('Image', selectedImage);
+                console.log('Image added to formData:', selectedImage.name);
+            }
     
             const response = await axios.post(API_URL, formData, {
                 headers: {
@@ -55,48 +60,59 @@ function ManageReward() {
             });
     
             if (response.status === 201) {
+                console.log('Reward created successfully:', response.data);
                 await fetchReward();
                 clearInput();
-                setIsModalOpen(false); // Close modal after creating
+                setIsModalOpen(false);
             }
         } catch (err) {
-            console.error('Error creating reward:', err);
+            console.error('Error creating reward:', err.response || err);
             alert('An error occurred while creating the reward');
         }
     };
     
     const updateReward = async () => {
         try {
-            const rawInput = {
-                RewardName: name,
-                Category: category,
-                Quantity: parseInt(quantity, 10),
-                Price: parseFloat(price)
-            };
-
-            const response = await axios.put(`${API_URL}/${rewardId}`, rawInput);
-
+            console.log('Updating reward with ID:', rewardId);
+    
+            const formData = new FormData();
+            formData.append('RewardName', name);
+            formData.append('Category', category);
+            formData.append('Quantity', parseInt(quantity, 10));
+            formData.append('Price', parseFloat(price));
+    
+            if (selectedImage) {
+                formData.append('Image', selectedImage); // Add the selected image if available
+                console.log('Image added to formData for update:', selectedImage.name);
+            }
+    
+            const response = await axios.put(`${API_URL}/${rewardId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
             if (response.status === 200) {
+                console.log('Reward updated successfully:', response.data);
                 await fetchReward();
                 clearInput();
+                setIsModalOpen(false);
             }
         } catch (err) {
-            console.error('Error updating reward:', err);
+            console.error('Error updating reward:', err.response || err);
             alert('An error occurred while updating the reward');
         }
     };
 
-
-   
-
     const handleAddClick = () => {
-        clearInput(); // Clear inputs before adding new reward
-        setIsModalOpen(true); // Open modal when "Add" button is clicked
+        clearInput();
+        setIsModalOpen(true);
         setModalTitle('Add Reward');
     };
 
     const handleCloseModal = () => {
-        setIsModalOpen(false); // Close modal
+        setIsModalOpen(false);
+        clearInput(); // Clear inputs when closing the modal
     };
 
     const clearInput = () => {
@@ -104,8 +120,10 @@ function ManageReward() {
         setCategory('');
         setQuantity('');
         setPrice('');
-        setRewardId(null); // Reset rewardId as well
+        setSelectedImage(null); // Clear selected image
+        setRewardId(null);
     }
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         switch (name) {
@@ -124,6 +142,11 @@ function ManageReward() {
             default:
                 break;
         }
+    };
+
+    const handleImageChange = (file) => {
+        console.log('Selected image:', file.name);
+        setSelectedImage(file); // Update selected image
     };
 
     return (
@@ -163,10 +186,6 @@ function ManageReward() {
             </ul>
         </nav>
 
-        
-        
-
-        
         <div className="header-buttons">
             <button onClick={handleAddClick}> Add </button>
             <Link to="/Edit" className="activityLink">
@@ -178,40 +197,43 @@ function ManageReward() {
         <Modal
             isOpen={isModalOpen}
             onClose={handleCloseModal}
-            onSubmit={isEditing ? updateReward : createReward} // Check if editing or adding
+            onSubmit={isEditing ? updateReward : createReward}
             formData={{ name, category, quantity, price }}
             onChange={handleChange}
+            onImageChange={handleImageChange} // Pass the image change handler
             modalTitle={modalTitle}
         />
 
-        
-        
-        <div className="table-container">
-            <table className="w3-table-all">
-                <thead>
-                    <tr className="w3-light-grey">
-                        <th>Reward</th>
-                        <th>Reward Name</th>
-                        <th>Category</th>
-                        <th>Quantity<div style={{ fontSize: '10px', color: 'black' }}></div></th>
-                        <th> Price <div style={{ fontSize: '10px', color: 'black' }}>(Smart Points)</div></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Reward.map(reward => (
-                        <tr key={reward._id}>
-                            <td>🖼️</td>
-                            <td>{reward.RewardName}</td>
-                            <td>{reward.Category}</td>
-                            <td>{reward.Quantity}</td>
-                            <td>{reward.Price}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-    
-            </div>
-            
+<div className="table-container">
+    <table className="w3-table-all">
+        <thead>
+            <tr className="w3-light-grey">
+                <th>Reward Image</th>
+                <th>Reward Name</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Price (Smart Points)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {Reward.map(reward => (
+                <tr key={reward._id}>
+                    <td>
+                        <img 
+                            src={reward.Image} 
+                            alt={reward.RewardName} 
+                            style={{ width: '50px', height: '50px' }} 
+                        />
+                    </td>
+                    <td>{reward.RewardName}</td>
+                    <td>{reward.Category}</td>
+                    <td>{reward.Quantity}</td>
+                    <td>{reward.Price}</td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>
         </>
     );
 }

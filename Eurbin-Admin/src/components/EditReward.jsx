@@ -4,13 +4,14 @@ import { Link, useLocation } from "react-router-dom";
 import Modal from './Modal'; // Import the Modal component
 
 function EditReward() {
-    const API_URL = 'https://eurbin.vercel.app/rewards';
+    const API_URL = 'http://localhost:7000/rewards';
 
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
     const [rewardId, setRewardId] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
     const [Reward, setRewards] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
     const [modalTitle, setModalTitle] = useState('Add Reward');
@@ -41,47 +42,68 @@ function EditReward() {
 
     const createReward = async () => {
         try {
-            const rawInput = {
-                RewardName: name,
-                Category: category,
-                Quantity: parseInt(quantity, 10),
-                Price: parseFloat(price)
-            };
-
-            const response = await axios.post(API_URL, rawInput);
-
+            console.log('Creating reward with data:', { name, category, quantity, price, selectedImage });
+            const formData = new FormData();
+            formData.append('RewardName', name);
+            formData.append('Category', category);
+            formData.append('Quantity', parseInt(quantity, 10));
+            formData.append('Price', parseFloat(price));
+            if (selectedImage) {
+                formData.append('Image', selectedImage);
+                console.log('Image added to formData:', selectedImage.name);
+            }
+    
+            const response = await axios.post(API_URL, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
             if (response.status === 201) {
+                console.log('Reward created successfully:', response.data);
                 await fetchReward();
                 clearInput();
-                setIsModalOpen(false); // Close modal after creating
+                setIsModalOpen(false);
             }
         } catch (err) {
-            console.error('Error creating reward:', err);
+            console.error('Error creating reward:', err.response || err);
             alert('An error occurred while creating the reward');
         }
-    } 
-
+    };
+    
     const updateReward = async () => {
         try {
-            const rawInput = {
-                RewardName: name,
-                Category: category,
-                Quantity: parseInt(quantity, 10),
-                Price: parseFloat(price)
-            };
-
-            const response = await axios.put(`${API_URL}/${rewardId}`, rawInput);
-
+            console.log('Updating reward with ID:', rewardId);
+    
+            const formData = new FormData();
+            formData.append('RewardName', name);
+            formData.append('Category', category);
+            formData.append('Quantity', parseInt(quantity, 10));
+            formData.append('Price', parseFloat(price));
+    
+            if (selectedImage) {
+                formData.append('Image', selectedImage); // Add the selected image if available
+                console.log('Image added to formData for update:', selectedImage.name);
+            }
+    
+            const response = await axios.put(`${API_URL}/${rewardId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
             if (response.status === 200) {
+                console.log('Reward updated successfully:', response.data);
                 await fetchReward();
                 clearInput();
-                setIsModalOpen(false); // Close modal after updating
+                setIsModalOpen(false);
             }
         } catch (err) {
-            console.error('Error updating reward:', err);
+            console.error('Error updating reward:', err.response || err);
             alert('An error occurred while updating the reward');
         }
     };
+
 
     const deleteReward = async (id) => {
         try {
@@ -112,7 +134,7 @@ function EditReward() {
         setCategory('');
         setQuantity('');
         setPrice('');
-        
+        setSelectedImage(null);
         setRewardId(null); // Reset rewardId as well
         setIsEditing(false); // Reset editing mode
     }
@@ -147,6 +169,11 @@ function EditReward() {
         }
     };
 
+
+    const handleImageChange = (file) => {
+        console.log('Selected image:', file.name);
+        setSelectedImage(file); // Update selected image
+    };
     return (
         <>
         <h1 className='headings'>Management</h1>
@@ -196,9 +223,10 @@ function EditReward() {
         <Modal
             isOpen={isModalOpen}
             onClose={handleCloseModal}
-            onSubmit={isEditing ? updateReward : createReward} // Check if editing or adding
+            onSubmit={isEditing ? updateReward : createReward}
             formData={{ name, category, quantity, price }}
             onChange={handleChange}
+            onImageChange={handleImageChange} // Pass the image change handler
             modalTitle={modalTitle}
         />
 

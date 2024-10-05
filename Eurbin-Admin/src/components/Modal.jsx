@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, modalTitle }) => {
+const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, onImageChange, modalTitle }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -10,10 +10,12 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, modalTitle }) =>
     const files = event.target.files;
     if (files && files.length > 0) {
         const file = files[0];
-        setSelectedImage(URL.createObjectURL(file));
-        onChange({ target: { name: 'image', value: file } }); // Send file to parent
+        console.log('Image selected:', file.name);
+        setSelectedImage(URL.createObjectURL(file)); // Preview the selected image
+        onImageChange(file); // Pass the file to the parent
     }
-};
+  };
+
   const handlePhotoboxClick = () => {
       if (fileInputRef.current) {
           fileInputRef.current.click();
@@ -22,6 +24,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, modalTitle }) =>
 
   const handleSubmit = (e) => {
       e.preventDefault();
+      console.log('Submitting form with data:', formData);
       onSubmit(); // Call the parent's onSubmit function
   };
 
@@ -88,6 +91,5 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, modalTitle }) =>
       </div>
   );
 };
-
 
 export default Modal;
