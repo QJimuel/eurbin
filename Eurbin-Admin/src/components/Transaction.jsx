@@ -112,17 +112,15 @@ function Transaction() {
                                 <td>{transaction.transactionPrice}</td>
                                 <td>{formatDate(transaction.date)}</td>
                                 <td>{transaction.referenceNo}</td>
-                                <td className="action-buttons">
+                                <td>
                                     {transaction.isAccepted === true ? (
-                                        <span className='status'>Accepted</span>
+                                        <span className='status' style={{ color: '#4CAF50' }}>Accepted</span>
                                     ) : transaction.isAccepted === false ? (
-                                        <span className='status'>Declined</span>
+                                        <span className='status' style={{ color: '#F44336' }}>Declined</span>
                                     ) : (
                                         <>  
                                         </>
                                     )}
-
-                                    
                                 </td>
                               
                              

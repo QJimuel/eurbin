@@ -30,12 +30,11 @@ body, h1, h2, p {
   }
 
   .header {
-    background-color: #800000; /* Dark red color */
-   
-    padding-left: 7%;
+    background-color: #800000; 
+    padding-left: 5%;
+    padding-top: 2%;
     display: flex;
     justify-content: space-between;
-    
   }
 
   .headings {
@@ -53,9 +52,9 @@ body, h1, h2, p {
   .main-content {
     background-color: #800000; /* Slightly lighter red color */
     padding: 40px;
-    height: 5vh;
+    height: 4vh;
     width: 100%;
-    border-radius: 0 0 20px 20px; /* Rounded corners for the bottom */
+    /* border-radius: 0 0 20px 20px; Rounded corners for the bottom */
   }
   
   .main-title {
@@ -64,52 +63,87 @@ body, h1, h2, p {
     font-size: 32px;
   }
   
+  /*TABLE CSS*/
 
   .table-container {
-    max-height: 50vh; 
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: block;
-  }
-  
-  .w3-table-all {
     width: 100%;
-    border-collapse: collapse;
-    text-align: center;
+    max-height: 430px; 
+    border-collapse: separate;
+    overflow-y: scroll; 
+    overflow-x: hidden; 
+    padding-left: 1px;
+    padding-right: 1px;
 }
 
-
-  .w3-table-all th {
-      border: none;
-      background-color: #ffffff;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-      padding: 8px;
+  /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+  .table-container::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar */
   }
 
-
-  .w3-table-all td {
-      border: 1px solid #ddd; 
-      padding: 8px;
+  /* Hide scrollbar for Firefox */
+  .table-container {
+    scrollbar-width: none; /* Hides the scrollbar */
   }
 
-
-  .w3-table-all tr {
-      outline: 1px solid #ddd; 
+  .w3-table-all {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px; 
   }
 
-  .w3-table-all tr:hover {
-    background-color: #ddd;
+  thead th {
+    border: none; 
+    text-align: center; 
+    padding: 10px;
+    font-weight: bold;
   }
-  
-  .w3-light-grey {
-    background-color: #f9f9f9;
+
+  .table-container tbody tr {
+    outline: 1px solid #800000; 
+    border-radius: 20px; 
+    background-color: #fff; 
   }
+
+  .table-container tbody tr td {
+    padding: 10px;
+    border: none; 
+    text-align: center; 
+  }
+
+  .table-container tbody tr {
+    border-radius: 20px; 
+    overflow: hidden; 
+  }
+
+  .table-container tbody tr:hover {
+    background-color: #f9f9f9; 
+  }
+
+  .cmBtnCont {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100%; 
+}
+
+  .cmBtn {
+    padding: 8px 15px 5px 15px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    min-width: 8%;
+    text-align: center;
+  }
+
+.cmBtn:hover {
+    background-color: #45a049;
+}
+
+/*END TABLE CSS*/
   
   button {
     margin: 0 5px;
-    padding: 10px 15px ;
+    padding: 10px 15px;
     background-color: #8B0000;
     color: white;
     border: none;
@@ -216,6 +250,12 @@ body, h1, h2, p {
   margin-bottom: 2%;
 }
 
+.addContBtn {
+  background-color: #4CAF50; 
+  color: #FFFFFF; 
+  border: none;
+}
+
 .header-btn {
   background-color: white;
   border: 1px solid black;
@@ -229,22 +269,31 @@ body, h1, h2, p {
   background-color: #A00000;
 }
 
-/* Style the action buttons container */
-.action-buttons {
+
+.rrBtn {
   display: flex;
   justify-content: center;
   align-items: center; 
 }
 
 /* Style for the buttons */
-.action-buttons button {
-  padding: 8px 12px;
-  border: 1px solid black;
-  border-radius: 5px;
+.rrBtn button {
+  padding: 8px 15px 5px 15px;
+  color: white;
+  border: none;
   cursor: pointer;
-  background-color: white;
-  color: black;
-  transition: background-color 0.3s ease-in;
+  min-width: 8%;
+  text-align: center;
+}
+
+.cmBtn {
+  padding: 8px 15px 5px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  min-width: 8%;
+  text-align: center;
 }
 
 
@@ -566,7 +615,6 @@ body, h1, h2, p {
 .dTitle{
   color: #800000;
   font-size: 3vh;
-  margin-bottom: 3%;
 }
 
 .userActivityBox{
@@ -574,59 +622,78 @@ body, h1, h2, p {
   padding: 2%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   width: 44.5%;
-  min-height: 43vh;
+  min-height: 40vh;
   height: auto;
   border-radius: 10px;
   margin-top: 3%;
 }
 
 .uaContainer {
-  max-height: 100vh; 
+  max-height: 250px; 
   overflow-y: auto;
   overflow-x: hidden;
   display: block;
+  padding-left: 1px;
+  padding-right: 1px;
 }
 
 .uaTable {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 15px; 
   text-align: center;
 }
 
-.uaTable th {
-    border: none;
-    background-color: #ffffff;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    padding: 8px;
+
+
+.uaTable thead th {
+  border: none; 
+  background-color: #ffffff; 
+  position: sticky; 
+  top: 0; 
+  z-index: 10; 
+  padding: 10px; 
+  font-weight: bold; 
+  text-align: center; 
 }
 
-.uaTable td {
-    border: 1px solid #ddd; 
-    padding: 8px;
+
+.uaTable tbody tr {
+  outline: 1px solid #800000; 
+  border-radius: 20px; 
+  background-color: #fff; 
+  overflow: hidden; 
 }
 
-
-.uaTable tr {
-    outline: 1px solid #ddd; 
+.uaTable tbody tr td {
+  padding: 10px; 
+  border: none; 
+  text-align: center; 
 }
 
-.uaTable tr:hover {
-  background-color: #ddd;
+.uaTable tbody tr:hover {
+  background-color: #f9f9f9; 
 }
 
 .uaGrey {
   background-color: #4a0f0f;
 }
 
-.tableHead{
-  font-size: 2.5vh;
+.tableHead {
+  font-size: 2.5vh; 
 }
 
-/* .tableData{
-  width: 60vw;
-} */
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.uaContainer::-webkit-scrollbar {
+  display: none; /* Hides the scrollbar */
+}
+
+/* Hide scrollbar for Firefox */
+.uaContainer {
+  scrollbar-width: none; /* Hides the scrollbar */
+}
+
+
 
 .selected-image {
   width: 100%;

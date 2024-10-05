@@ -225,161 +225,160 @@ function About() {
         </>
     );
 }
-
 const styles = {
-    container: {
-      maxHeight: '90vh', // Limit the height for scrollability
-      overflowY: 'auto', // Enable vertical scrolling
-      width: '86%',
-      overflowX: 'hidden',
-      paddingLeft: "5%"
-    },
-    about: {
-        display: 'flex',
-        justifyContent: 'space-between',  
-        alignItems: 'center',             
-        marginTop: '5vh',
-    },
-    aboutText: {
-        flexBasis: '50%',
-     
-    },
-    aboutImage: {
-        flexBasis: '50%',  
-        marginRight: '-10vw',
-    },
-    header: {
-        fontSize: '36px',
-        color: '#800000',
-        fontWeight: '900',  
-        marginBottom: '20px',
-    },
-    header1: {
-        fontSize: '3vw',
-        fontFamily: 'Poppins',
-        color: '#800000',
-        fontWeight: '600',  
-        marginBottom: '20px',
-    },
-    subHeader: {
-      fontSize: '2vw',
-      marginTop: '2vw',
-      color: '#800000',
-    },
-    
-    /*INSTRUCCTION CSS*/
-    instructionContent: {
-      marginLeft: '0%',
-      marginTop: '3%',
-      overflowY: 'hidden', // Keep vertical scroll
-      overflowX: 'hidden', // Hide horizontal scroll
-      marginBottom: '10vh',
-    },
-    iContentScrollable: {
-      display: 'flex',         
-      flexWrap: 'nowrap',        
-      overflowX: 'auto',         
-      scrollbarWidth: 'none',
-      fontSize: '1.5vw',
-      marginTop: '5vh',
-      width: '90%',
-    },
-    step: {
-      minWidth: '35%',     
+  container: {
+    maxHeight: '90vh', // Limit the height for scrollability
+    overflowY: 'auto', // Enable vertical scrolling
+    width: '86%',
+    overflowX: 'hidden',
+    paddingLeft: "5%"
+  },
+  about: {
       display: 'flex',
-      alignItems: 'center',
-      flexDirection: 'column',
-    },
-    stepP: {
-      marginLeft: 30,
-    },
-    iImage: {
-      width: '100%',         
-       maxHeight: '80%',
-      marginBottom: '3vh',
-    },
-    /*END INSTRUCCTION CSS*/
-    
-    paragraph1: {
-        fontSize: '1.5vw',
-        fontWeight: '600',
-    },
-    paragraph: {
-        fontSize: '1.3vw',
-        color: '#555',
-        lineHeight: '1.6',
-    },
-    image: {
-        maxWidth: '80%',    
-        height: 'auto',
-    },
-    sidebar: {
-        width: '257px',
-        height: '100vh',
-        backgroundColor: '#800000',
-        opacity: 0.94,
-        color: 'white',
-        padding: '20px',
-    },
-    sidebarList: {
-        listStyle: 'none',
-        padding: 0,
-    },
-      sidebarItem: {
-        marginBottom: '20px',
-    },
-    sidebarLink: {
-        color: 'white',
-        textDecoration: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '20px',             
-        marginLeft: '20px',
-        cursor: 'pointer',
-    },
-    logo: {
-        fontSize: '24px',
-        color: 'black',
-    },
-    nav: {
-        display: 'flex',
-    },
-    navList: {
-        listStyle: 'none',
-        display: 'flex',
-        margin: 0,
-        padding: 0,
-    },
-    navItem: {
-        marginLeft: '10px',
-    },
-    link: {
-        textDecoration: 'none',
-    },
-    button: {
-        backgroundColor: 'white',
-        border: '1px solid #ccc',
-        borderRadius: '5px',
-        padding: '5px 10px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '5px',
-        color: 'black',
-    },
-    main: {
-        padding: '20px',
-    },
-    title: {
-        color: 'darkred',
-    },
-    
-    // header: {
-    //     textAlign: 'center',
-    //     fontSize: '2.5em',
-    //     marginBottom: '20px',
-    //     color: '#800000',
-    // },   
+      justifyContent: 'space-between',  
+      alignItems: 'center',             
+      marginTop: '5vh',
+  },
+  aboutText: {
+      flexBasis: '50%',
+   
+  },
+  aboutImage: {
+      flexBasis: '50%',  
+      marginRight: '-10vw',
+  },
+  header: {
+      fontSize: '36px',
+      color: '#800000',
+      fontWeight: '900',  
+      marginBottom: '20px',
+  },
+  header1: {
+      fontSize: '3vw',
+      fontFamily: 'Poppins',
+      color: '#800000',
+      fontWeight: '600',  
+      marginBottom: '20px',
+  },
+  subHeader: {
+    fontSize: '2vw',
+    marginTop: '2vw',
+    color: '#800000',
+  },
+  
+  /*INSTRUCCTION CSS*/
+  instructionContent: {
+    marginLeft: '0%',
+    marginTop: '3%',
+    overflowY: 'hidden', // Keep vertical scroll
+    overflowX: 'hidden', // Hide horizontal scroll
+    marginBottom: '10vh',
+  },
+  iContentScrollable: {
+    display: 'flex',         
+    flexWrap: 'nowrap',        
+    overflowX: 'auto',         
+    scrollbarWidth: 'none',
+    fontSize: '1.5vw',
+    marginTop: '5vh',
+    width: '90%',
+  },
+  step: {
+    minWidth: '35%',     
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  stepP: {
+    marginLeft: 30,
+  },
+  iImage: {
+    width: '100%',         
+     maxHeight: '80%',
+    marginBottom: '3vh',
+  },
+  /*END INSTRUCCTION CSS*/
+  
+  paragraph1: {
+      fontSize: '1.5vw',
+      fontWeight: '600',
+  },
+  paragraph: {
+      fontSize: '1.3vw',
+      color: '#555',
+      lineHeight: '1.6',
+  },
+  image: {
+      maxWidth: '80%',    
+      height: 'auto',
+  },
+  sidebar: {
+    width: '257px',
+    height: '100vh',
+    backgroundColor: '#800000',
+    color: 'white',
+    padding: '20px',
+    paddingTop: "6vh",
+  },
+  sidebarList: {
+    listStyle: 'none',
+    padding: 0,
+  },
+  sidebarItem: {
+    marginBottom: '20px',
+  },
+  sidebarLink: {
+    color: 'white',
+    textDecoration: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',             
+    marginLeft: '20px',
+    cursor: "pointer",
+  },
+  logo: {
+    fontSize: '24px',
+    color: 'black',
+  },
+  nav: {
+    display: 'flex',
+  },
+  navList: {
+    listStyle: 'none',
+    display: 'flex',
+    margin: 0,
+    padding: 0,
+  },
+  navItem: {
+    marginLeft: '10px',
+  },
+  link: {
+    textDecoration: 'none',
+  },
+  button: {
+    backgroundColor: 'white',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    padding: '5px 10px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
+    color: 'black',
+  },
+  main: {
+    padding: '20px',
+  },
+  title: {
+    color: 'darkred',
+  },
+  
+  // header: {
+  //     textAlign: 'center',
+  //     fontSize: '2.5em',
+  //     marginBottom: '20px',
+  //     color: '#800000',
+  // },   
 };
 
 export default About;

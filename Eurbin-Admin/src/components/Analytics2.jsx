@@ -297,6 +297,7 @@ const styles = {
     backgroundColor: '#800000',
     color: 'white',
     padding: '20px',
+    paddingTop: "6vh",
   },
   sidebarList: {
     listStyle: 'none',

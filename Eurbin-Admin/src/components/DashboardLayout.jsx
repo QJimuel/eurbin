@@ -255,15 +255,14 @@ function DashboardLayout() {
                                 <td>{transaction.transactionPrice}</td>
                                 <td>{transaction.referenceNo}</td>
                                 <td className="action-buttons">
-                                    {transaction.isAccepted === true ? (
-                                        <span className='status'>Accepted</span>
-                                    ) : transaction.isAccepted === false ? (
-                                        <span className='status'>Declined</span>
-                                    ) : (
-                                        <>  
-                                        </>
-                                    )}
-                                </td>
+                                      {transaction.isAccepted === true ? (
+                                          <span className="status" style={{ color: '#4CAF50' }}>Accepted</span>
+                                      ) : transaction.isAccepted === false ? (
+                                          <span className="status" style={{ color: '#F44336' }}>Declined</span>
+                                      ) : (
+                                          <span className="status">Pending</span>
+                                      )}
+                                  </td>
                             </tr>
                         ))}
                     </tbody>
@@ -298,6 +297,7 @@ function DashboardLayout() {
   );
 }
 
+
 const styles = {
   header: {
     color: 'white',
@@ -313,6 +313,7 @@ const styles = {
     backgroundColor: '#800000',
     color: 'white',
     padding: '20px',
+    paddingTop: "6vh",
   },
   sidebarList: {
     listStyle: 'none',
@@ -328,6 +329,7 @@ const styles = {
     alignItems: 'center',
     gap: '20px',             
     marginLeft: '20px',
+    cursor: "pointer",
   },
   logo: {
     fontSize: '24px',

@@ -144,32 +144,35 @@ function RequestReward() {
         <td>{transaction.transactionPrice}</td>
         <td>{formatDate(transaction.date)}</td>
         <td>{transaction.referenceNo}</td>
-        <td className="action-buttons">
-          {transaction.isAccepted === true ? (
-            <span className="status">Accepted</span>
-          ) : transaction.isAccepted === false ? (
-            <span className="status">Declined</span>
-          ) : (
-            <>
-              <Link to="/Transaction">
-                <button
-                  className={location.pathname === "/Transaction"}
-                  onClick={() => handleAccept(transaction._id)}
-                >
-                  Accept
-                </button>
-              </Link>
-              <Link to="/Transaction">
-                <button
-                  className={location.pathname === "/Transaction"}
-                  onClick={() => handleDecline(transaction._id)}
-                >
-                  Decline
-                </button>
-              </Link>
-            </>
-          )}
+        <td className="rrBtn">
+            {transaction.isAccepted === true ? (
+                <span className="status">Accepted</span>
+            ) : transaction.isAccepted === false ? (
+                <span className="status">Declined</span>
+            ) : (
+                <>
+                <Link to="/Transaction" style={{ textDecoration: 'none' }}>
+                    <button
+                    className={location.pathname === "/Transaction"}
+                    style={{ backgroundColor: '#4CAF50' }} 
+                    onClick={() => handleAccept(transaction._id)}
+                    >
+                    Accept
+                    </button>
+                </Link>
+                <Link to="/Transaction" style={{ textDecoration: 'none' }}>
+                    <button
+                    className={location.pathname === "/Transaction"}
+                    style={{ backgroundColor: '#F44336' }} 
+                    onClick={() => handleDecline(transaction._id)}
+                    >
+                    Decline
+                    </button>
+                </Link>
+                </>
+            )}
         </td>
+
       </tr>
     ))
   ) : (

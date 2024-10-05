@@ -115,7 +115,7 @@ function ContentManagement() {
                 setDescription={setDescription}
             />
 
-            <div className="table-container">
+<div className="table-container">
                 <table className="w3-table-all">
                     <thead>
                         <tr className="w3-light-grey">
@@ -123,6 +123,7 @@ function ContentManagement() {
                             <th>Subject</th>
                             <th>Description</th>
                             <th>Date</th>
+                            <th>Post</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -132,14 +133,25 @@ function ContentManagement() {
                                 <td>{content.subject}</td>
                                 <td>{content.description}</td>
                                 <td>{new Date(content.date).toLocaleString()}</td>
-
-                                {!content.isPosted ? (
-                                    <button onClick={() => updateIsPosted(content.contentId)}>Post</button>
-                                ) :(
-                                    <button  onClick={() => disableContent(content.contentId)}>Disable</button>
-                                )}
-                                            
-                                
+                                <td className="cmBtnCont">
+                                    {!content.isPosted ? (
+                                        <button 
+                                            className="cmBtn" 
+                                            style={{ backgroundColor: '#4CAF50' }} 
+                                            onClick={() => updateIsPosted(content.contentId)}
+                                        >
+                                            Enable
+                                        </button>
+                                    ) : (
+                                        <button 
+                                            className="cmBtn" 
+                                            style={{ backgroundColor: '#F44336' }} 
+                                            onClick={() => disableContent(content.contentId)}
+                                        >
+                                            Disable
+                                        </button>
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

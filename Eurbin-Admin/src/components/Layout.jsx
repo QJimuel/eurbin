@@ -165,12 +165,12 @@ const styles = {
     marginTop: "15%",
   },
   sidebar: {
-    width: "300px",
-    height: "100vh",
-    backgroundColor: "#800000",
-  
-    color: "white",
-    padding: "20px",
+    width: '300px',
+    height: '100vh',
+    backgroundColor: '#800000',
+    color: 'white',
+    padding: '20px',
+    paddingTop: "6vh",
   },
   sidebarList: {
     listStyle: "none",

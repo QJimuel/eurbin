@@ -222,7 +222,7 @@ function ManageReward() {
                         <img 
                             src={reward.Image} 
                             alt={reward.RewardName} 
-                            style={{ width: '50px', height: '50px' }} 
+                            style={{ width: '80px', height: '80px', borderRadius: '10px' }} 
                         />
                     </td>
                     <td>{reward.RewardName}</td>

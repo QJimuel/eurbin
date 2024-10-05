@@ -250,11 +250,11 @@ function EditReward() {
                             <td>{reward.Category}</td>
                             <td>{reward.Quantity}</td>
                             <td>{reward.Price}</td>
-                            <td className="action-buttons">
-                                <button onClick={() => handleEditClick(reward)} className="btn-edit">
+                            <td className="rrBtn">
+                                <button  style={{ backgroundColor: '#4CAF50' }} onClick={() => handleEditClick(reward)} className="btn-edit">
                                     <i className="fas fa-pencil-alt"></i>
                                 </button>
-                                <button onClick={() => deleteReward(reward._id)} className="btn-delete">
+                                <button style={{ backgroundColor: '#F44336' }}  onClick={() => deleteReward(reward._id)} className="btn-delete">
                                     <i className="fas fa-trash"></i>
                                 </button>
                             </td>
