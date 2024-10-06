@@ -46,7 +46,8 @@ function Analytics2() {
     '#FF5733', // Red
     '#33FF57', // Green
     '#3357FF', // Blue
-    '#FF33A8', // Pink
+    '#33B5FF', // Sky Blue
+    
     '#FFC300', // Yellow
     '#FF33F6', // Magenta
     '#33FFF6', // Cyan
@@ -63,6 +64,7 @@ function Analytics2() {
     '#FF5E33', // Salmon
     '#C2FF33', // Light Yellow
     '#FF9A33', // Apricot
+    '#FF33A8', // Pink
   ];
 
   useEffect(() => {
@@ -133,7 +135,7 @@ function Analytics2() {
             setRewards(response.data.rewards);
             console.log('Rewards fetched successfully:', response.data.rewards);
 
-            calculateRewardTransactions(response.data.rewards);
+            await calculateRewardTransactions(response.data.rewards);
             console.log(rewardTransactionData) 
         } else {
             console.error('Unexpected data format:', response.data);
@@ -147,36 +149,43 @@ function Analytics2() {
 
 const fetchTransactions = async () => {
   try {
-      const response = await axios.get(transaction_API_URL);
-      if (response.status === 200 && Array.isArray(response.data.transactions)) {
-          setTransactions(response.data.transactions);
-      } else {
-          console.error('Unexpected data format:', response.data);
-          alert('An error occurred: Unexpected data format');
-      }
+    const response = await axios.get(transaction_API_URL);
+    console.log('Transaction response:', response); // Log the entire response
+    
+    if (response.status === 200 && Array.isArray(response.data.transactions)) {
+      setTransactions(response.data.transactions);
+      return response.data.transactions; // Return the fetched transactions
+    } else {
+      console.error('Unexpected data format:', response.data);
+      alert('An error occurred: Unexpected data format');
+      return []; // Return an empty array on error to prevent further issues
+    }
   } catch (err) {
-      console.error('Error fetching transactions:', err);
-      alert('An error occurred while fetching transactions');
+    console.error('Error fetching transactions:', err);
+    alert('An error occurred while fetching transactions');
+    return []; // Return an empty array on error
   }
 };
+const calculateRewardTransactions = async (rewards) => {
+  const transactions = await fetchTransactions(); // Await the transaction fetching
 
-const calculateRewardTransactions = (rewards) => {
-    const rewardCounts = rewards.map(reward => {
-    const transactionCount = transactions.filter(transaction => transaction.transactionName == reward.RewardName).length;
+  // Ensure transactions is an array
+  if (!Array.isArray(transactions)) {
+    console.error('Expected an array of transactions, but got:', transactions);
+    return; // Exit if the data is not as expected
+  }
+
+  const rewardCounts = rewards.map(reward => {
+    const transactionCount = transactions.filter(transaction => transaction.transactionName === reward.RewardName).length;
 
     return {
       rewardName: reward.RewardName,
       transactionCount,
     };
-
   });
 
   setRewardTransactionData(rewardCounts);
-
-  
   console.log('Calculated reward transactions:', rewardCounts);
-
- 
 };
 
 
@@ -399,7 +408,10 @@ const calculateRewardTransactions = (rewards) => {
             </ResponsiveContainer>
 
       
-
+    <br />
+    <br />
+    <br />
+    <br />
             <h3>User Distribution by Department</h3>
             <div style={{ width: '100%', height: 300 }}>
 
@@ -425,6 +437,11 @@ const calculateRewardTransactions = (rewards) => {
       <Tooltip />
     </PieChart>
   </ResponsiveContainer>
+
+  <br />
+    <br />
+    <br />
+    <br />
 
 
 
@@ -463,7 +480,11 @@ const calculateRewardTransactions = (rewards) => {
 )}
 
 
+<br />
+    <br />
+   
 
+    <h3>Transactions per Reward</h3>
 
 
 <ResponsiveContainer width="100%" height={400}>
@@ -488,7 +509,6 @@ const calculateRewardTransactions = (rewards) => {
 </ResponsiveContainer>
 
 
-<h3>Transactions per Reward</h3>
        
           </div>
         </div>
