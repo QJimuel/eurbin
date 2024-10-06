@@ -1,5 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
-import user from '../Images/user.png'
+import user1 from '../Images/user.png'
 import bottle from '../Images/bottle.png'
 import co2 from '../Images/co2.png'
 import point from '../Images/point.png'
@@ -19,16 +19,29 @@ import axios from 'axios';
 import EditProfileModal from "./EditProfileModal";
 import ChangePassModal from "./ChangePassModal";
 
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  LineChart, Line,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from 'recharts';
+import { colors } from "@mui/material";
 
 
 function DashboardLayout() {
   const API_URL = 'https://eurbin.vercel.app/transactions';
   const total_API_URL = 'https://eurbin.vercel.app/total/highest';
+  const user_API_URL = 'https://eurbin.vercel.app/user';
+
   const [transactions, setTransactions] = useState([]);
   const [totals, settotals] = useState({});
+  const [user, setUser] = useState([]);
   
   useEffect(() => {
     fetchTotal();
+    fetchUser();
   }, []);
 
   const fetchTotal = async () => {
@@ -37,6 +50,25 @@ function DashboardLayout() {
       if (response.status === 200 && response.data.highestTotals) {
         // Set the state with the highestTotals object
         settotals(response.data.highestTotals);
+      } else {
+        console.error('Unexpected data format:', response.data);
+        alert('An error occurred: Unexpected data format');
+      }
+    } catch (err) {
+      console.error('Error fetching totals:', err);
+      alert('An error occurred while fetching totals');
+    }
+  };
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(user_API_URL);
+    
+      if (response.status === 200 && response.data.users) {
+
+        const activeUsers = response.data.users.filter(user => user.isActive);
+            setUser(activeUsers);
+    
       } else {
         console.error('Unexpected data format:', response.data);
         alert('An error occurred: Unexpected data format');
@@ -98,8 +130,36 @@ function DashboardLayout() {
       };
 
       
+      const getDepartmentData = () => {
+        const departmentCounts = {
+          CCMS: 0,
+          CIHTM: 0,
+          CNAS: 0,
+          CME: 0,
+          CCJC: 0,
+          CAS: 0,
+          CED: 0,
+        };
+    
+        user.forEach(u => {
+          if (departmentCounts[u.department] !== undefined) {
+            departmentCounts[u.department]++;
+          }
+        });
+    
+        // Prepare data for the pie chart
+        return Object.entries(departmentCounts).map(([department, count]) => ({
+          name: department,
+          value: count,
+        }));
+      };
+    
+      const departmentData = getDepartmentData();
 
-      
+      const percentComputaion = () => {
+        const percent = (totals.highestTotalBottle / 500) * 100;
+        return `${percent}%`; // Return as a string with a percentage sign
+      };  
     
 
   return (
@@ -185,13 +245,33 @@ function DashboardLayout() {
 
         <div className="dashboardBox">
 
+          <div className="rmdHeaders1">
+
             <h1 className="dHeader"> Dashboard </h1>
+              
+            <div className="pasokLang">
+            <h1 className="dTitle">EURBin Status:</h1>
+              <div style={styles.binLevelStyle}>
+                
+                  <div style={styles.binPercentStyle}>
+                      <p style={styles.percent}>{percentComputaion()}</p>
+                  </div>
+              </div>
+
+
+            </div>
+          
+           
+
+          </div>
+
+          
 
             <div className="dbParent">
 
                 <div className="dashboardBox1">
                 <div className="dbox">
-                    <img src={user} alt="" />
+                    <img src={user1} alt="" />
                     <div>
                     <b>{totals.highestTotalUser}</b>
                     <p>Total Users</p>
@@ -231,22 +311,35 @@ function DashboardLayout() {
 
             </div>
             
+
+
+            <div className="dataBox">
+        
             
             <div className="userActivityBox">
               <h1 className="dTitle">Recent Transaction</h1>
 
                 
+
+
+          <table className="uaTable2">
+          <thead>
+              <tr className="uaGrey">
+                <th className="tableHead">User ID</th>
+                <th className="tableHead">Reward Name</th>
+                <th className="tableHead">Price</th>
+                <th className="tableHead">Reference No.</th>
+                <th className="tableHead" >Status</th>
+              </tr>
+          </thead>
+
+          </table>
+            
             <div className="uaContainer">
+              
+
                 <table className="uaTable">
-                    <thead>
-                        <tr className="uaGrey">
-                            <th className="tableHead">User ID</th>
-                            <th className="tableHead">Reward Name</th>
-                            <th className="tableHead">Price</th>
-                            <th className="tableHead">Reference No.</th>
-                            <th className="tableHead" >Status</th>
-                        </tr>
-                    </thead>
+                   
                     <tbody>
                         {transactions.map((transaction) => (
                             <tr key={transaction._id}>
@@ -268,7 +361,49 @@ function DashboardLayout() {
                     </tbody>
                 </table>
             </div>
+
+
+            </div>  
+
+
+
+
+
+
+
+          <div style={{ width: '100%', height: 300, justifyContent:'center', textAlign:'center'}}>
+            <h3>User Distribution by Department</h3>
+            <ResponsiveContainer>
+              
+              <PieChart>
+                <Pie
+                  data={departmentData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={110
+                  }
+                  dataKey="value"
+                >
+                  {
+                    departmentData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#ff9f40', '#4bc0c0', '#36a2eb'][index % 7]} />
+                    ))
+                  }
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+         
+        
+        
             </div>
+
+
+ 
         </div>
         
 
@@ -289,8 +424,9 @@ function DashboardLayout() {
 
 
         
-    
+       
     </div>
+    
 
     
     </>
@@ -367,6 +503,27 @@ const styles = {
   title: {
     color: 'darkred',
   },
+  binLevelStyle:{
+    padding: '1%',
+    height: '30px',
+    width: '130px',
+    borderRadius: '10px',
+    border: 'solid 1px black',
+  },
+
+  binPercentStyle:{
+    display: 'flex',
+    height: '100%',
+    width:'80%',
+    backgroundColor: '#800000',
+    borderRadius: '8px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#fff'
+  },
+  percent:{
+    color: 'white'
+  }
 };
 
 export default DashboardLayout;

@@ -14,7 +14,6 @@ import logOut from '../Images/exit.png'
 import content from '../Images/content.png'
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 import EditProfileModal from "./EditProfileModal";
 import ChangePassModal from "./ChangePassModal";
@@ -56,7 +55,7 @@ function About() {
     return (
         <>
 
-<header className="header">
+    <header className="header">
         <h1 className="header-title">EURBin</h1>
     </header>
 
@@ -183,10 +182,29 @@ function About() {
           </div>
         </div>
 
-            <h2 style={styles.subHeader}>Benefits of Using EURBin</h2>
-            <p style={styles.paragraph}>
-                By using EURBin, you contribute to reducing plastic waste, promoting recycling, and fostering a sustainable environment. Every bottle recycled brings us one step closer to a cleaner planet!
-            </p>
+        <h2 style={styles.subHeader}>Benefits of Using EURBin</h2>
+        <section style={styles.benefitsSection}>
+          <div style={styles.benefitCards}>
+            <div style={styles.card}>
+              <img src={co2} style={styles.cardIcon} alt="Reduce CO2" />
+              <h3 style={styles.cardTitle}>Reduce CO2 Emissions</h3>
+              <p style={styles.cardText}>By recycling plastic, you help reduce greenhouse gas emissions and contribute to a cleaner atmosphere.</p>
+            </div>
+
+            <div style={styles.card}>
+              <img src={bottle} style={styles.cardIcon} alt="Reduce Plastic Waste" />
+              <h3 style={styles.cardTitle}>Reduce Plastic Waste</h3>
+              <p style={styles.cardText}>Every bottle recycled prevents more plastic waste from polluting the environment.</p>
+            </div>
+
+            <div style={styles.card}>
+              <img src={point} style={styles.cardIcon} alt="Earn Points" />
+              <h3 style={styles.cardTitle}>Earn Points for Rewards</h3>
+              <p style={styles.cardText}>Receive Smart Points that you can redeem for exciting rewards while helping the environment.</p>
+            </div>
+          </div>
+        </section>
+
 
             <h2 style={styles.subHeader}>FAQs</h2>
             <ul style={styles.paragraph}>
@@ -225,160 +243,205 @@ function About() {
         </>
     );
 }
+
 const styles = {
-  container: {
-    maxHeight: '90vh', // Limit the height for scrollability
-    overflowY: 'auto', // Enable vertical scrolling
-    width: '86%',
-    overflowX: 'hidden',
-    paddingLeft: "5%"
-  },
-  about: {
-      display: 'flex',
-      justifyContent: 'space-between',  
-      alignItems: 'center',             
+    container: {
+      maxHeight: '90vh', // Limit the height for scrollability
+      overflowY: 'auto', // Enable vertical scrolling
+      width: '86%',
+      overflowX: 'hidden',
+      paddingLeft: "5%"
+    },
+    about: {
+        display: 'flex',
+        justifyContent: 'space-between',  
+        alignItems: 'center',             
+        marginTop: '5vh',
+    },
+    aboutText: {
+        flexBasis: '50%',
+     
+    },
+    aboutImage: {
+        flexBasis: '50%',  
+        marginRight: '-10vw',
+    },
+    header: {
+        fontSize: '36px',
+        color: '#800000',
+        fontWeight: '900',  
+        marginBottom: '20px',
+    },
+    header1: {
+        fontSize: '3vw',
+        fontFamily: 'Poppins',
+        color: '#800000',
+        fontWeight: '600',  
+        marginBottom: '20px',
+    },
+    subHeader: {
+      fontSize: '2vw',
+      marginTop: '2vw',
+      color: '#800000',
+    },
+    
+    /*INSTRUCCTION CSS*/
+    instructionContent: {
+      marginLeft: '0%',
+      marginTop: '3%',
+      overflowY: 'hidden', // Keep vertical scroll
+      overflowX: 'hidden', // Hide horizontal scroll
+      marginBottom: '10vh',
+    },
+    iContentScrollable: {
+      display: 'flex',         
+      flexWrap: 'nowrap',        
+      overflowX: 'auto',         
+      scrollbarWidth: 'none',
+      fontSize: '1.5vw',
       marginTop: '5vh',
-  },
-  aboutText: {
-      flexBasis: '50%',
-   
-  },
-  aboutImage: {
-      flexBasis: '50%',  
-      marginRight: '-10vw',
-  },
-  header: {
-      fontSize: '36px',
-      color: '#800000',
-      fontWeight: '900',  
+      width: '90%',
+    },
+    step: {
+      minWidth: '35%',     
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+    },
+    stepP: {
+      marginLeft: 30,
+    },
+    iImage: {
+      width: '100%',         
+       maxHeight: '80%',
+      marginBottom: '3vh',
+    },
+    /*END INSTRUCCTION CSS*/
+
+    paragraph1: {
+        fontSize: '1.5vw',
+        fontWeight: '600',
+    },
+    paragraph: {
+        fontSize: '1.3vw',
+        lineHeight: '1.6',
+    },
+    image: {
+        maxWidth: '80%',    
+        height: 'auto',
+    },
+    sidebar: {
+      width: '257px',
+      height: '100vh',
+      backgroundColor: '#800000',
+      color: 'white',
+      padding: '20px',
+      paddingTop: "6vh",
+    },
+    sidebarList: {
+      listStyle: 'none',
+      padding: 0,
+    },
+    sidebarItem: {
       marginBottom: '20px',
-  },
-  header1: {
-      fontSize: '3vw',
-      fontFamily: 'Poppins',
+    },
+    sidebarLink: {
+      color: 'white',
+      textDecoration: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '20px',             
+      marginLeft: '20px',
+      cursor: "pointer",
+    },
+    logo: {
+      fontSize: '24px',
+      color: 'black',
+    },
+    nav: {
+      display: 'flex',
+    },
+    navList: {
+      listStyle: 'none',
+      display: 'flex',
+      margin: 0,
+      padding: 0,
+    },
+    navItem: {
+      marginLeft: '10px',
+    },
+    link: {
+      textDecoration: 'none',
+    },
+    button: {
+      backgroundColor: 'white',
+      border: '1px solid #ccc',
+      borderRadius: '5px',
+      padding: '5px 10px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '5px',
+      color: 'black',
+    },
+    main: {
+      padding: '20px',
+    },
+    title: {
+      color: 'darkred',
+    },
+  
+
+
+    benefitsSection: {
+      padding: '4vh 5%',
+      borderRadius: '10px',
+      marginBottom: '5vh',
+    },
+    sectionHeader: {
+      fontSize: '2vw',
       color: '#800000',
-      fontWeight: '600',  
-      marginBottom: '20px',
-  },
-  subHeader: {
-    fontSize: '2vw',
-    marginTop: '2vw',
-    color: '#800000',
-  },
-  
-  /*INSTRUCCTION CSS*/
-  instructionContent: {
-    marginLeft: '0%',
-    marginTop: '3%',
-    overflowY: 'hidden', // Keep vertical scroll
-    overflowX: 'hidden', // Hide horizontal scroll
-    marginBottom: '10vh',
-  },
-  iContentScrollable: {
-    display: 'flex',         
-    flexWrap: 'nowrap',        
-    overflowX: 'auto',         
-    scrollbarWidth: 'none',
-    fontSize: '1.5vw',
-    marginTop: '5vh',
-    width: '90%',
-  },
-  step: {
-    minWidth: '35%',     
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
-  stepP: {
-    marginLeft: 30,
-  },
-  iImage: {
-    width: '100%',         
-     maxHeight: '80%',
-    marginBottom: '3vh',
-  },
-  /*END INSTRUCCTION CSS*/
-  
-  paragraph1: {
+      fontWeight: '700',
+      textAlign: 'left', 
+      marginBottom: '3vh',
+    },
+    benefitCards: {
+      display: 'flex',
+      justifyContent: 'flex-start', 
+      alignItems: 'flex-start',
+      flexWrap: 'nowrap', 
+    },
+    card: {
+      backgroundColor: '#fff',
+      width: '30%', 
+      padding: '2vw',
+      margin: '1vw',
+      borderRadius: '10px',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+      textAlign: 'left', 
+      height: '200px', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      justifyContent: 'center', 
+      alignItems: 'flex-start', 
+      gap: '1vh', 
+    },
+    cardIcon: {
+      width: '50px',
+      height: '50px',
+      alignSelf: 'center', 
+      marginBottom: '1vh',
+    },    
+    cardTitle: {
       fontSize: '1.5vw',
       fontWeight: '600',
-  },
-  paragraph: {
-      fontSize: '1.3vw',
-      color: '#555',
-      lineHeight: '1.6',
-  },
-  image: {
-      maxWidth: '80%',    
-      height: 'auto',
-  },
-  sidebar: {
-    width: '257px',
-    height: '100vh',
-    backgroundColor: '#800000',
-    color: 'white',
-    padding: '20px',
-    paddingTop: "6vh",
-  },
-  sidebarList: {
-    listStyle: 'none',
-    padding: 0,
-  },
-  sidebarItem: {
-    marginBottom: '20px',
-  },
-  sidebarLink: {
-    color: 'white',
-    textDecoration: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '20px',             
-    marginLeft: '20px',
-    cursor: "pointer",
-  },
-  logo: {
-    fontSize: '24px',
-    color: 'black',
-  },
-  nav: {
-    display: 'flex',
-  },
-  navList: {
-    listStyle: 'none',
-    display: 'flex',
-    margin: 0,
-    padding: 0,
-  },
-  navItem: {
-    marginLeft: '10px',
-  },
-  link: {
-    textDecoration: 'none',
-  },
-  button: {
-    backgroundColor: 'white',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    padding: '5px 10px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '5px',
-    color: 'black',
-  },
-  main: {
-    padding: '20px',
-  },
-  title: {
-    color: 'darkred',
-  },
-  
-  // header: {
-  //     textAlign: 'center',
-  //     fontSize: '2.5em',
-  //     marginBottom: '20px',
-  //     color: '#800000',
-  // },   
+      marginBottom: '1vh',
+    },
+    cardText: {
+      fontSize: '1.2vw',
+    },
+    
+
 };
 
 export default About;

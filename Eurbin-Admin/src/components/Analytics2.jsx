@@ -10,11 +10,15 @@ import logOut from '../Images/exit.png'
 import content from '../Images/content.png'
 
 
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link } from 'react-router-dom';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   LineChart, Line,
-  ResponsiveContainer
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  AreaChart
 } from 'recharts';
 import axios from 'axios';
 
@@ -24,20 +28,56 @@ import ChangePassModal from "./ChangePassModal";
 function Analytics2() {
   const total_API_URL = 'https://eurbin.vercel.app/total';
   const highest_API_URL = 'https://eurbin.vercel.app/total/highest';
+  const user_API_URL = 'https://eurbin.vercel.app/user';
+  const reward_API_URL = 'https://eurbin.vercel.app/rewards';
+  const transaction_API_URL = 'https://eurbin.vercel.app/transactions';
+
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+
 
   const [totals, settotals] = useState([]);
   const [highTotals, setHightotals] = useState({});
+  const [user, setUser] = useState([]);
+  const [reward, setRewards] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [rewardTransactionData, setRewardTransactionData] = useState([])
+
+  const colors = [
+    '#FF5733', // Red
+    '#33FF57', // Green
+    '#3357FF', // Blue
+    '#FF33A8', // Pink
+    '#FFC300', // Yellow
+    '#FF33F6', // Magenta
+    '#33FFF6', // Cyan
+    '#FF8433', // Orange
+    '#A033FF', // Purple
+    '#33FF87', // Light Green
+    '#FF5733', // Coral
+    '#FFB633', // Gold
+    '#8B33FF', // Indigo
+    '#33B5FF', // Sky Blue
+    '#B2FF33', // Lime Green
+    '#FF33A8', // Fuchsia
+    '#33B8FF', // Light Blue
+    '#FF5E33', // Salmon
+    '#C2FF33', // Light Yellow
+    '#FF9A33', // Apricot
+  ];
 
   useEffect(() => {
+    fetchReward();
     fetchTotal();
     fetchHighestTotal();
+    fetchUser();
+   
+    fetchTransactions();
   }, []);
 
   const fetchTotal = async () => {
     try {
       const response = await axios.get(total_API_URL);
-      console.log('API Response:', response.data);
-
+    
       if (response.status === 200 && Array.isArray(response.data.total)) {
         settotals(response.data.total);
       } else {
@@ -53,7 +93,7 @@ function Analytics2() {
   const fetchHighestTotal = async () => {
     try {
       const response = await axios.get(highest_API_URL);
-      console.log('API Response:', response.data);
+      
       if (response.status === 200 && response.data.highestTotals) {
         setHightotals(response.data.highestTotals);
       } else {
@@ -66,6 +106,80 @@ function Analytics2() {
     }
   };
 
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(user_API_URL);
+    
+      if (response.status === 200 && response.data.users) {
+
+        const activeUsers = response.data.users.filter(user => user.isActive);
+            setUser(activeUsers);
+    
+      } else {
+        console.error('Unexpected data format:', response.data);
+        alert('An error occurred: Unexpected data format');
+      }
+    } catch (err) {
+      console.error('Error fetching totals:', err);
+      alert('An error occurred while fetching totals');
+    }
+  };
+
+  const fetchReward = async () => {
+    try {
+        
+        const response = await axios.get(reward_API_URL);
+        if (response.status === 200 && Array.isArray(response.data.rewards)) {
+            setRewards(response.data.rewards);
+            console.log('Rewards fetched successfully:', response.data.rewards);
+
+            calculateRewardTransactions(response.data.rewards);
+            console.log(rewardTransactionData) 
+        } else {
+            console.error('Unexpected data format:', response.data);
+            alert('An error occurred: Unexpected data format');
+        }
+    } catch (err) {
+        console.error('Error fetching rewards:', err);
+        alert('An error occurred while fetching rewards');
+    }
+}
+
+const fetchTransactions = async () => {
+  try {
+      const response = await axios.get(transaction_API_URL);
+      if (response.status === 200 && Array.isArray(response.data.transactions)) {
+          setTransactions(response.data.transactions);
+      } else {
+          console.error('Unexpected data format:', response.data);
+          alert('An error occurred: Unexpected data format');
+      }
+  } catch (err) {
+      console.error('Error fetching transactions:', err);
+      alert('An error occurred while fetching transactions');
+  }
+};
+
+const calculateRewardTransactions = (rewards) => {
+    const rewardCounts = rewards.map(reward => {
+    const transactionCount = transactions.filter(transaction => transaction.transactionName == reward.RewardName).length;
+
+    return {
+      rewardName: reward.RewardName,
+      transactionCount,
+    };
+
+  });
+
+  setRewardTransactionData(rewardCounts);
+
+  
+  console.log('Calculated reward transactions:', rewardCounts);
+
+ 
+};
+
+
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     return `${date.toLocaleDateString('default', { month: 'short', year: 'numeric' })}`;
@@ -77,56 +191,62 @@ function Analytics2() {
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
-  
+
     // Initialize a map with all months and default values
     const monthlyData = months.reduce((acc, month) => {
       acc[`${month} 2024`] = {
         formattedDate: `${month} `,
         totalUser: 0,
         totalBottle: 0,
+        totalCo2: 0,  // Add totalCo2 here
       };
       return acc;
     }, {});
-  
+
     // Process the data to get the highest values for each month
     data.forEach(item => {
       const date = new Date(item.date);
       const monthYear = `${date.toLocaleDateString('default', { month: 'short' })} ${date.getFullYear()}`;
 
-
       if (monthlyData[monthYear]) {
         // Update the highest value for the current month
         monthlyData[monthYear].totalUser = Math.max(monthlyData[monthYear].totalUser, item.totalUser || 0);
         monthlyData[monthYear].totalBottle = Math.max(monthlyData[monthYear].totalBottle, item.totalBottle || 0);
+        monthlyData[monthYear].totalCo2 = Math.max(monthlyData[monthYear].totalCo2, item.totalCo2 || 0); // Add this line
       }
     });
-  
+
     // Extract and sort the data
     const sortedMonthlyData = Object.values(monthlyData)
       .sort((a, b) => new Date(a.formattedDate) - new Date(b.formattedDate));
-  
+
     // Adjust values for each month
-    let lastMonthData = { totalUser: 0, totalBottle: 0 };
-    
+    let lastMonthData = { totalUser: 0, totalBottle: 0, totalCo2: 0 }; // Initialize totalCo2
+
     return sortedMonthlyData.map((monthData, index) => {
       // Calculate the difference between the current month and the last month
       const currentMonthUser = monthData.totalUser - lastMonthData.totalUser;
       const currentMonthBottle = monthData.totalBottle - lastMonthData.totalBottle;
-  
+      const currentMonthCo2 = monthData.totalCo2 - lastMonthData.totalCo2; // Add this line
+
       // Update last month's data for the next iteration
       lastMonthData = {
         totalUser: monthData.totalUser,
         totalBottle: monthData.totalBottle,
+        totalCo2: monthData.totalCo2, // Add this line
       };
-  
+
       // Ensure values don't go negative
       return {
         formattedDate: monthData.formattedDate,
         totalUser: Math.max(currentMonthUser, 0),
         totalBottle: Math.max(currentMonthBottle, 0),
+        totalCo2: Math.max(currentMonthCo2, 0), // Add this line
       };
     });
-  };
+};
+
+
   
   const formattedData = processData(totals);
 
@@ -144,6 +264,33 @@ function Analytics2() {
   const [isChangePassModalOpen, setIsChangePassModalOpen] = useState(false);
   const handleOpenCPModal = () => setIsChangePassModalOpen(true);
   const handleCloseCPModal = () => setIsChangePassModalOpen(false);
+
+  const getDepartmentData = () => {
+    const departmentCounts = {
+      CCMS: 0,
+      CIHTM: 0,
+      CNAS: 0,
+      CME: 0,
+      CCJC: 0,
+      CAS: 0,
+      CED: 0,
+    };
+
+    user.forEach(u => {
+      if (departmentCounts[u.department] !== undefined) {
+        departmentCounts[u.department]++;
+      }
+    });
+    
+
+    // Prepare data for the pie chart
+    return Object.entries(departmentCounts).map(([department, count]) => ({
+      name: department,
+      value: count,
+    }));
+  };
+
+  const departmentData = getDepartmentData();
 
   return (
     <>
@@ -246,28 +393,114 @@ function Analytics2() {
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="totalUser" fill="#800000" />
+                <Bar dataKey="totalBottle" fill ="#36a2eb" />
+                <Bar dataKey="totalCo2" fill="#82ca9d" />
               </BarChart>
             </ResponsiveContainer>
 
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={formattedData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="formattedDate" tickFormatter={(tick) => tick} />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="totalBottle" stroke="#800000" />
-              </LineChart>
-            </ResponsiveContainer>
+      
+
+            <h3>User Distribution by Department</h3>
+            <div style={{ width: '100%', height: 300 }}>
+
+              
+  <ResponsiveContainer>
+    <PieChart>
+      <Pie
+        data={departmentData}
+        cx="50%"
+        cy="50%"
+        labelLine={false}
+        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+        outerRadius={110}
+        dataKey="value"
+        onClick={(entry) => setSelectedDepartment(entry.name)} // Drill down feature
+      >
+        {
+          departmentData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#ff9f40', '#4bc0c0', '#36a2eb'][index % 7]} />
+          ))
+        }
+      </Pie>
+      <Tooltip />
+    </PieChart>
+  </ResponsiveContainer>
+
+
+
+  
+</div>
+{selectedDepartment && (
+  <div>
+    <h3>{selectedDepartment} User Details</h3>
+
+    <div className="table-container">
+      <table className="w3-table-all">
+        <thead>
+          <tr className="w3-light-grey">
+            <th>Username</th>
+            <th>Plastic Bottle</th>
+            <th>Program</th>
+            <th>CO2</th>
+          </tr>
+        </thead>
+        <tbody>
+          {user
+            .filter(u => u.department === selectedDepartment) // Filter users by selected department
+            .map((u, index) => (
+              <tr key={index}>
+                <td>{u.userName}</td>
+                <td>{u.plasticBottle}</td>
+                <td>{u.program}</td>
+                <td>{u.co2}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
+    <button onClick={() => setSelectedDepartment(null)}>Back to Departments</button>
+  </div>
+)}
+
+
+
+
+
+<ResponsiveContainer width="100%" height={400}>
+  <BarChart data={rewardTransactionData} layout="vertical">
+    <CartesianGrid strokeDasharray="3 3" />
+    <YAxis dataKey="rewardName" type="category" angle={-65} textAnchor="end" />
+    <XAxis type="number" />
+    <Tooltip />
+    <Legend />
+    
+    <Bar dataKey="transactionCount" barSize={40}>
+      {
+        rewardTransactionData.map((reward, index) => (
+          <Cell 
+            key={reward.rewardName} 
+            fill={colors[index % colors.length]} // Assign unique color to each bar
+          />
+        ))
+      }
+    </Bar>
+  </BarChart>
+</ResponsiveContainer>
+
+
+<h3>Transactions per Reward</h3>
+       
           </div>
         </div>
+
+        
 
         <main style={styles.main}>
           <Outlet />
         </main>
       </div>
 
-      {/* EDIT PROFILE MODAL */}
+      {/*  EDIT PROFILE MODAL */}
       <EditProfileModal
         isOpen={isEditProfileModalOpen}
         onClose={handleCloseEPModal}

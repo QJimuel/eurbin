@@ -2,6 +2,15 @@ import React, { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import EditProfileModal from "./EditProfileModal";
 import ChangePassModal from "./ChangePassModal";
+import dashbboard from '../Images/speedometer.png'
+import analytics from '../Images/analysis.png'
+import userManagement from '../Images/people.png'
+import rewardManagement from '../Images/reward.png'
+import editProfile from '../Images/edit.png'
+import changePass from '../Images/padlock.png'
+import about from '../Images/information.png'
+import logOut from '../Images/exit.png'
+import content from '../Images/content.png'
 
 function Layout2() {
   /*EDIT PROFILE*/
@@ -28,55 +37,59 @@ function Layout2() {
     setIsChangePassModalOpen(false);
   };
 
+  const logout = ()=>
+    {
+      window.localStorage.clear();
+      console.log("Token cleared");
+      window.location.href = "./"
+      console.log(window.localStorage.getItem('token'));
+    }
+
   return (
     <>
       <header className="header">
-        <h1 className="header-title">LAYOUT2</h1>
+        <h1 className="header-title">EURBin</h1>
       </header>
 
       <div className="container">
         <aside style={styles.sidebar}>
           <ul style={styles.sidebarList}>
-            <li style={styles.sidebarItem}>
-              <Link to="/BinStatus" style={styles.sidebarLink}>
-                <span role="img" aria-label="bin-status">
-                  🗑️
-                </span>{" "}
-                Bin Status
-              </Link>
-            </li>
-            <li style={styles.sidebarItem}>
-              <a onClick={handleOpenEPModal} style={styles.sidebarLink}>
-                <span role="img" aria-label="edit-profile">
-                  ✏️
-                </span>{" "}
-                Edit Profile
-              </a>
-            </li>
-            <li style={styles.sidebarItem}>
-              <a onClick={handleOpenCPModal} style={styles.sidebarLink}>
-                <span role="img" aria-label="change-password">
-                  🔒
-                </span>{" "}
-                Change Password
-                </a>
-            </li>
-            <li style={styles.sidebarItem}>
-              <Link to="/About" style={styles.sidebarLink}>
+          <li style={styles.sidebarItem}>
+            <Link to="/BinStatus" style={styles.sidebarLink}>
+              <span role="img" aria-label="dashboard">
+                <img className="icons" src={dashbboard}/>
+              </span> 
+              Bin Status
+            </Link>
+          </li>
+          <li style={styles.sidebarItem}>
+            <a onClick={handleOpenEPModal}  style={styles.sidebarLink}>
+              <span role="img" aria-label="edit-profile">
+                <img className="icons" src={editProfile}/>
+              </span> Edit Profile
+            </a>
+          </li>
+          <li style={styles.sidebarItem}>
+            <a onClick={handleOpenCPModal}  style={styles.sidebarLink}>
+              <span role="img" aria-label="change-password">
+                <img className="icons" src={changePass}/>
+              </span> Change Password
+            </a>
+          </li>
+          <li style={styles.sidebarItem}>
+            <Link to="/About" style={styles.sidebarLink}>
                 <span role="img" aria-label="about">
-                  ❔
-                </span>{" "}
-                About
-              </Link>
-            </li>
-            <li style={styles.sidebarItem}>
-              <Link to="/Login" style={styles.sidebarLink}>
-                <span role="img" aria-label="logout">
-                  🚪
-                </span>{" "}
-                Logout
-              </Link>
-            </li>
+              <img className="icons" src={about}/>
+              </span> About
+            </Link>
+          </li>
+          <li style={styles.sidebarItem}>
+            <a onClick= {logout}to="/" style={styles.sidebarLink}>
+              <span role="img" aria-label="logout">
+              <img className="icons" src={logOut}/>  
+              </span> Logout
+            </a>
+          </li>
           </ul>
         </aside>
 
@@ -116,9 +129,9 @@ const styles = {
     width: "300px",
     height: "100vh",
     backgroundColor: "#800000",
-    opacity: 0.94,
     color: "white",
     padding: "20px",
+    paddingTop: "6vh",
   },
   sidebarList: {
     listStyle: "none",
@@ -134,7 +147,7 @@ const styles = {
     alignItems: "center",
     gap: "20px",
     marginLeft: "20px",
-    cursor: "pointer", 
+    cursor: "pointer", // Add pointer cursor for clickable items
   },
   logo: {
     fontSize: "24px",
@@ -167,11 +180,12 @@ const styles = {
     color: "black",
   },
   main: {
-    padding: "20px",
+
   },
   title: {
     color: "darkred",
   },
 };
+
 
 export default Layout2;
