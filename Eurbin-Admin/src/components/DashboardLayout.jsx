@@ -157,7 +157,7 @@ function DashboardLayout() {
       const departmentData = getDepartmentData();
 
       const percentComputaion = () => {
-        const percent = (totals.highestTotalBottle / 500) * 100;
+        const percent = Math.ceil((totals.highestTotalBottle / 500) * 100); 
         return `${percent}%`; // Return as a string with a percentage sign
       };  
     

@@ -72,15 +72,13 @@ exports.createReward = async (req, res) => {
 
         const { RewardName, Category, Quantity, Price } = req.body;
 
-        // Validate required fields
+
         if (!RewardName || !Category || !Quantity || !Price) {
             return res.status(400).json({ error: 'All fields are required (RewardName, Category, Quantity, Price)' });
         }
-
-        // Handle the uploaded image file (S3 file URL)
         const imageUrl = req.file ? req.file.location : null;
 
-        // Create a new reward
+        
         const newReward = new Reward({
             RewardName,
             Category,
@@ -101,12 +99,11 @@ exports.createReward = async (req, res) => {
     }
 };
 
-// Update a reward
 exports.updateReward = async (req, res) => {
     try {
         const { RewardName, Category, Quantity, Price } = req.body;
 
-        // Handle the updated image file (if any)
+
         const imageUrl = req.file ? req.file.location : null;
 
         const reward = await Reward.findByIdAndUpdate(
@@ -126,12 +123,11 @@ exports.updateReward = async (req, res) => {
     }
 };
 
-// Update a reward
 exports.updateReward2 = async (req, res) => {
     try {
         const { RewardName, Category, Quantity, Price } = req.body;
 
-        // Handle the updated image file (if any)
+      
        
         const reward = await Reward.findByIdAndUpdate(
             req.params.id,

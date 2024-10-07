@@ -124,7 +124,6 @@ exports.deleteUser = async (req, res) => {
     }
 };
 
-// Login user
 exports.loginUser = async (req, res) => {
     try {
         const { userName, password } = req.body;
@@ -149,7 +148,6 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-// Update password
 exports.updatePassword = async (req, res) => {
     try {
         const { userId, oldPassword, newPassword } = req.body;

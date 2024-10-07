@@ -301,6 +301,7 @@ const calculateRewardTransactions = async (rewards) => {
 
   const departmentData = getDepartmentData();
 
+
   return (
     <>
       <header className="header">

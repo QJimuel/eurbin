@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import smallPlastic from '../Images/smallPlastic.jpg'
+import largePlastic from '../Images/largePlastic.jpg'
+
 
 function RecycleableData() {
 
@@ -88,37 +91,48 @@ function RecycleableData() {
                 <table className="w3-table-all">
                     <thead>
                         <tr className="w3-light-grey">
-                            <th>User ID</th>
-                            <th>Reward Name</th>
-                            <th>Price</th>
-                            <th>Reference No.</th>
-                            <th>Status</th>
+                            <th>Waste</th>
+                            <th>Size</th>
+                            <th>Quantity</th>
+                            <th>Weight</th>
+                            <th>Date</th>
                            
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredTransactions.map((transaction) => (
-                            <tr key={transaction._id}>
-                                <td>{transaction.userId}</td>
-                                <td>{transaction.transactionName}</td>
-                                <td>{transaction.transactionPrice}</td>
-                                <td>{transaction.referenceNo}</td>
-                                <td className="action-buttons">
-                                    {transaction.isAccepted === true ? (
-                                        <span className='status'>Accepted</span>
-                                    ) : transaction.isAccepted === false ? (
-                                        <span className='status'>Declined</span>
-                                    ) : (
-                                        <>  
-                                        </>
-                                    )}
+                       
+                        <tr>
+                            <td>
+                                <img 
+                                    src={smallPlastic} 
+                                    alt="Small Bottle" 
+                                    style={{ width: '40px', height: '100px', borderRadius: '10px' }} 
+                                />
+                            </td>
+                            <td>Small Bottle</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
 
-                                    
-                                </td>
-                              
-                             
-                            </tr>
-                        ))}
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <img 
+                                    src={largePlastic} 
+                                    alt="Large Bottle" 
+                                    style={{ width: '40px', height: '100px', borderRadius: '10px' }} 
+                                />
+                            </td>
+                            <td>Large Bottle</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                   
                     </tbody>
                 </table>
             </div>
