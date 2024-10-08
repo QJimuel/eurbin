@@ -7,34 +7,10 @@ import largePlastic from '../Images/largePlastic.jpg'
 
 function RecycleableData() {
 
-    const API_URL = 'https://eurbin.vercel.app/transactions';
     const location = useLocation();
-    const [transactions, setTransactions] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
+   
 
 
-    useEffect(() => {
-        fetchTransactions();
-    }, []);
-
-    const fetchTransactions = async () => {
-        try {
-            const response = await axios.get(API_URL);
-            if (response.status === 200 && Array.isArray(response.data.transactions)) {
-                setTransactions(response.data.transactions.filter(transaction => transaction.isAccepted === true || transaction.isAccepted === false));
-            } else {
-                console.error('Unexpected data format:', response.data);
-                alert('An error occurred: Unexpected data format');
-            }
-        } catch (err) {
-            console.error('Error fetching transactions:', err);
-            alert('An error occurred while fetching transactions');
-        }
-    };
-
-    const filteredTransactions = transactions.filter((transaction) =>
-        transaction.referenceNo.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
     return<>
   

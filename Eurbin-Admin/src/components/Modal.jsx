@@ -63,9 +63,9 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, onImageChange, m
                       className="custom-select"
                   >
                       <option value="" disabled>Select a category</option>
-                      <option value="Category1">Category 1</option>
-                      <option value="Category2">Category 2</option>
-                      <option value="Category3">Category 3</option>
+                      <option value="School Supplies">School Supplies</option>
+                      <option value="Accesories">Accesories</option>
+                      <option value="Consumable">Consumable</option>
                   </select>
                   <input
                       placeholder='Quantity'

@@ -74,20 +74,7 @@ function DeactivatedUser() {
                     </button>
                 </Link>
             </li>
-            <li >
-                <Link to="" >
-                <button className={location.pathname === "/Transaction" ? "active-btn" : "inactive-btn"}>
-                        T
-                    </button>
-                </Link>
-            </li>
-            <li >
-                <Link to="" >
-                <button className={location.pathname === "/Recycleables" ? "active-btn" : "inactive-btn"}>
-                        Re
-                    </button>
-                </Link>
-            </li>
+      
             </ul>
         </nav>
       <br/>

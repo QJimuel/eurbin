@@ -71,24 +71,11 @@ function UserManagement() {
             <li >
                 <Link to="/DeactivatedUser" >
                 <button className={location.pathname === "/DeactivatedUser" ? "active-btn" : "inactive-btn"}>
-                        Deactivated User
+                        Deactivated Users
                     </button>
                 </Link>
             </li>
-            <li >
-                <Link to="" >
-                <button className={location.pathname === "/Transaction" ? "active-btn" : "inactive-btn"}>
-                        T
-                    </button>
-                </Link>
-            </li>
-            <li >
-                <Link to="" >
-                <button className={location.pathname === "/Recycleables" ? "active-btn" : "inactive-btn"}>
-                        Re
-                    </button>
-                </Link>
-            </li>
+       
             </ul>
         </nav>
       <br/>

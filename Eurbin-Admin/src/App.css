@@ -218,6 +218,8 @@ body, h1, h2, p {
     background-color: maroon;
     color: white;
     cursor: pointer;
+      
+   
   }
 
   .edit-reward-button {
@@ -357,10 +359,18 @@ body, h1, h2, p {
   border-radius: 4px;
 }
 
+.modal-content .custom-select::placeholder {
+
+  color: #888; /* Adjust color as needed */
+
+}
+
+
+
 .modal-content .custom-select {
   font-family: 'Manjari', sans-serif; /* Adjust font family as needed */
   font-size: 12px; /* Adjust font size as needed */
-  color: #888; /* Adjust color as needed */
+  color: black; /* Adjust color as needed */
   border: 1px solid #ccc; /* Add border styling */
   padding: 8px; /* Adjust padding as needed */
   background-color: #fff; /* Background color */
