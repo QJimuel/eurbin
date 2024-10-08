@@ -91,7 +91,7 @@ exports.login = async (req, res) => {
        
 
         // If valid, generate JWT
-        const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '3m' });
+        const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '15m' });
         
         // Send token to the client
       

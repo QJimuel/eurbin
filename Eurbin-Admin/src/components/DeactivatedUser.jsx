@@ -16,7 +16,13 @@ function DeactivatedUser() {
     
       const fetchUser = async () => {
         try {
-          const response = await axios.get(API_URL);
+            const token = localStorage.getItem('token'); // Adjust this according to your implementation
+
+            const response = await axios.get(user_API_URL, {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
+            });
         
           if (response.status === 200 && response.data.users) {
             const activeUsers = response.data.users.filter(user => !user.isActive);

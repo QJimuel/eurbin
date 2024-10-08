@@ -62,7 +62,13 @@ function DashboardLayout() {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(user_API_URL);
+      const token = localStorage.getItem('token'); // Adjust this according to your implementation
+
+      const response = await axios.get(user_API_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+        },
+      });
     
       if (response.status === 200 && response.data.users) {
 
