@@ -13,6 +13,8 @@ const userRoutes = require('../routes/userRoutes');
 const totalRoutes = require('../routes/totalRoutes');
 const contentRoutes = require('../routes/contentRoutes')
 
+
+
 const app = express();
 
 const corsOptions = {
@@ -55,7 +57,7 @@ app.use('/transactions', transactionRoutes);
 app.use('/bottles', plasticBottleRoutes);
 app.use('/admin', authRoutes);
 app.use('/code', redeemCodeRoutes);
-app.use('/user', userRoutes);
+app.use('/user',  userRoutes);
 app.use('/total', totalRoutes);
 app.use('/contents', contentRoutes);
 

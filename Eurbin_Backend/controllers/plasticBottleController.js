@@ -12,9 +12,9 @@ exports.getAllBottles = async (req, res) => {
 
 // Create a new plastic bottle entry
 exports.createBottle = async (req, res) => {
-    const { userId, Size, date } = req.body;
+    const { userId, Size, Code, date } = req.body;
 
-    const newBottle = new PlasticBottle({ userId, Size, date });
+    const newBottle = new PlasticBottle({ userId, Size,Code, date });
     try {
         const plasticBottle = await newBottle.save();
         res.status(201).json(plasticBottle);

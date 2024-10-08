@@ -1,33 +1,20 @@
-// routes/rewardRoutes.js
-
+// routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const authenticateToken = require('../middlewares/authMiddleware');
 
 console.log('User Routes Loaded');
 
-// Route to get all rewards
-router.get('/', userController.getAllUsers);
-
-// Route to get a specific reward by ID
-router.get('/:id', userController.getUserById);
-
-// Route to create a new reward
+// Public Routes
 router.post('/', userController.createUser);
-
-// Route to update a reward by ID
-router.put('/update-password', userController.updatePassword);
-
-router.put('/:id', userController.updateUser);
-
-
-
-// Route to delete a reward by ID
-router.delete('/:id',userController.deleteUser);
-
 router.post('/login', userController.loginUser);
 
-
-
+// Protected Routes
+router.get('/', authenticateToken, userController.getAllUsers);
+router.get('/:id', authenticateToken, userController.getUserById);
+router.put('/:id', authenticateToken, userController.updateUser);
+router.delete('/:id', authenticateToken, userController.deleteUser);
+router.put('/update-password', authenticateToken, userController.updatePassword);
 
 module.exports = router;

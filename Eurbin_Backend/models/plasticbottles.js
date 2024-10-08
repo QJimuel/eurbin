@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const plasticBottleSchema = new mongoose.Schema({
    userId: String,
    Size: String,
+   Code: String,
    date: Date
    
 

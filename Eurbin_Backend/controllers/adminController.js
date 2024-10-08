@@ -52,9 +52,7 @@ exports.register = async (req, res) => {
             return res.status(500).json({ error: 'Failed to send verification email' });
         }
 
-        console.log('Email User:', process.env.EMAIL_USER);
-        console.log('Email Pass:', process.env.EMAIL_PASS);
-
+      
          res.status(201).json({ message: 'Admin registered successfully. Please verify your email to activate your account.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
