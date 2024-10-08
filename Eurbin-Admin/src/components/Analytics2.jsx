@@ -280,6 +280,9 @@ const calculateRewardTransactions = async (rewards) => {
   const handleOpenCPModal = () => setIsChangePassModalOpen(true);
   const handleCloseCPModal = () => setIsChangePassModalOpen(false);
 
+  const maxValue = Math.max(...rewardTransactionData.map(reward => reward.transactionCount));
+
+
   const getDepartmentData = () => {
     const departmentCounts = {
       CCMS: 0,
@@ -498,11 +501,11 @@ const calculateRewardTransactions = async (rewards) => {
   <BarChart data={rewardTransactionData} layout="vertical">
     <CartesianGrid strokeDasharray="3 3" />
     <YAxis dataKey="rewardName" type="category" angle={-65} textAnchor="end" />
-    <XAxis type="number" />
+    <XAxis type="number"   domain={[0, maxValue + 1]}  allowDecimals={false}/>
     <Tooltip />
     <Legend />
     
-    <Bar dataKey="transactionCount" barSize={40}>
+    <Bar dataKey="transactionCount" barSize={50}>
       {
         rewardTransactionData.map((reward, index) => (
           <Cell 
