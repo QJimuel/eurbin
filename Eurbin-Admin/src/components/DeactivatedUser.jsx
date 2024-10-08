@@ -5,7 +5,7 @@ import { Outlet, Link } from "react-router-dom";
 import ModalUser from './ModalUser';
 
 function DeactivatedUser() {
-    const API_URL = 'https://eurbin.vercel.app/user';
+    const user_API_URL = 'https://eurbin.vercel.app/user';
     const [user, setUser] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null); 
     const [isModalOpen, setIsModalOpen] = useState(false);
