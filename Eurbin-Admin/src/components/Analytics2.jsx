@@ -423,7 +423,9 @@ const calculateRewardTransactions = async (rewards) => {
     <br />
     <br />
             <h3>User Distribution by Department</h3>
-            <div style={{ width: '100%', height: 300 }}>
+
+            <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '300px', justifyContent: 'space-around' }}>        
+            <div style={{  flex: 1 }}>
 
               
   <ResponsiveContainer>
@@ -458,7 +460,7 @@ const calculateRewardTransactions = async (rewards) => {
   
 </div>
 {selectedDepartment && (
-  <div>
+  <div style={{ width: '50%', height: '300px' }} >
     <h3>{selectedDepartment} User Details</h3>
 
     <div className="table-container">
@@ -489,7 +491,7 @@ const calculateRewardTransactions = async (rewards) => {
   </div>
 )}
 
-
+</div>
 <br />
     <br />
    

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import student from '../Images/three_student.png'
 
 function Login() {
 
@@ -59,11 +60,15 @@ function Login() {
             `}
         </style>
         <div style={styles.container}>
-            <div style={styles.redBox}>
+
             <div style={styles.loginBox}>
+
+                <img src={student} alt="" style={{width:'100px', height:'150px'}}/>
+
+
                 <table>
                     <tbody>
-                        <h1 style={styles.header}>Login Account</h1>
+                        <h1 style={styles.header}>Admin Login</h1>
                         <tr>
                             <td>
                                 <input
@@ -104,7 +109,7 @@ function Login() {
                         </tr>
                     </tbody>
                 </table>
-            </div>
+         
             </div>
         </div>
         </>
@@ -132,7 +137,7 @@ function Login() {
         boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
         backgroundColor: 'white',
         width: '30vw',
-        height: '45vh',
+        height: '55vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

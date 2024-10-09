@@ -9,6 +9,7 @@ function DeactivatedUser() {
     const [user, setUser] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null); 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         fetchUser();
@@ -54,6 +55,16 @@ function DeactivatedUser() {
         setSelectedUser(null); 
     };
 
+    const handleSearch = (e) => {
+      setSearchQuery(e.target.value);
+  };
+
+  const filteredUsers = user.filter((user) =>
+      user.userName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) 
+  );
+
+
     
     return<>
         <h1 className="headings"> User Management </h1>
@@ -77,11 +88,16 @@ function DeactivatedUser() {
       
             </ul>
         </nav>
-      <br/>
-      <br/>
-      <br/>
+
          
-       
+       <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Search User"
+                    value={searchQuery}
+                    onChange={handleSearch}
+                />
+            </div>
 
 
         <div className="table-container">
@@ -97,20 +113,23 @@ function DeactivatedUser() {
                     </tr>
                 </thead>
                 <tbody>
-                    {user.map(item => (
-                        <tr key={user._id} onClick={() => handleRowClick(item)}>
-        
-                            <td>{item.userId}</td>
-                            <td>{item.userName}</td>
-                            <td>{item.email}</td>
-                            <td>{item.department}</td>
-                            <td>{item.yearLevel}</td>
-                            <td>{formatDate(item.creationDate)}</td>
-                            
-                            
-                        </tr>
-                    ))}
-                </tbody>
+                        {filteredUsers.length > 0 ? (
+                            filteredUsers.map(item => (
+                                <tr key={item._id} onClick={() => handleRowClick(item)}>
+                                    <td>{item.userId}</td>
+                                    <td>{item.userName}</td>
+                                    <td>{item.email}</td>
+                                    <td>{item.department}</td>
+                                    <td>{item.yearLevel}</td>
+                                    <td>{formatDate(item.creationDate)}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="6" style={{ textAlign: "center" }}>No users found</td>
+                            </tr>
+                        )}
+                    </tbody>
             </table>
     
             </div>
