@@ -76,6 +76,7 @@ body, h1, h2, p {
     padding-right: 1px;
 }
 
+
   /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
   .table-container::-webkit-scrollbar {
     display: none; /* Hides the scrollbar */
@@ -87,7 +88,7 @@ body, h1, h2, p {
   }
 
   .w3-table-all {
-    width: 100%;
+    width: 99%;
     border-collapse: separate;
     border-spacing: 0 15px; 
     overflow-y: hidden; 
@@ -101,7 +102,7 @@ body, h1, h2, p {
   }
 
   .table-container tbody tr {
-    outline: 1px solid #800000; 
+    outline: 1px solid #800000 ; 
     border-radius: 20px; 
     background-color: #fff; 
   }
@@ -120,6 +121,47 @@ body, h1, h2, p {
   .table-container tbody tr:hover {
     background-color: #f9f9f9; 
   }
+
+
+  .table-container-analytics {
+  width:100%;
+  max-height: 200px; 
+  border-collapse: separate;
+  overflow-y: scroll; 
+  overflow-x: hidden; 
+  padding-left: 1px;
+  padding-right: 1px;
+}
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.table-container-analytics::-webkit-scrollbar {
+  display: none; /* Hides the scrollbar */
+}
+
+/* Hide scrollbar for Firefox */
+.table-container-analytics {
+  scrollbar-width: none; /* Hides the scrollbar */
+}
+
+.table-container-analytics tbody tr {
+  outline: 1px solid #2B0100; 
+  border-radius: 20px; 
+  background-color: #fff; 
+}
+
+.table-container-analytics tbody tr td {
+  padding: 8px;
+  border: none; 
+  text-align: center; 
+}
+
+.table-container-analytics tbody tr {
+  border-radius: 20px; 
+  overflow: hidden; 
+}
+
+.table-container-analytics tbody tr:hover {
+  background-color: #f9f9f9; 
+}
 
   .cmBtnCont {
     display: flex;
@@ -552,7 +594,7 @@ body, h1, h2, p {
 
 .analyticsBox{
   height: 500px;
-  width: 95%;
+  width: 100%;
   margin-top: 5%;
   margin-left: -10px;
   justify-content: center;
@@ -560,7 +602,15 @@ body, h1, h2, p {
   text-align: center;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: thin;
+  
+}
+.analyticsBox::-webkit-scrollbar {
+  display: none; /* Hides the scrollbar */
+}
+
+/* Hide scrollbar for Firefox */
+.analyticsBox {
+  scrollbar-width: none; /* Hides the scrollbar */
 }
 
 .days{
