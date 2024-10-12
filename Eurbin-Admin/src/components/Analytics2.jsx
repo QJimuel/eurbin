@@ -18,7 +18,8 @@
     PieChart,
     Pie,
     Cell,
-    AreaChart
+    AreaChart,
+    Area
   } from 'recharts';
   import axios from 'axios';
 
@@ -481,60 +482,71 @@
             <div style={{  flex: 1 }}>
            
             <ResponsiveContainer width="95%" height={300}>
-            <h3>Monthly Contributions Overview</h3>
-      <LineChart 
-        data={formattedData}
-        onClick={(data, index) => {
-          const clickedMonthName = data.activeLabel.trim(); // Example: "Oct"
-          const year = '2024'; // You can fetch this dynamically based on the data
-          
-          // Convert "Oct" to "2024-10"
-          const selectedMonth = `${year}-${monthNames[clickedMonthName]}`;
-          
-          setSelectedMonth(selectedMonth);
-        }}
-      >
-        <CartesianGrid strokeDasharray="1 1" stroke="#ccccc1" />
-        <XAxis dataKey="formattedDate" tickFormatter={(tick) => tick} 
-         tick={{ fill: '#000', fontSize: 12 }} // Customize tick label color and size
-         axisLine={{ stroke: '#000', strokeWidth: 1 }} // Customize axis line color and width
-         tickLine={{ stroke: '#000', strokeWidth: 1 }}  />
-        <YAxis     tick={{ fill: '#000', fontSize: 12 }} // Customize tick label color and size
-          axisLine={{ stroke: '#000', strokeWidth: 1 }} // Customize axis line color and width
-          tickLine={{ stroke: '#000', strokeWidth: 1 }} />
-        <Tooltip content={<CustomizedTooltip />} />
-        <Legend />
+  <h3>Monthly Contributions Overview</h3>
+  <AreaChart
+    data={formattedData}
+    onClick={(data, index) => {
+      const clickedMonthName = data.activeLabel.trim(); // Example: "Oct"
+      const year = '2024'; // You can fetch this dynamically based on the data
 
-     
-        <Line
-          type="monotone"
-          dataKey="totalBottle"
-          stroke="#8B33FF"
-          strokeWidth={1}
-          dot={{ r: 4 }}
-          activeDot={{ r: 8 }}
-          isAnimationActive={true}
-        />
-        <Line
-          type="monotone"
-          dataKey="totalCo2"
-          stroke="#82ca9d"
-          strokeWidth={1}
-          dot={{ r: 4 }}
-          activeDot={{ r: 8 }}
-          isAnimationActive={true}
-        />
-           <Line
-          type="monotone"
-          dataKey="totalUser"
-          stroke="#2B0100"
-          strokeWidth={1}
-          dot={{ r: 4 }}
-          activeDot={{ r: 8 }}
-          isAnimationActive={true}
-        />
-      </LineChart>
-    </ResponsiveContainer>
+      // Convert "Oct" to "2024-10"
+      const selectedMonth = `${year}-${monthNames[clickedMonthName]}`;
+
+      setSelectedMonth(selectedMonth);
+    }}
+  >
+  
+  <CartesianGrid strokeDasharray="1 0" stroke="#ccc" horizontal={true} vertical={false} />
+    <XAxis
+      dataKey="formattedDate"
+      tickFormatter={(tick) => tick}
+      tick={{ fill: '#000', fontSize: 12 }} // Customize tick label color and size
+      axisLine={{ stroke: '#fff', strokeWidth: .5 }} // Customize axis line color and width
+      tickLine={{ stroke: '#fff', strokeWidth: .5 }}
+    />
+    <YAxis
+      tick={{ fill: '#000', fontSize: 12 }} // Customize tick label color and size
+      axisLine={{ stroke: '#fff', strokeWidth: 1 }} // Customize axis line color and width
+      tickLine={{ stroke: '#fff', strokeWidth: 1 }}
+      
+      
+    />
+    <Tooltip content={<CustomizedTooltip />} />
+    <Legend />
+
+    <Area
+      type="monotone"
+      dataKey="totalBottle"
+      stroke="#8B33FF"
+      fill="#8B33FF"
+      strokeWidth={1}
+      dot={{ r: 4 }}
+      activeDot={{ r: 8 }}
+      isAnimationActive={true}
+    />
+    <Area
+      type="monotone"
+      dataKey="totalCo2"
+      stroke="#82ca9d"
+      fill="#82ca9d"
+      strokeWidth={1}
+      dot={{ r: 4 }}
+      activeDot={{ r: 8 }}
+      isAnimationActive={true}
+    />
+    <Area
+      type="monotone"
+      dataKey="totalUser"
+      stroke="#2B0100"
+      fill="#2B0100"
+      strokeWidth={1}
+      dot={{ r: 4 }}
+      activeDot={{ r: 8 }}
+      isAnimationActive={true}
+    />
+  </AreaChart>
+</ResponsiveContainer>
+
     <br />
       <br />
       <br />
@@ -702,26 +714,46 @@
       <h3>Transactions per Reward</h3>
 
 
-  <ResponsiveContainer width="100%" height={400}>
-    <BarChart data={rewardTransactionData} layout="vertical">
-      <CartesianGrid strokeDasharray="3 3" />
-      <YAxis dataKey="rewardName" type="category" angle={-65} textAnchor="end" />
-      <XAxis type="number"   domain={[0, maxValue + 1]}  allowDecimals={false}/>
-      <Tooltip />
-      <Legend />
-      
-      <Bar dataKey="transactionCount" barSize={50}>
-        {
-          rewardTransactionData.map((reward, index) => (
-            <Cell 
-              key={reward.rewardName} 
-              fill={colors[index % colors.length]} // Assign unique color to each bar
-            />
-          ))
-        }
-      </Bar>
-    </BarChart>
-  </ResponsiveContainer>
+      <ResponsiveContainer width="100%" height={400}>
+  <LineChart data={rewardTransactionData} layout="horizontal">
+    {/* Customize the grid to show only vertical lines */}
+    <CartesianGrid strokeDasharray="3 0" vertical={false} horizontal={true} stroke="#ccc" />
+
+    <XAxis 
+      dataKey="rewardName" 
+      type="category" 
+      textAnchor="start" 
+      padding={{ left: 30, right: 30 }}
+      tick={{ fill: '#000', fontSize: 12 }} // Customize tick label color and size
+      axisLine={{ stroke: '#fff', strokeWidth: 1 }} // Customize axis line color and width
+      tickLine={{ stroke: '#fff', strokeWidth: 1 }} 
+    />
+    
+    <YAxis 
+      type="number" 
+      domain={[0, maxValue + 1]} 
+      allowDecimals={false}
+      tick={{ fill: '#000', fontSize: 12 }} 
+      axisLine={{ stroke: '#fff', strokeWidth: 1 }} 
+      tickLine={{ stroke: '#fff', strokeWidth: 1 }}
+    />
+
+    <Tooltip />
+    <Legend />
+
+    <Line
+      type="monotone" // Smooth curve
+      dataKey="transactionCount"
+      stroke="#FF8433" // Line color
+      strokeWidth={4}
+      dot={{ r: 8 }} // Dot size
+      activeDot={{ r: 12 }} // Active dot size
+    />
+  </LineChart>
+</ResponsiveContainer>
+
+
+
 
 
         
