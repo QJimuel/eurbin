@@ -31,7 +31,7 @@ exports.getUserById = async (req, res) => {
 
 // Create a new user
 exports.createUser = async (req, res) => {
-    try {
+    try {   
         const maxUser = await User.findOne().sort({ userId: -1 }).exec();
         const newUserId = maxUser ? maxUser.userId + 1 : 1;
         const { userName, password, email, role, department, program, yearLevel, smartPoints, plasticBottle, rank, co2, accumulatedSP } = req.body;
@@ -55,7 +55,7 @@ exports.createUser = async (req, res) => {
             accumulatedSP,
             isActive: true,
             creationDate: new Date()
-        });
+        }); 
 
         await newUser.save();
         await updateTotal();
