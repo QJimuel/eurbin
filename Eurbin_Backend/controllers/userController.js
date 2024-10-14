@@ -6,6 +6,49 @@ const updateTotal = require('../utils/updateTotal');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'; // Use environment variable
 
+
+const multer = require('multer');
+const path = require('path');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const multerS3 = require('multer-s3');
+
+// Configure AWS S3 Client
+// Configure AWS S3 Client
+const s3 = new S3Client({
+    region: 'ap-southeast-2',  // Load from environment variables
+    credentials: {
+        accessKeyId: 'AKIAWMFUPPJEGS5A25OL', // Load from environment variables
+        secretAccessKey: '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', // Load from environment variables
+    },
+});
+
+// Set up multer to upload images to S3
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'rurbin-reward-and-profile-images', // Your S3 bucket name
+       
+        key: (req, file, cb) => {
+            const uniqueFilename = Date.now().toString() + path.extname(file.originalname); // Generate a unique filename
+            cb(null, uniqueFilename);
+        }
+    }),
+    limits: { fileSize: 10 * 1024 * 1024 }, // Max file size 10MB
+    fileFilter: (req, file, cb) => {
+        const fileTypes = /jpeg|jpg|png|gif/;
+        const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = fileTypes.test(file.mimetype);
+        if (mimetype && extname) {
+            return cb(null, true);
+        } else {
+            cb(new Error('Only images are allowed'));
+        }
+    }
+});
+
+exports.upload = upload;
+
+
 // Get all users
 exports.getAllUsers = async (req, res) => {
     try {
@@ -75,7 +118,9 @@ exports.updateUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        let updateData = { userName, email, smartPoints, plasticBottle, rank, co2, accumulatedSP };
+        const imageUrl = req.file ? req.file.location : null;
+
+        let updateData = { userName, email, smartPoints, plasticBottle, rank, co2, accumulatedSP,Image: imageUrl };
         const updatedUser = await User.findOneAndUpdate({ userId: userId }, updateData, { new: true });
         await updateTotal();
         res.json(updatedUser);

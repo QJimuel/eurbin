@@ -14,7 +14,9 @@ router.post('/login', userController.loginUser);
 router.put('/update-password', authenticateToken,   userController.updatePassword);
 router.get('/',authenticateToken,  userController.getAllUsers);
 router.get('/:id',authenticateToken,  userController.getUserById);
-router.put('/:id', authenticateToken, userController.updateUser);
+
+router.put('/:id',authenticateToken ,userController.upload,userController.updateUser);
+
 router.delete('/:id', authenticateToken, userController.deleteUser);
 
 
