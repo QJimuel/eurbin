@@ -46,7 +46,7 @@ const upload = multer({
     }
 });
 
-exports.upload = upload;
+exports.upload = upload.single('Image');
 
 
 // Get all users
