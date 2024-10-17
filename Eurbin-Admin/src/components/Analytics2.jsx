@@ -39,6 +39,17 @@
     const [selectedDepartment1, setSelectedDepartment1] = useState("");
     const [selectedProgram, setSelectedProgram] = useState(null);
 
+    const [selectedRole, setSelectedRole] = useState("");
+    const [selectedYearLevel, setSelectedYearLevel] = useState("");
+
+    const yearLevels = ["1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year"];
+
+
+    const [selectedReward, setSelectedReward] = useState(null); // Store the selected reward name
+    const [rewardTransactions, setRewardTransactions] = useState([]); // Store the selected reward transactions
+
+
+
     const [totals, settotals] = useState([]);
     const [highTotals, setHightotals] = useState({});
     const [user, setUser] = useState([]);
@@ -95,6 +106,9 @@
       "CCJC",
       "CED",
       "CAS",
+      "Staff",
+      "ETEEAP",
+      "Faculty"
     ];
 
     useEffect(() => {
@@ -383,6 +397,25 @@
       return user.filter(u => u.department === selectedDepartment && u.program === program);
     };
 
+    const handleLineClick = (data) => {
+      console.log("Clicked Data:", data); // Debugging log
+    
+      // Accessing the active label directly
+      const rewardName = data.activeLabel.trim(); // Use activeLabel directly
+    
+      // Filter transactions based on the clicked reward name
+      const filteredTransactions = transactions.filter(
+        (transaction) => transaction.transactionName.trim() === rewardName
+      );
+    
+      setSelectedReward(rewardName);
+      setRewardTransactions(filteredTransactions);
+    
+      console.log("Filtered Transactions:", filteredTransactions); // Verify the result
+    };
+    
+    
+
 
     return (
       <>
@@ -552,65 +585,117 @@
       <br />
       <br />
 </div>
-              {selectedMonth && (
-              <div>
-                <h3>Contributions in {selectedMonth}</h3>
+{selectedMonth && (
+        <div>
+          <h3>Contributions in {selectedMonth}</h3>
 
-                <div>
-                  <label htmlFor="departmentFilter">Filter by Department: </label>
-                  <select
-                    id="departmentFilter"
-                    value={selectedDepartment1}
-                    onChange={(e) => setSelectedDepartment1(e.target.value)}
-                  >
-                    <option value="">All Departments</option>
-                    {departments.map((department, index) => (
-                      <option key={index} value={department}>
-                        {department}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+          <div>
+            <label htmlFor="roleFilter">Filter by Role: </label>
+            <select
+              id="roleFilter"
+              value={selectedRole}
+              onChange={(e) => {
+                setSelectedRole(e.target.value);
+                setSelectedYearLevel(""); // Reset year level when role changes
+              }}
+            >
+              <option value="">All Roles</option>
+              <option value="Staff">Staff</option>
+              <option value="Faculty">Faculty</option>
+              <option value="Student">Student</option>
+              <option value="ETEEAP">ETEEAP</option>
+            </select>
+          </div>
 
-                <div className="table-container-analytics">
-                  <table className="w3-table-all">
-                    <thead>
-                      <tr className="w3-light-grey">
-                        <th>Username</th>
-                        <th>Plastic Bottle</th>
-                        <th>Program</th>
-                        <th>CO2 Contribution</th>
-                    
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {user
-                       .filter((u) => {
-                        const userMonth = getMonthFromDate(u.creationDate); // Returns "YYYY-MM"
-                        const matchesMonth = userMonth === selectedMonth; // Check month
-                    
-                        // Check if the user matches the selected department (if any)
-                        const matchesDepartment = selectedDepartment1
-                          ? u.department === selectedDepartment1
-                          : true; // If no department is selected, include all
-                    
-                        return matchesMonth && matchesDepartment; // Both conditions must be true
-                      })
-                        .map((u, index) => (
-                          <tr key={index}>
-                            <td>{u.userName}</td>
-                            <td>{u.plasticBottle}</td>
-                            <td>{u.program}</td>
-                            <td>{u.co2}</td>
-                            
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-                <button onClick={() => setSelectedMonth(null)}>Back to Graph</button>
-              </div>
-            )}
+          {selectedRole === "Student" && (
+            <div>
+              <label htmlFor="yearLevelFilter">Filter by Year Level: </label>
+              <select
+                id="yearLevelFilter"
+                value={selectedYearLevel}
+                onChange={(e) => setSelectedYearLevel(e.target.value)}
+              >
+                <option value="">All Year Levels</option>
+                {yearLevels.map((yearLevel, index) => (
+                  <option key={index} value={yearLevel}>
+                    {yearLevel}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div>
+            <label htmlFor="departmentFilter">Filter by Department: </label>
+            <select
+              id="departmentFilter"
+              value={selectedDepartment1}
+              onChange={(e) => setSelectedDepartment1(e.target.value)}
+            >
+              <option value="">All Departments</option>
+              {departments.map((department, index) => (
+                <option key={index} value={department}>
+                  {department}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="table-container-analytics">
+            <table className="w3-table-all">
+              <thead>
+                <tr className="w3-light-grey">
+                  <th>Username</th>
+                  <th>Plastic Bottle</th>
+                  <th>Program</th>
+                  <th>CO2 Contribution</th>
+                </tr>
+              </thead>
+              <tbody>
+                {user
+                  .filter((u) => {
+                    const userMonth = getMonthFromDate(u.creationDate); // Returns "YYYY-MM"
+                    const matchesMonth = userMonth === selectedMonth; // Check month
+
+                    // Check if the user matches the selected role
+                    const matchesRole = selectedRole ? u.role === selectedRole : true; // If no role is selected, include all
+
+                    // Check if the user matches the selected department (if any)
+                    const matchesDepartment = selectedDepartment1
+                      ? u.department === selectedDepartment1
+                      : true; // If no department is selected, include all
+
+                    // Check if the user matches the selected year level (if role is Student)
+                    const matchesYearLevel = selectedRole === "Student"
+                      ? selectedYearLevel ? u.yearLevel === selectedYearLevel : true // Include all if no year level selected
+                      : true;
+
+                    // Additional checks for specific roles
+                    const isEteeap = u.role === "ETEEAP";
+                    const isFaculty = u.role === "Faculty";
+
+                    // Conditions for filtering
+                    return (
+                      matchesMonth &&
+                      matchesRole &&
+                      (isEteeap || isFaculty || matchesDepartment) &&
+                      matchesYearLevel
+                    ); // Include ETEEAP and Faculty regardless of department/year level
+                  })
+                  .map((u, index) => (
+                    <tr key={index}>
+                      <td>{u.userName}</td>
+                      <td>{u.plasticBottle}</td>
+                      <td>{u.program}</td>
+                      <td>{u.co2}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+          <button onClick={() => setSelectedMonth(null)}>Back to Graph</button>
+        </div>
+      )}
 
 
      </div>   
@@ -715,44 +800,80 @@
 
 
       <ResponsiveContainer width="100%" height={400}>
-  <LineChart data={rewardTransactionData} layout="horizontal">
-    {/* Customize the grid to show only vertical lines */}
+  <LineChart data={rewardTransactionData} layout="horizontal" onClick={(e) => handleLineClick(e)}>
     <CartesianGrid strokeDasharray="3 0" vertical={false} horizontal={true} stroke="#ccc" />
-
     <XAxis 
       dataKey="rewardName" 
       type="category" 
       textAnchor="start" 
       padding={{ left: 30, right: 30 }}
-      tick={{ fill: '#000', fontSize: 12 }} // Customize tick label color and size
-      axisLine={{ stroke: '#fff', strokeWidth: 1 }} // Customize axis line color and width
-      tickLine={{ stroke: '#fff', strokeWidth: 1 }} 
-    />
-    
-    <YAxis 
-      type="number" 
-      domain={[0, maxValue + 1]} 
-      allowDecimals={false}
-      tick={{ fill: '#000', fontSize: 12 }} 
-      axisLine={{ stroke: '#fff', strokeWidth: 1 }} 
+      tick={{ fill: '#000', fontSize: 12 }}
+      axisLine={{ stroke: '#fff', strokeWidth: 1 }}
       tickLine={{ stroke: '#fff', strokeWidth: 1 }}
     />
-
+    <YAxis 
+      type="number" 
+      domain={[0, maxValue + 1]}
+      allowDecimals={false}
+      tick={{ fill: '#000', fontSize: 12 }}
+      axisLine={{ stroke: '#fff', strokeWidth: 1 }}
+      tickLine={{ stroke: '#fff', strokeWidth: 1 }}
+    />
     <Tooltip />
     <Legend />
-
     <Line
-      type="monotone" // Smooth curve
-      dataKey="transactionCount"
-      stroke="#FF8433" // Line color
-      strokeWidth={4}
-      dot={{ r: 8 }} // Dot size
-      activeDot={{ r: 12 }} // Active dot size
-    />
+  type="monotone"
+  dataKey="transactionCount"
+  stroke="#FF8433"
+  strokeWidth={4}
+  dot={{ r: 8 }} // Normal dot size
+  activeDot={{ r: 12 }} // Enlarged on hover
+   // Attach onClick here
+/>
+
   </LineChart>
 </ResponsiveContainer>
 
-
+<div className="table-container-analytics">
+  {selectedReward && (
+    <>
+      <h3>Transactions for: {selectedReward}</h3>
+      <table className="w3-table-all" style={{ marginTop: '20px', width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr className="w3-light-grey">
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Transaction Name</th>
+            <th>Price</th>
+            <th>Reference No</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rewardTransactions.length > 0 ? (
+            rewardTransactions.map((transaction) => (
+              <tr key={transaction._id}>
+                <td>{transaction._id}</td>
+                <td>{transaction.userId}</td>
+                <td>{transaction.transactionName}</td>
+                <td>{transaction.transactionPrice}</td>
+                <td>{transaction.referenceNo}</td>
+                <td>{transaction.isAccepted ? 'Accepted' : 'Pending'}</td>
+                <td>{new Date(transaction.date).toLocaleString()}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="7" style={{ textAlign: 'center' }}>No transactions found.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <button className="w3-button w3-blue" onClick={() => setSelectedReward(null)}>Back to Line Graph</button>
+    </>
+  )}
+</div>
 
 
 
