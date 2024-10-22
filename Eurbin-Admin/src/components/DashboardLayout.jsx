@@ -38,10 +38,15 @@ function DashboardLayout() {
   const [transactions, setTransactions] = useState([]);
   const [totals, settotals] = useState({});
   const [user, setUser] = useState([]);
+  const [greetingName, setGreetingName] = useState('');
   
   useEffect(() => {
     fetchTotal();
     fetchUser();
+    const email = localStorage.getItem('username');
+    if (email) {
+      setGreetingName(email);
+    }
   }, []);
 
   const fetchTotal = async () => {
@@ -170,9 +175,12 @@ function DashboardLayout() {
 
   return (
     <>
-    <header className="header">
-        <h1 className="header-title">EURBin</h1>
-    </header>
+        <header className="header">
+        <p className="header-title">EURBin</p>
+        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
+    
+       
+      </header>
 
     <div className="container">
       <aside style={styles.sidebar}>

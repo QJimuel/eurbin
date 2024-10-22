@@ -57,6 +57,8 @@
     const [transactions, setTransactions] = useState([]);
     const [rewardTransactionData, setRewardTransactionData] = useState([])
 
+    const [greetingName, setGreetingName] = useState('');
+
     const colors = [
       '#FF5733', // Red
       '#33FF57', // Green
@@ -118,6 +120,10 @@
       fetchUser();
     
       fetchTransactions();
+      const email = localStorage.getItem('username');
+      if (email) {
+        setGreetingName(email);
+      }
     }, []);
 
     const fetchTotal = async () => {
@@ -419,9 +425,12 @@
 
     return (
       <>
-        <header className="header">
-          <h1 className="header-title">EURBin</h1>
-        </header>
+           <header className="header">
+        <p className="header-title">EURBin</p>
+        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
+    
+       
+      </header>
 
         <div className="container">
         <aside style={styles.sidebar}>
