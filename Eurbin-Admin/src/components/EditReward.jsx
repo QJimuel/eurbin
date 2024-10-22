@@ -245,7 +245,13 @@ function EditReward() {
                 <tbody>
                     {Reward.map(reward => (
                         <tr key={reward._id}>
-                            <td>🖼️</td>
+                                <td>
+                                    <img 
+                                        src={reward.Image} 
+                                        alt={reward.RewardName} 
+                                        style={{ width: '70px', height: '70px', borderRadius: '10px' }} 
+                                    />
+                                </td>   
                             <td>{reward.RewardName}</td>
                             <td>{reward.Category}</td>
                             <td>{reward.Quantity}</td>

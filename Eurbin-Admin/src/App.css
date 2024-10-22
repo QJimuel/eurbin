@@ -33,9 +33,11 @@ body, h1, h2, p {
   .header {
     background-color: #800000; 
     padding-left: 5%;
-    padding-top: 2%;
+    padding-right: 5%;
+    padding-top:1%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   .headings {
@@ -44,10 +46,11 @@ body, h1, h2, p {
   }
   
   .header-title {
-    font-family: "Manjari", system-ui;
+    font-family: "Poppins", system-ui;
     color: white;
-    font-size: 24px;
-    padding:1%;
+    font-size: 40px;
+    font-weight: 600;
+
   }
   
   .main-content {
@@ -99,10 +102,11 @@ body, h1, h2, p {
     text-align: center; 
     padding: 10px;
     font-weight: bold;
+    color: #2B0100;
   }
 
   .table-container tbody tr {
-    outline: 1px solid #800000 ; 
+    outline: 1px solid #2B0100 ; 
     border-radius: 20px; 
     background-color: #fff; 
   }
@@ -744,17 +748,12 @@ body, h1, h2, p {
 
 .uaTable2 {
   width: 100%;
-  
 }
 
 .uaTable2 thead th {
-
   background-color: #ffffff; 
-
   font-weight: bold; 
   text-align: center; 
- 
- 
 }
 
 
@@ -771,19 +770,15 @@ body, h1, h2, p {
 .uaTable thead th {
   border: none; 
   background-color: #ffffff; 
-
   top: 0; 
   z-index: 10; 
- 
   font-weight: bold; 
   text-align: center; 
- 
- 
 }
 
 
 .uaTable tbody tr {
-  outline: 1px solid #800000; 
+  outline: 1px solid #2B0100; 
   border-radius: 20px; 
   background-color: #fff; 
   overflow: hidden; 

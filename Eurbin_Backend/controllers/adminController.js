@@ -98,7 +98,9 @@ exports.login = async (req, res) => {
         res.json({
              token,
             email: admin.email, 
-            userId: admin._id 
+            userId: admin._id,
+            username: admin.username
+
          });
         
     } catch (err) {

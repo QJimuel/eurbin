@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import EditProfileModal from "./EditProfileModal";
 import ChangePassModal from "./ChangePassModal";
 import dashbboard from '../Images/speedometer.png'
-import analytics from '../Images/analysis.png'
-import userManagement from '../Images/people.png'
-import rewardManagement from '../Images/reward.png'
 import editProfile from '../Images/edit.png'
 import changePass from '../Images/padlock.png'
 import about from '../Images/information.png'
 import logOut from '../Images/exit.png'
-import content from '../Images/content.png'
 
 function Layout2() {
+
+  const [greetingName, setGreetingName] = useState('');
+
+  useEffect(() => {
+    const email = localStorage.getItem('username');
+    if (email) {
+      setGreetingName(email);
+    }
+  }, []);
   /*EDIT PROFILE*/
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
-  // const [formData, setFormData] = useState({ name: "" });
 
   const handleOpenEPModal = () => {
     setIsEditProfileModalOpen(true);
@@ -49,6 +53,8 @@ function Layout2() {
     <>
       <header className="header">
         <h1 className="header-title">EURBin</h1>
+        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
+    
       </header>
 
       <div className="container">
@@ -77,7 +83,7 @@ function Layout2() {
             </a>
           </li>
           <li style={styles.sidebarItem}>
-            <Link to="/About" style={styles.sidebarLink}>
+            <Link to="/About2" style={styles.sidebarLink}>
                 <span role="img" aria-label="about">
               <img className="icons" src={about}/>
               </span> About
@@ -147,7 +153,7 @@ const styles = {
     alignItems: "center",
     gap: "20px",
     marginLeft: "20px",
-    cursor: "pointer", // Add pointer cursor for clickable items
+    cursor: "pointer", 
   },
   logo: {
     fontSize: "24px",

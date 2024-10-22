@@ -586,117 +586,119 @@
       <br />
 </div>
 {selectedMonth && (
-        <div>
-          <h3>Contributions in {selectedMonth}</h3>
+  <div>
+    <h3>Contributions in {selectedMonth}</h3>
 
-          <div>
-            <label htmlFor="roleFilter">Filter by Role: </label>
-            <select
-              id="roleFilter"
-              value={selectedRole}
-              onChange={(e) => {
-                setSelectedRole(e.target.value);
-                setSelectedYearLevel(""); // Reset year level when role changes
-              }}
-            >
-              <option value="">All Roles</option>
-              <option value="Staff">Staff</option>
-              <option value="Faculty">Faculty</option>
-              <option value="Student">Student</option>
-              <option value="ETEEAP">ETEEAP</option>
-            </select>
-          </div>
+    <div>
+      <label htmlFor="roleFilter">Filter by Role: </label>
+      <select
+        id="roleFilter"
+        value={selectedRole}
+        onChange={(e) => {
+          setSelectedRole(e.target.value);
+          setSelectedYearLevel(""); // Reset year level when role changes
+        }}
+      >
+        <option value="">All Roles</option>
+        <option value="Staff">Staff</option>
+        <option value="Faculty">Faculty</option>
+        <option value="Student">Student</option>
+        <option value="ETEEAP">ETEEAP</option>
+      </select>
+    </div>
 
-          {selectedRole === "Student" && (
-            <div>
-              <label htmlFor="yearLevelFilter">Filter by Year Level: </label>
-              <select
-                id="yearLevelFilter"
-                value={selectedYearLevel}
-                onChange={(e) => setSelectedYearLevel(e.target.value)}
-              >
-                <option value="">All Year Levels</option>
-                {yearLevels.map((yearLevel, index) => (
-                  <option key={index} value={yearLevel}>
-                    {yearLevel}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+    {selectedRole === "Student" && (
+      <div>
+        <label htmlFor="yearLevelFilter">Filter by Year Level: </label>
+        <select
+          id="yearLevelFilter"
+          value={selectedYearLevel}
+          onChange={(e) => setSelectedYearLevel(e.target.value)}
+        >
+          <option value="">All Year Levels</option>
+          {yearLevels.map((yearLevel, index) => (
+            <option key={index} value={yearLevel}>
+              {yearLevel}
+            </option>
+          ))}
+        </select>
+      </div>
+    )}
 
-          <div>
-            <label htmlFor="departmentFilter">Filter by Department: </label>
-            <select
-              id="departmentFilter"
-              value={selectedDepartment1}
-              onChange={(e) => setSelectedDepartment1(e.target.value)}
-            >
-              <option value="">All Departments</option>
-              {departments.map((department, index) => (
-                <option key={index} value={department}>
-                  {department}
-                </option>
-              ))}
-            </select>
-          </div>
+    {/* Hide the department filter if the selected role is Staff or ETEEAP */}
+    {(selectedRole !== "Staff" && selectedRole !== "ETEEAP") && (
+      <div>
+        <label htmlFor="departmentFilter">Filter by Department: </label>
+        <select
+          id="departmentFilter"
+          value={selectedDepartment1}
+          onChange={(e) => setSelectedDepartment1(e.target.value)}
+        >
+          <option value="">All Departments</option>
+          {departments.map((department, index) => (
+            <option key={index} value={department}>
+              {department}
+            </option>
+          ))}
+        </select>
+      </div>
+    )}
 
-          <div className="table-container-analytics">
-            <table className="w3-table-all">
-              <thead>
-                <tr className="w3-light-grey">
-                  <th>Username</th>
-                  <th>Plastic Bottle</th>
-                  <th>Program</th>
-                  <th>CO2 Contribution</th>
-                </tr>
-              </thead>
-              <tbody>
-                {user
-                  .filter((u) => {
-                    const userMonth = getMonthFromDate(u.creationDate); // Returns "YYYY-MM"
-                    const matchesMonth = userMonth === selectedMonth; // Check month
+    <div className="table-container-analytics">
+      <table className="w3-table-all">
+        <thead>
+          <tr className="w3-light-grey">
+            <th>Username</th>
+            <th>Plastic Bottle</th>
+            <th>Program</th>
+            <th>CO2 Contribution</th>
+          </tr>
+        </thead>
+        <tbody>
+          {user
+            .filter((u) => {
+              const userMonth = getMonthFromDate(u.creationDate); // Returns "YYYY-MM"
+              const matchesMonth = userMonth === selectedMonth; // Check month
 
-                    // Check if the user matches the selected role
-                    const matchesRole = selectedRole ? u.role === selectedRole : true; // If no role is selected, include all
+              // Check if the user matches the selected role
+              const matchesRole = selectedRole ? u.role === selectedRole : true; // If no role is selected, include all
 
-                    // Check if the user matches the selected department (if any)
-                    const matchesDepartment = selectedDepartment1
-                      ? u.department === selectedDepartment1
-                      : true; // If no department is selected, include all
+              // Check if the user matches the selected department (if any)
+              const matchesDepartment = selectedDepartment1
+                ? u.department === selectedDepartment1
+                : true; // If no department is selected, include all
 
-                    // Check if the user matches the selected year level (if role is Student)
-                    const matchesYearLevel = selectedRole === "Student"
-                      ? selectedYearLevel ? u.yearLevel === selectedYearLevel : true // Include all if no year level selected
-                      : true;
+              // Check if the user matches the selected year level (if role is Student)
+              const matchesYearLevel = selectedRole === "Student"
+                ? selectedYearLevel ? u.yearLevel === selectedYearLevel : true // Include all if no year level selected
+                : true;
 
-                    // Additional checks for specific roles
-                    const isEteeap = u.role === "ETEEAP";
-                    const isFaculty = u.role === "Faculty";
+              // Additional checks for specific roles
+              const isEteeap = u.role === "ETEEAP";
+              const isFaculty = u.role === "Faculty";
 
-                    // Conditions for filtering
-                    return (
-                      matchesMonth &&
-                      matchesRole &&
-                      (isEteeap || isFaculty || matchesDepartment) &&
-                      matchesYearLevel
-                    ); // Include ETEEAP and Faculty regardless of department/year level
-                  })
-                  .map((u, index) => (
-                    <tr key={index}>
-                      <td>{u.userName}</td>
-                      <td>{u.plasticBottle}</td>
-                      <td>{u.program}</td>
-                      <td>{u.co2}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-          <button onClick={() => setSelectedMonth(null)}>Back to Graph</button>
-        </div>
-      )}
-
+              // Conditions for filtering
+              return (
+                matchesMonth &&
+                matchesRole &&
+                (isEteeap || isFaculty || matchesDepartment) &&
+                matchesYearLevel
+              ); // Include ETEEAP and Faculty regardless of department/year level
+            })
+            .map((u, index) => (
+              <tr key={index}>
+                <td>{u.userName}</td>
+                <td>{u.plasticBottle}</td>
+                <td>{u.program}</td>
+                <td>{u.co2}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
+    <button onClick={() => setSelectedMonth(null)}>Back to Graph</button>
+  </div>
+)}
 
      </div>   
       <br />
@@ -838,7 +840,7 @@
   {selectedReward && (
     <>
       <h3>Transactions for: {selectedReward}</h3>
-      <table className="w3-table-all" style={{ marginTop: '20px', width: '100%', borderCollapse: 'collapse' }}>
+      <table className="w3-table-all">
         <thead>
           <tr className="w3-light-grey">
             <th>ID</th>

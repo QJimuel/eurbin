@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, Link , Navigate} from "react-router-dom";
 
 import user from '../Images/user.png'
@@ -22,6 +22,14 @@ import ChangePassModal from "./ChangePassModal";
 function Layout() {
  
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+  const [greetingName, setGreetingName] = useState('');
+
+  useEffect(() => {
+    const email = localStorage.getItem('username');
+    if (email) {
+      setGreetingName(email);
+    }
+  }, []);
   
   const handleOpenEPModal = () => {
     setIsEditProfileModalOpen(true);
@@ -51,11 +59,16 @@ function Layout() {
       window.location.href = "./"
       console.log(window.localStorage.getItem('token'));
     }
+
+
+
   return (
     <>
       <header className="header">
-        <h1 className="header-title">EURBin</h1>
-        <h1 className="header-title">hello</h1> 
+        <p className="header-title">EURBin</p>
+        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
+    
+       
       </header>
 
       <div className="container">

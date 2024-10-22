@@ -24,6 +24,8 @@ import BinStatus from "./components/BinStatus";
 import About from "./components/About";
 import ContentManagement from "./components/ContentManagement";
 import DeactivatedUser from "./components/DeactivatedUser";
+import About2 from "./components/About2";
+import { useState, useEffect } from 'react';
 
 function PrivateRoute({ element: Component, ...rest }) {
   const isAuthenticated = !!localStorage.getItem('token'); // Check if the token exists in localStorage
@@ -31,6 +33,21 @@ function PrivateRoute({ element: Component, ...rest }) {
 }
 
 function App() {
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    // Check if token exists and is valid
+    if (token) {
+      // Decode the token to check expiration (if using JWT)
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const isExpired = Date.now() >= payload.exp * 1000;
+
+      if (isExpired) {
+        localStorage.removeItem('token'); // Clear expired token
+        window.location.href = '/Login'; // Redirect to login
+      }
+    }
+  }, []);
   return (
     <>
       <BrowserRouter>
@@ -67,9 +84,9 @@ function App() {
 
           <Route path="/" element={<PrivateRoute element={<Layout2 />} />}>
             <Route path="/BinStatus" element={<BinStatus />} />
-            <Route path="/About" element={<About />} />
-          
+           
           </Route>
+          <Route path="/About2" element={<About2 />} />
         </Routes>
       </BrowserRouter>
     </>

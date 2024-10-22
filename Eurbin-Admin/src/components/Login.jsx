@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import student from '../Images/three_student.png'
+import axiosInstance from './AxiosInstance';
 
 function Login() {
 
@@ -21,12 +22,14 @@ function Login() {
     }
 
     try {
-        const response = await axios.post('https://eurbin.vercel.app/admin/login', { email, password });
+        const response = await axiosInstance.post('/admin/login', { email, password });
 
         if (response.status === 200) { 
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userEmail', response.data.email);
             localStorage.setItem('userId', response.data.userId);
+            localStorage.setItem('username', response.data.username);
+            console.log(response.data)
 
             alert('Login successful');
 

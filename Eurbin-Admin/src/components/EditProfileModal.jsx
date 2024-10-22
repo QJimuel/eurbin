@@ -36,18 +36,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       <div className="epModalContent">
         <button onClick={onClose} className="epCloseBtn">&times;</button>
 
-        <div className="epImageContainer">
-          <div className="epImage">
-            <div className="epImageInner">
-              <div className="epCameraContainer">
-                <span role="img" aria-label="camera" className="cameraIcon">
-                  <img src={camera} alt="Camera" />
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <h2 className="cpTitle">Edit Profile</h2>
         <form onSubmit={handleSubmit} className="epForm">
           <div className="inputContainer">
             <span role="img" aria-label="user" className="inputIcon">
