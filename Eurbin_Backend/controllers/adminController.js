@@ -4,7 +4,9 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 
 const transporter = nodemailer.createTransport({
-    service: 'Gmail', // You can use other email services
+    host: 'smtp.gmail.com', // or your provider's host
+    port: 465,
+    secure: true, // You can use other email services
     auth: {
         user: "eurbinmmq@gmail.com",
         pass: "mwqy dmwx myrn ngny",
