@@ -27,7 +27,7 @@ exports.createRank = async (req, res) => {
 };
 
 exports.getUserRanks = async (req, res) => {
-    const { userId } = req.params;
+    const { userId } = req.body;
     try {
         const ranks = await Rank.find({ userId: String(userId) }); // Get all records for the user
         if (!ranks.length) {
