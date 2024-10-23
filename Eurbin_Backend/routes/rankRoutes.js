@@ -3,6 +3,6 @@ const router = express.Router();
 const rankController = require('../controllers/rankController');
 
 router.post('/', rankController.createRank);
-router.get('/', rankController.getUserRanks);
+router.patch('/', rankController.getUserRanks);
 
 module.exports = router;
