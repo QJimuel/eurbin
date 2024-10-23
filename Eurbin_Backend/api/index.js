@@ -11,7 +11,8 @@ const authRoutes = require('../routes/authRoutes');
 const redeemCodeRoutes = require('../routes/redeemCodeRoutes');
 const userRoutes = require('../routes/userRoutes');
 const totalRoutes = require('../routes/totalRoutes');
-const contentRoutes = require('../routes/contentRoutes')
+const contentRoutes = require('../routes/contentRoutes');
+const rankRoutes = require('../routes/rankRoutes');
 
 
 
@@ -60,6 +61,8 @@ app.use('/code', redeemCodeRoutes);
 app.use('/user',  userRoutes);
 app.use('/total', totalRoutes);
 app.use('/contents', contentRoutes);
+app.use('/rank', rankRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
