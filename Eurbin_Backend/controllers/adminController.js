@@ -44,7 +44,7 @@ exports.register = async (req, res) => {
 
          try {
             await transporter.sendMail({
-                from: "eEURBONM",
+                from: "Eurbin Admin",
                 to: email,
                 subject: 'Email Verification',
                 html: `<h4>Hello, ${username}</h4><p>Please verify your email by clicking the link below:</p><a href="${verificationLink}">Verify Email</a>`,
