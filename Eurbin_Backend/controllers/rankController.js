@@ -25,3 +25,16 @@ exports.createRank = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.getUserRanks = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const ranks = await Rank.find({ userId }); // Get all records for the user
+        if (!ranks.length) {
+            return res.status(404).json({ message: 'No ranks found for this user.' });
+        }
+        res.status(200).json({ ranks });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
