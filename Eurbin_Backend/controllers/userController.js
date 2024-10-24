@@ -3,9 +3,21 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const updateTotal = require('../utils/updateTotal');
+const nodemailer = require('nodemailer');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'; // Use environment variable
 
+
+// Nodemailer transporter setup
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: "eurbinmmq@gmail.com",
+        pass: "mwqy dmwx myrn ngny", // Ensure these credentials are correct and secure
+    },
+});
 
 const multer = require('multer');
 const path = require('path');
@@ -74,7 +86,7 @@ exports.getUserById = async (req, res) => {
 
 // Create a new user
 exports.createUser = async (req, res) => {
-    try {   
+    try {
         const maxUser = await User.findOne().sort({ userId: -1 }).exec();
         const newUserId = maxUser ? maxUser.userId + 1 : 1;
         const { userName, password, email, role, department, program, yearLevel, smartPoints, plasticBottle, rank, co2, accumulatedSP } = req.body;
@@ -97,11 +109,37 @@ exports.createUser = async (req, res) => {
             co2,
             accumulatedSP,
             isActive: true,
-            creationDate: new Date()
-        }); 
+            creationDate: new Date(),
+        });
 
+        // Save the new user to the database
         await newUser.save();
         await updateTotal();
+
+        // Send acknowledgment email
+        const mailOptions = {
+            from: '"Eurbin Team" <eurbinmmq@gmail.com>',
+            to: email,
+            subject: 'Welcome to Eurbin!',
+            html: `
+                <h1>Hello ${userName},</h1>
+                <p>Welcome to Eurbin! We're excited to have you on board.</p>
+                <p>You can now start earning smart points by recycling plastic bottles and tracking your rewards.</p>
+                <p>If you have any questions, feel free to reach out to us at any time.</p>
+                <br />
+                <p>Best Regards,</p>
+                <p>Eurbin Team</p>
+            `,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+            } else {
+                console.log('Acknowledgment email sent:', info.response);
+            }
+        });
+
         res.status(201).json(newUser);
     } catch (err) {
         res.status(500).json({ error: err.message });
