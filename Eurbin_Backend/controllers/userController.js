@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const updateTotal = require('../utils/updateTotal');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto'); // For generating random OTPs
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'; // Use environment variable
 
@@ -93,6 +94,7 @@ exports.createUser = async (req, res) => {
 
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
+        const otp = crypto.randomInt(1000, 9999);
 
         const newUser = new User({
             userId: newUserId,
@@ -108,7 +110,7 @@ exports.createUser = async (req, res) => {
             rank,
             co2,
             accumulatedSP,
-            isActive: true,
+            isActive: false,
             creationDate: new Date(),
         });
 
@@ -117,7 +119,7 @@ exports.createUser = async (req, res) => {
         await updateTotal();
 
              // Send email asynchronously without waiting for it to finish
-        sendAcknowledgmentEmail(email, userName);
+        sendAcknowledgmentEmail(email, userName, otp);
 
         res.status(201).json(newUser);
     } catch (err) {
@@ -127,25 +129,42 @@ exports.createUser = async (req, res) => {
 
 
 
-// Function to send acknowledgment email
-const sendAcknowledgmentEmail = async (email, userName) => {
+exports.verifyOTP = async (req, res) => {
+    const { email, otp } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) return res.status(404).json({ message: 'User not found.' });
+        if (user.otp !== otp) return res.status(400).json({ message: 'Invalid OTP.' });
+
+        user.isVerified = true; // Mark as verified
+        user.otp = null; // Clear OTP
+        await user.save();
+
+        res.json({ message: 'OTP verified successfully.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// Email with OTP
+const sendAcknowledgmentEmail = async (email, userName, otp) => {
     const mailOptions = {
         from: '"Eurbin Team" <eurbinmmq@gmail.com>',
         to: email,
-        subject: 'Welcome to Eurbin!',
+        subject: 'Welcome to Eurbin! Please Verify Your Email',
         html: `
             <h1>Hello ${userName},</h1>
-            <p>Welcome to Eurbin! We're excited to have you on board.</p>
-            <p>Start earning smart points by recycling plastic bottles and tracking your rewards.</p>
-            <br />
-            <p>Best Regards,</p>
-            <p>Eurbin Team</p>
+            <p>Welcome to Eurbin! Please use the following OTP to verify your account:</p>
+            <h2>${otp}</h2>
+            <p>Best Regards,<br/>Eurbin Team</p>
         `,
     };
 
     try {
         const info = await transporter.sendMail(mailOptions);
-        console.log('Acknowledgment email sent:', info.response);
+        console.log('OTP email sent:', info.response);
     } catch (error) {
         console.error('Error sending email:', error);
     }
