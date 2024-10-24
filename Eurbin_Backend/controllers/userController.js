@@ -116,33 +116,38 @@ exports.createUser = async (req, res) => {
         await newUser.save();
         await updateTotal();
 
-        // Send acknowledgment email
-        const mailOptions = {
-            from: '"Eurbin Team" <eurbinmmq@gmail.com>',
-            to: email,
-            subject: 'Welcome to Eurbin!',
-            html: `
-                <h1>Hello ${userName},</h1>
-                <p>Welcome to Eurbin! We're excited to have you on board.</p>
-                <p>You can now start earning smart points by recycling plastic bottles and tracking your rewards.</p>
-                <p>If you have any questions, feel free to reach out to us at any time.</p>
-                <br />
-                <p>Best Regards,</p>
-                <p>Eurbin Team</p>
-            `,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error('Error sending email:', error);
-            } else {
-                console.log('Acknowledgment email sent:', info.response);
-            }
-        });
+             // Send email asynchronously without waiting for it to finish
+        sendAcknowledgmentEmail(email, userName);
 
         res.status(201).json(newUser);
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+};
+
+
+
+// Function to send acknowledgment email
+const sendAcknowledgmentEmail = async (email, userName) => {
+    const mailOptions = {
+        from: '"Eurbin Team" <eurbinmmq@gmail.com>',
+        to: email,
+        subject: 'Welcome to Eurbin!',
+        html: `
+            <h1>Hello ${userName},</h1>
+            <p>Welcome to Eurbin! We're excited to have you on board.</p>
+            <p>Start earning smart points by recycling plastic bottles and tracking your rewards.</p>
+            <br />
+            <p>Best Regards,</p>
+            <p>Eurbin Team</p>
+        `,
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Acknowledgment email sent:', info.response);
+    } catch (error) {
+        console.error('Error sending email:', error);
     }
 };
 
