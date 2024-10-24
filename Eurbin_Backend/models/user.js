@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
    rank: String,
    co2: Number,
    accumulatedSP: Number,
+   otp: String,
    isActive: Boolean,
    creationDate: Date,
    Image: String

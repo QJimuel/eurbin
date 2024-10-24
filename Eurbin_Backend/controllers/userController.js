@@ -110,6 +110,7 @@ exports.createUser = async (req, res) => {
             rank,
             co2,
             accumulatedSP,
+            otp: otp,
             isActive: false,
             creationDate: new Date(),
         });
