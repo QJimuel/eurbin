@@ -140,7 +140,7 @@ exports.verifyOTP = async (req, res) => {
         console.log(user.otp, otp)
         if (user.otp !== otp) return res.status(400).json({ message: 'Invalid OTP.' });
 
-        user.isVerified = true; // Mark as verified
+        user.isActive = true; // Mark as verified
         user.otp = null; // Clear OTP
         await user.save();
 
