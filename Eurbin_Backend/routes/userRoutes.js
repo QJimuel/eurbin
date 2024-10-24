@@ -9,6 +9,8 @@ console.log('User Routes Loaded');
 // Public Routes
 router.post('/', userController.createUser);
 router.post('/login', userController.loginUser);
+router.post('/verify-otp', userController.verifyOTP);
+
 
 // Protected Routes
 router.put('/update-password', authenticateToken,   userController.updatePassword);
