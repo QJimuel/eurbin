@@ -92,6 +92,11 @@ exports.createUser = async (req, res) => {
         const newUserId = maxUser ? maxUser.userId + 1 : 1;
         const { userName, password, email, role, department, program, yearLevel, smartPoints, plasticBottle, rank, co2, accumulatedSP } = req.body;
 
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email is already registered' });
+        }
+
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
         const otp = crypto.randomInt(1000, 9999);
