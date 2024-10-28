@@ -120,7 +120,7 @@ exports.createUser = async (req, res) => {
         await updateTotal();
 
              // Send email asynchronously without waiting for it to finish
-        sendAcknowledgmentEmail(email, userName, otp);
+        await sendAcknowledgmentEmail(email, userName, otp);
 
         res.status(201).json(newUser);
     } catch (err) {
