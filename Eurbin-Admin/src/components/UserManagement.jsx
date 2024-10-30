@@ -10,6 +10,7 @@ function UserManagement() {
     const [selectedUser, setSelectedUser] = useState(null); 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [sortOption, setSortOption] = useState('userId'); 
 
     useEffect(() => {
         fetchUser();
@@ -66,57 +67,92 @@ function UserManagement() {
     );
 
     
-    return<>
-        <h1 className="headings"> User Management </h1>
+    const handleSortChange = (e) => {
+        setSortOption(e.target.value);
+    };
 
-        <nav className="nav">
-            <ul className="navList">
-            <li >
-                <Link to="/ManageUser" >
-                <button className={location.pathname === "/ManageUser" ? "active-btn" : "inactive-btn"}>
-                        Active Users
-                    </button>
-                </Link>
-            </li>
-            <li >
-                <Link to="/DeactivatedUser" >
-                <button className={location.pathname === "/DeactivatedUser" ? "active-btn" : "inactive-btn"}>
-                        Deactivated Users
-                    </button>
-                </Link>
-            </li>
-       
-            </ul>
-        </nav>
-  
+    const sortedUsers = user
+    .filter((user) =>
+        user.userName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+        if (sortOption === 'userId') {
+            const userIdA = String(a.userId);
+            const userIdB = String(b.userId);
+            return userIdA.localeCompare(userIdB);
+        }
+        if (sortOption === 'yearLevel') {
+            const aYear = parseInt(a.yearLevel) || 0; 
+            const bYear = parseInt(b.yearLevel) || 0; 
+            return aYear - bYear; 
+        }
+        if (sortOption === 'department') {
+            return String(a.department).localeCompare(String(b.department));
+        }
+        return 0;
+    });
 
-        <div className="search-container">
-                <input
-                    type="text"
-                    placeholder="Search User"
-                    value={searchQuery}
-                    onChange={handleSearch}
-                />
+
+
+    return (
+        <>
+            <h1 className="headings"> User Management </h1>
+
+            <nav className="nav">
+                <ul className="navList">
+                    <li>
+                        <Link to="/ManageUser">
+                            <button className={location.pathname === "/ManageUser" ? "active-btn" : "inactive-btn"}>
+                                Active Users
+                            </button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/DeactivatedUser">
+                            <button className={location.pathname === "/DeactivatedUser" ? "active-btn" : "inactive-btn"}>
+                                Deactivated Users
+                            </button>
+                        </Link>
+                    </li>
+                </ul>
+            </nav>
+
+            <div className="controls">
+                <div className="search-container">
+                    <input
+                        type="text"
+                        placeholder="Search User"
+                        value={searchQuery}
+                        onChange={handleSearch}
+                    />
+                </div>
+
+                <div className="sort-container">
+                    <label>Sort by:</label>
+                    <select value={sortOption} onChange={handleSortChange}>
+                        <option value="userId">User ID</option>
+                        <option value="yearLevel">Year Level</option>
+                        <option value="department">Department</option>
+                    </select>
+                </div>
             </div>
-         
-       
 
-
-        <div className="table-container">
-            <table className="w3-table-all">
-                <thead>
-                    <tr className="w3-light-grey">
-                        <th>User Id</th>
-                        <th>User Name</th>
-                        <th>Email</th>
-                        <th>Department</th>
-                        <th>Year Level</th>
-                        <th>Creation Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                        {filteredUsers.length > 0 ? (
-                            filteredUsers.map(item => (
+            <div className="table-container">
+                <table className="w3-table-all">
+                    <thead>
+                        <tr className="w3-light-grey">
+                            <th>User Id</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Year Level</th>
+                            <th>Creation Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sortedUsers.length > 0 ? (
+                            sortedUsers.map(item => (
                                 <tr key={item._id} onClick={() => handleRowClick(item)}>
                                     <td>{item.userId}</td>
                                     <td>{item.userName}</td>
@@ -132,18 +168,17 @@ function UserManagement() {
                             </tr>
                         )}
                     </tbody>
-            </table>
-    
+                </table>
             </div>
 
             <ModalUser 
                 isOpen={isModalOpen} 
                 onClose={closeModal} 
                 user={selectedUser} 
-                button= "Deactivate"
+                button="Deactivate"
             />
-    
-    </> ;
-    
+        </>
+    );
 }
+
 export default UserManagement;

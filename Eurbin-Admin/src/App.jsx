@@ -25,6 +25,7 @@ import About from "./components/About";
 import ContentManagement from "./components/ContentManagement";
 import DeactivatedUser from "./components/DeactivatedUser";
 import About2 from "./components/About2";
+import Activity2 from "./components/Activity2";
 import { useState, useEffect } from 'react';
 
 function PrivateRoute({ element: Component, ...rest }) {
@@ -84,6 +85,8 @@ function App() {
 
           <Route path="/" element={<PrivateRoute element={<Layout2 />} />}>
             <Route path="/BinStatus" element={<BinStatus />} />
+            <Route path="/Activity2" element={<Activity2 />} />
+
            
           </Route>
           <Route path="/About2" element={<About2 />} />

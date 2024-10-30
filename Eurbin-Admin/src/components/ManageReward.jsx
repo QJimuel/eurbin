@@ -16,6 +16,7 @@ function ManageReward() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [modalTitle, setModalTitle] = useState('Add Reward');
+    const [sortOption, setSortOption] = useState(''); 
 
     const location = useLocation();  
 
@@ -149,6 +150,17 @@ function ManageReward() {
         setSelectedImage(file); // Update selected image
     };
 
+    const sortRewards = (rewards) => {
+        switch (sortOption) {
+            case 'rewardName':
+                return [...rewards].sort((a, b) => a.RewardName.localeCompare(b.RewardName));
+            case 'quantity':
+                return [...rewards].sort((a, b) => a.Quantity - b.Quantity);
+            default:
+                return rewards; 
+        }
+    };    
+
     return (
         <>
         <h1 className='headings'>Management</h1>
@@ -193,6 +205,14 @@ function ManageReward() {
             </Link>
         </div>
 
+        <div className="sort-container">
+            <label htmlFor="sort">Sort by:</label>
+            <select id="sort" onChange={(e) => setSortOption(e.target.value)} value={sortOption}>
+                <option value="rewardName">Reward Name</option>
+                <option value="quantity">Quantity</option>
+            </select>
+        </div>
+
         {/* Modal for Add/Edit Reward */}
         <Modal
             isOpen={isModalOpen}
@@ -204,36 +224,36 @@ function ManageReward() {
             modalTitle={modalTitle}
         />
 
-<div className="table-container">
-    <table className="w3-table-all">
-        <thead>
-            <tr className="w3-light-grey">
-                <th>Reward Image</th>
-                <th>Reward Name</th>
-                <th>Category</th>
-                <th>Quantity</th>
-                <th>Price (Smart Points)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {Reward.map(reward => (
-                <tr key={reward._id}>
-                    <td>
-                        <img 
-                            src={reward.Image} 
-                            alt={reward.RewardName} 
-                            style={{ width: '70px', height: '70px', borderRadius: '10px' }} 
-                        />
-                    </td>
-                    <td>{reward.RewardName}</td>
-                    <td>{reward.Category}</td>
-                    <td>{reward.Quantity}</td>
-                    <td>{reward.Price}</td>
-                </tr>
-            ))}
-        </tbody>
-    </table>
-</div>
+        <div className="table-container">
+            <table className="w3-table-all">
+                <thead>
+                    <tr className="w3-light-grey">
+                        <th>Reward Image</th>
+                        <th>Reward Name</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Price (Smart Points)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {sortRewards(Reward).map(reward => (
+                    <tr key={reward._id}>
+                        <td>
+                            <img 
+                                src={reward.Image} 
+                                alt={reward.RewardName} 
+                                style={{ width: '70px', height: '70px', borderRadius: '10px' }} 
+                            />
+                        </td>
+                        <td>{reward.RewardName}</td>
+                        <td>{reward.Category}</td>
+                        <td>{reward.Quantity}</td>
+                        <td>{reward.Price}</td>
+                    </tr>
+                ))}
+            </tbody>
+            </table>
+        </div>
         </>
     );
 }

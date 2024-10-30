@@ -1,4 +1,9 @@
 import { Outlet, Link } from "react-router-dom";
+import bottleIcon from '../Images/5.png'
+import step1 from '../Images/1.png'
+import step2 from '../Images/2.png'
+import step3 from '../Images/3.png'
+import step4 from '../Images/4.png'
 import bottle from '../Images/bottle.png'
 import co2 from '../Images/co2.png'
 import point from '../Images/point.png'
@@ -105,41 +110,31 @@ function About2() {
                 </p>
             </div>
             <div style={styles.aboutImage}>
-                <img src={bottle} style={styles.image} />
+                <img src={bottleIcon} style={styles.image} />
             </div>
         </div>
 
         <div style={styles.instructionContent}>
           <h2 style={styles.subHeader}>How to Use EURBin</h2>
           <div style={styles.iContentScrollable}>
-            <div style={styles.step}>
-              <img src={bottle} style={styles.iImage} />
+          <div style={styles.step}>
+              <img src={step1} style={styles.iImage} />
               <b>Step 1</b>
-              <p style={styles.stepP} >Locate the EURBin.</p>
-            </div>
-            <div style={styles.step}>
-              <img src={bottle} style={styles.iImage} />
-              <b>Step 2</b>
               <p style={styles.stepP} >Deposit your plastic bottle into the bin.</p>
             </div>
             <div style={styles.step}>
-              <img src={bottle} style={styles.iImage} />
-              <b>Step 3</b>
+              <img src={step2} style={styles.iImage} />
+              <b>Step 2</b>
               <p style={styles.stepP}>Receive a redeemable code displayed on the bin.</p>
             </div>
             <div style={styles.step}>
-              <img src={bottle} style={styles.iImage} />
+              <img src={step3} style={styles.iImage} />
+              <b>Step 3</b>
+              <p style={styles.stepP}>Enter the redeemable code to earn Smart Points.</p>
+            </div>
+            <div style={styles.step}>
+              <img src={step4} style={styles.iImage} />
               <b>Step 4</b>
-              <p style={styles.stepP}>Open the EURBin mobile app.</p>
-            </div>
-            <div style={styles.step}>
-              <img src={bottle} style={styles.iImage} />
-              <b>Step 5</b>
-              <p style={styles.stepP}>Enter the redeemable code to earn Smart Points (SP).</p>
-            </div>
-            <div style={styles.step}>
-              <img src={bottle} style={styles.iImage} />
-              <b>Step 6</b>
               <p style={styles.stepP}>Exchange your Smart Points for exciting rewards!</p>
             </div>
           </div>
@@ -278,7 +273,7 @@ const styles = {
       marginLeft: 30,
     },
     iImage: {
-      width: '100%',         
+      width: '60%',         
        maxHeight: '80%',
       marginBottom: '3vh',
     },

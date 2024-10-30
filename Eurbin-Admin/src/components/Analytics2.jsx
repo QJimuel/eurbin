@@ -422,102 +422,98 @@
     
     
 
-
     return (
       <>
-           <header className="header">
+      <header className="header">
         <p className="header-title">EURBin</p>
         <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
-    
-       
       </header>
 
-        <div className="container">
-        <aside style={styles.sidebar}>
+      <div className="container">
+      <aside style={styles.sidebar}>
           <ul style={styles.sidebarList}>
-
-          <li style={styles.sidebarItem}>
-            <Link to="/Dashboard2" style={styles.sidebarLink}>
-              <span role="img" aria-label="dashboard">
-                <img className="icons" src={dashbboard}/>
-              </span> 
-              Dashboard
-            </Link>
-          </li>
-          <li style={styles.sidebarItem}>
-            <Link to="/Analytics2" style={styles.sidebarLink}>
-              <span role="img" aria-label="analytics">
-                <img className="icons" src={analytics}/>
-              </span> 
-              Analytics
-            </Link>
-          </li>
-          <li style={styles.sidebarItem}>
-                <Link to="/ManageUser" style={styles.sidebarLink}>
-                  <span role="img" aria-label="instructions">
-                    <img className="icons" src={userManagement}/>
-                  </span>
-                  User Management
-                </Link>
-              </li>
-          <li style={styles.sidebarItem}>
-            <Link to="/Manage" style={styles.sidebarLink}>
-              <span role="img" aria-label="management">
-                <img className="icons" src={rewardManagement}/>
-              </span> Reward Management 
-            </Link>
-          </li>
-          <li style={styles.sidebarItem}>
-            <Link to="/ContentManagement" style={styles.sidebarLink}>
-              <span role="img" aria-label="management">
-                <img className="icons" src={content}/>
-              </span> Content Management
-            </Link>
-          </li>
-          <li style={styles.sidebarItem}>
-            <a onClick={handleOpenEPModal}  style={styles.sidebarLink}>
-              <span role="img" aria-label="edit-profile">
-                <img className="icons" src={editProfile}/>
-              </span> Edit Profile
-            </a>
-          </li>
-          <li style={styles.sidebarItem}>
-            <a onClick={handleOpenCPModal}  style={styles.sidebarLink}>
-              <span role="img" aria-label="change-password">
-                <img className="icons" src={changePass}/>
-              </span> Change Password
-            </a>
-          </li>
-          <li style={styles.sidebarItem}>
-            <Link to="/About" style={styles.sidebarLink}>
-              <span role="img" aria-label="about">
-              <img className="icons" src={about}/>
-              </span> About
-            </Link>
-          </li>
-          <li style={styles.sidebarItem}>
-            <a onClick= {logout}to="/Login" style={styles.sidebarLink}>
-              <span role="img" aria-label="logout">
-              <img className="icons" src={logOut}/>  
-              </span> Logout
-            </a>
-          </li>
+            <li style={styles.sidebarItem}>
+              <Link to="/Dashboard2" style={styles.sidebarLink}>
+                <span role="img" aria-label="dashboard">
+                  <img className="icons" src={dashbboard}/>
+                </span> 
+                Dashboard
+              </Link>
+            </li>
+            <li style={styles.sidebarItem}>
+              <Link to="/Analytics2" style={styles.sidebarLink}>
+                <span role="img" aria-label="analytics">
+                  <img className="icons" src={analytics}/>
+                </span> 
+                Analytics
+              </Link>
+            </li>
+            <li style={styles.sidebarItem}>
+                  <Link to="/ManageUser" style={styles.sidebarLink}>
+                    <span role="img" aria-label="instructions">
+                      <img className="icons" src={userManagement}/>
+                    </span>
+                    User Management
+                  </Link>
+                </li>
+            <li style={styles.sidebarItem}>
+              <Link to="/Manage" style={styles.sidebarLink}>
+                <span role="img" aria-label="management">
+                  <img className="icons" src={rewardManagement}/>
+                </span> Reward Management 
+              </Link>
+            </li>
+            <li style={styles.sidebarItem}>
+              <Link to="/ContentManagement" style={styles.sidebarLink}>
+                <span role="img" aria-label="management">
+                  <img className="icons" src={content}/>
+                </span> Content Management
+              </Link>
+            </li>
+            <li style={styles.sidebarItem}>
+              <a onClick={handleOpenEPModal}  style={styles.sidebarLink}>
+                <span role="img" aria-label="edit-profile">
+                  <img className="icons" src={editProfile}/>
+                </span> Edit Profile
+              </a>
+            </li>
+            <li style={styles.sidebarItem}>
+              <a onClick={handleOpenCPModal}  style={styles.sidebarLink}>
+                <span role="img" aria-label="change-password">
+                  <img className="icons" src={changePass}/>
+                </span> Change Password
+              </a>
+            </li>
+            <li style={styles.sidebarItem}>
+              <Link to="/About" style={styles.sidebarLink}>
+                <span role="img" aria-label="about">
+                <img className="icons" src={about}/>
+                </span> About
+              </Link>
+            </li>
+            <li style={styles.sidebarItem}>
+              <a onClick= {logout}to="/Login" style={styles.sidebarLink}>
+                <span role="img" aria-label="logout">
+                <img className="icons" src={logOut}/>  
+                </span> Logout
+              </a>
+            </li>
           </ul>
-        </aside>
+      </aside> 
 
-          <div className='analyticsBox'>
-            <h2 className="dHeader">Analytics</h2>
-
-            <div className="boxes" style={styles.boxes}>
-              <div className="co2Box" style={styles.co2Box}>
-                <p>Highest CO2: {highTotals.highestTotalCo2}</p>
-              </div>
-
-              <div className="bottleKgBox" style={styles.bottleKgBox}>
-                <p>Highest Bottle (kg): {(highTotals.highestTotalBottle / 50)}</p>
-              </div>
+      <div className='analyticsBox'>
+          <div className="rmdHeaders1"> 
+            <h1 className="anaHeader">Analytics</h1>
+          </div>
+          <div className="boxes" style={styles.boxes}>
+            <div className="co2Box" style={styles.co2Box}>
+              <p style={styles.boxText}> Highest CO2: { !isNaN(Number(highTotals.highestTotalCo2)) ? Number(highTotals.highestTotalCo2).toFixed(2) : '0.00' }</p>
             </div>
-
+            <div className="bottleKgBox" style={styles.bottleKgBox}>
+              <p style={styles.boxText}>Highest Bottle (kg): {(highTotals.highestTotalBottle / 50)}</p>
+            </div>
+          </div>
+            
             <div className='graphs'>
 
             <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '300px', justifyContent: 'space-around' }}>        
@@ -705,7 +701,7 @@
         </tbody>
       </table>
     </div>
-    <button onClick={() => setSelectedMonth(null)}>Back to Graph</button>
+    <button onClick={() => setSelectedMonth(null)} style={{ marginLeft: '450px' }}>Back to Graph</button>
   </div>
 )}
 
@@ -716,7 +712,7 @@
       <br />
               <h3>User Distribution by Department</h3>
 
-              <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', height: '300px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-around', height: '300px', marginRight: '50px'}}>
       <div style={{ flex: 1 }}>
         <ResponsiveContainer  height="100%">
           <PieChart>
@@ -759,7 +755,7 @@
                   }}
                 />
               </BarChart>
-              <button onClick={() => setSelectedDepartment(null) }>Back to Department</button>
+              <button onClick={() => setSelectedDepartment(null) } style={{ marginLeft: '400px' }}>Back to Department</button>
             </ResponsiveContainer>
           
 
@@ -778,29 +774,31 @@
      {selectedProgram && (
               <div style={{ marginTop: '20px' }}>
                 <h4>Users in {selectedProgram}</h4>
-                <div className="table-container">
-                  <table className="w3-table-all">
-                    <thead>
-                      <tr className="w3-light-grey">
-                        <th>Username</th>
-                        <th>Plastic Bottle</th>
-                        <th>Program</th>
-                        <th>CO2</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {getUsersByProgram(selectedProgram).map((u, index) => (
-                        <tr key={index}>
-                          <td>{u.userName}</td>
-                          <td>{u.plasticBottle}</td>
-                          <td>{u.program}</td>
-                          <td>{u.co2}</td>
+                <div className="table-container-analytics">
+                  <div className="table-container">
+                    <table className="w3-table-all">
+                      <thead>
+                        <tr className="w3-light-grey">
+                          <th>Username</th>
+                          <th>Plastic Bottle</th>
+                          <th>Program</th>
+                          <th>CO2</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {getUsersByProgram(selectedProgram).map((u, index) => (
+                          <tr key={index}>
+                            <td>{u.userName}</td>
+                            <td>{u.plasticBottle}</td>
+                            <td>{u.program}</td>
+                            <td>{u.co2}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                <button onClick={() => setSelectedProgram(null)}>Back to Programs</button>
+                <button onClick={() => setSelectedProgram(null)} style={{ marginLeft: '980px' }} >Back to Programs</button>
               </div>
             )}
   <br />
@@ -810,7 +808,7 @@
       <h3>Transactions per Reward</h3>
 
 
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="96%" height={400}>
   <LineChart data={rewardTransactionData} layout="horizontal" onClick={(e) => handleLineClick(e)}>
     <CartesianGrid strokeDasharray="3 0" vertical={false} horizontal={true} stroke="#ccc" />
     <XAxis 
@@ -881,7 +879,7 @@
           )}
         </tbody>
       </table>
-      <button className="w3-button w3-blue" onClick={() => setSelectedReward(null)}>Back to Line Graph</button>
+      <button className="w3-button w3-blue" onClick={() => setSelectedReward(null)} style={{ marginLeft: '940px', marginBottom: '20px' }}>Back to Line Graph</button>
     </>
   )}
 </div>
@@ -924,7 +922,7 @@
       marginTop: '15%', 
     },
     sidebar: {
-      width: '300px',
+      width: '253px',
       height: '100vh',
       backgroundColor: '#800000',
       color: 'white',
@@ -976,31 +974,40 @@
       gap: '5px',
       color: 'black',
     },
+
     main: {
       padding: '20px',
     },
+
     title: {
       color: 'darkred',
     },
+
     boxes: {
+      marginLeft: '5%',
+      marginRight: '5%',
       display: 'flex',
       justifyContent: 'end',
       marginBottom: '20px',
       gap: 20,
       padding: 20,
     },
+
     co2Box: {
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#800000',
       padding: '20px',
-      borderRadius: '8px',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
       fontSize: '20px',
       width: '100%',
     },
+
+    boxText: {
+      color: 'white', // This style will be applied to the <p> tag
+    },
+    
     bottleKgBox: {
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#800000',
       padding: '20px',
-      borderRadius: '8px',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
       fontSize: '20px',
       width: '100%',

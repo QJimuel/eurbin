@@ -1,40 +1,46 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import smallPlastic from '../Images/smallPlastic.jpg';
+import largePlastic from '../Images/largePlastic.jpg';
 
 function BinStatus() {
 
     const API_URL = 'https://eurbin.vercel.app/transactions';
+    const BOTTLES_API_URL = 'https://eurbin.vercel.app/bottles';
+    const location = useLocation();
     const [transactions, setTransactions] = useState([]);
+    const [smallBottleCount, setSmallBottleCount] = useState(0);
+    const [largeBottleCount, setLargeBottleCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
 
-
     useEffect(() => {
-        fetchTransactions();
+        fetchBottleData();
     }, []);
 
-    const fetchTransactions = async () => {
+    const fetchBottleData = async () => {
         try {
-            const response = await axios.get(API_URL);
-            if (response.status === 200 && Array.isArray(response.data.transactions)) {
-                setTransactions(response.data.transactions.filter(transaction => transaction.isAccepted === true || transaction.isAccepted === false));
+            const response = await axios.get(BOTTLES_API_URL);
+            console.log(response.data);  // Log the response to ensure the format
+            if (response.status === 200 && Array.isArray(response.data.bottles)) {  // Access bottles array
+                const smallBottles = response.data.bottles.filter(bottle => bottle.Size === 'Small').length;
+                const largeBottles = response.data.bottles.filter(bottle => bottle.Size === 'Large').length;
+    
+                setSmallBottleCount(smallBottles);
+                setLargeBottleCount(largeBottles);
             } else {
                 console.error('Unexpected data format:', response.data);
                 alert('An error occurred: Unexpected data format');
             }
         } catch (err) {
-            console.error('Error fetching transactions:', err);
-            alert('An error occurred while fetching transactions');
+            console.error('Error fetching bottle data:', err);
+            alert('An error occurred while fetching bottle data');
         }
     };
 
-    const filteredTransactions = transactions.filter((transaction) =>
-        transaction.referenceNo.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
     return<>
   
-  <h1 className='headings'>Bin Management</h1>
+    <h1 className='headings'>Bin Management</h1>
 
         <div className="rmdHeaders">
             <p>EURBin Status: </p>
@@ -44,7 +50,7 @@ function BinStatus() {
                 </div>
             </div>
             <div className="activityButton">
-                <Link to="/Activity" className="activityLink">
+                <Link to="/Activity2" className="activityLink">
                     <button>Activity</button>
                 </Link>
             </div>
@@ -54,37 +60,40 @@ function BinStatus() {
                 <table className="w3-table-all">
                     <thead>
                         <tr className="w3-light-grey">
-                            <th>User ID</th>
-                            <th>Reward Name</th>
-                            <th>Price</th>
-                            <th>Reference No.</th>
-                            <th>Status</th>
-                           
+                            <th>Waste</th>
+                            <th>Size</th>
+                            <th>Quantity</th>
+                            <th>Weight</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredTransactions.map((transaction) => (
-                            <tr key={transaction._id}>
-                                <td>{transaction.userId}</td>
-                                <td>{transaction.transactionName}</td>
-                                <td>{transaction.transactionPrice}</td>
-                                <td>{transaction.referenceNo}</td>
-                                <td className="action-buttons">
-                                    {transaction.isAccepted === true ? (
-                                        <span className='status'>Accepted</span>
-                                    ) : transaction.isAccepted === false ? (
-                                        <span className='status'>Declined</span>
-                                    ) : (
-                                        <>  
-                                        </>
-                                    )}
-
-                                    
-                                </td>
-                              
-                             
-                            </tr>
-                        ))}
+                        <tr>
+                            <td>
+                                <img
+                                    src={smallPlastic}
+                                    alt="Small Bottle"
+                                    style={{ width: '40px', height: '100px', borderRadius: '10px' }}
+                                />
+                            </td>
+                            <td>Small Bottle</td>
+                            <td>{smallBottleCount}</td> {/* Display small bottle quantity */}
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img
+                                    src={largePlastic}
+                                    alt="Large Bottle"
+                                    style={{ width: '40px', height: '100px', borderRadius: '10px' }}
+                                />
+                            </td>
+                            <td>Large Bottle</td>
+                            <td>{largeBottleCount}</td> {/* Display large bottle quantity */}
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
