@@ -151,6 +151,11 @@ function ContentManagement() {
                                             Disable
                                         </button>
                                     )}
+                                      <button 
+                                            className="cmBtn" 
+                                            style={{ backgroundColor: '#F44336' }} 
+                                            onClick={() => disableContent(content.contentId)}
+                                        >Delete</button>
                                 </td>
                             </tr>
                         ))}

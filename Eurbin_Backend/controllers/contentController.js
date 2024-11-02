@@ -70,3 +70,20 @@ exports.disableContent = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+// Delete content by contentId
+exports.deleteContent = async (req, res) => {
+    const { contentId } = req.params;
+
+    try {
+        const content = await Content.findOneAndDelete({ contentId });
+
+        if (!content) {
+            return res.status(404).json({ message: 'Content not found' });
+        }
+
+        res.status(200).json({ message: 'Content deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
