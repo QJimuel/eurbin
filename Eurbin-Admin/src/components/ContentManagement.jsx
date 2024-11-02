@@ -19,8 +19,6 @@ function ContentManagement() {
     const fetchContents = async () => {
         try {
             const response = await axios.get(API_URL);
-            console.log('API Response:', response.data); 
-
             if (response.status === 200 && Array.isArray(response.data.content)) {
                 setContents(response.data.content); 
             } else {
@@ -51,7 +49,7 @@ function ContentManagement() {
             const response = await axios.patch(`${API_URL}/disable/${contentId}`);
     
             if (response.status === 200) {
-                await fetchContents(); // Refresh the contents list
+                await fetchContents();
             }
         } catch (err) {
             console.error('Error disabling content:', err);
@@ -59,6 +57,18 @@ function ContentManagement() {
         }
     };
     
+    const deleteContent = async (contentId) => {
+        try {
+            const response = await axios.delete(`${API_URL}/${contentId}`);
+            
+            if (response.status === 200) {
+                await fetchContents(); // Refresh the contents list after deletion
+            }
+        } catch (err) {
+            console.error('Error deleting content:', err);
+            alert('An error occurred while deleting the content');
+        }
+    };
 
     const createContent = async () => {
         try {
@@ -104,7 +114,6 @@ function ContentManagement() {
                 <button onClick={handleAddClick}>Add Content</button>
             </div>
 
-            {/* Modal for Add Content */}
             <ModalAddContent
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
@@ -115,7 +124,7 @@ function ContentManagement() {
                 setDescription={setDescription}
             />
 
-<div className="table-container">
+            <div className="table-container">
                 <table className="w3-table-all">
                     <thead>
                         <tr className="w3-light-grey">
@@ -151,11 +160,13 @@ function ContentManagement() {
                                             Disable
                                         </button>
                                     )}
-                                      <button 
-                                            className="cmBtn" 
-                                            style={{ backgroundColor: '#F44336' }} 
-                                            onClick={() => disableContent(content.contentId)}
-                                        >Delete</button>
+                                    <button 
+                                        className="cmBtn" 
+                                        style={{ backgroundColor: '#F44336' }} 
+                                        onClick={() => deleteContent(content.contentId)}
+                                    >
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         ))}
