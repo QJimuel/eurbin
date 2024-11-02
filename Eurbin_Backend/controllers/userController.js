@@ -266,3 +266,57 @@ exports.updatePassword = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+
+// controllers/userController.js
+
+exports.forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Generate new password
+        const newPassword = crypto.randomBytes(4).toString('hex'); // Generate a 4-byte random password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update user's password
+        user.password = hashedPassword;
+        await user.save();
+
+        // Send email with the username and new password
+        await sendForgotPasswordEmail(email, user.userName, newPassword);
+
+        res.status(200).json({ message: 'New password sent to your email.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// Email function to send new password
+const sendForgotPasswordEmail = async (email, userName, newPassword) => {
+    const mailOptions = {
+        from: '"Eurbin Team" <eurbinmmq@gmail.com>',
+        to: email,
+        subject: 'Your New Password for Eurbin',
+        html: `
+            <h1>Hello ${userName},</h1>
+            <p>Your password has been reset. Here are your new login details:</p>
+            <p><strong>Username:</strong> ${userName}</p>
+            <p><strong>New Password:</strong> ${newPassword}</p>
+            <p>Please log in and change this password as soon as possible.</p>
+            <p>Best Regards,<br/>Eurbin Team</p>
+        `,
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Password reset email sent:', info.response);
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+};

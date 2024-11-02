@@ -21,5 +21,5 @@ router.put('/:id',authenticateToken ,userController.upload,userController.update
 
 router.delete('/:id', authenticateToken, userController.deleteUser);
 
-
+router.post('/forgot-password', userController.forgotPassword);
 module.exports = router;
