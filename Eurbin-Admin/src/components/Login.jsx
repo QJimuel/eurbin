@@ -31,6 +31,12 @@ function Login() {
             localStorage.setItem('username', response.data.username);
             console.log(response.data)
 
+            const sessionCollectedOffset = sessionStorage.getItem('collectedOffset');
+            if (sessionCollectedOffset) {
+              localStorage.setItem('collectedOffset', sessionCollectedOffset);
+              sessionStorage.removeItem('collectedOffset'); // Clear it from sessionStorage
+            }
+
             alert('Login successful');
 
             if (response.data.email === "admin") {

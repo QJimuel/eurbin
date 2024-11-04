@@ -39,7 +39,10 @@ function DashboardLayout() {
   const [totals, settotals] = useState({});
   const [user, setUser] = useState([]);
   const [greetingName, setGreetingName] = useState('');
-  
+  const [collectedOffset, setCollectedOffset] = useState(
+    Number(localStorage.getItem('collectedOffset')) || 0
+  );
+  const MAX_BOTTLES = 500;
   useEffect(() => {
     fetchTotal();
     fetchUser();
@@ -48,6 +51,11 @@ function DashboardLayout() {
       setGreetingName(email);
     }
   }, []);
+
+  useEffect(() => {
+    // Store collectedOffset in localStorage whenever it changes
+    localStorage.setItem('collectedOffset', collectedOffset);
+  }, [collectedOffset]);
 
   const fetchTotal = async () => {
     try {
@@ -108,10 +116,14 @@ function DashboardLayout() {
             console.error('Error fetching transactions:', err);
             alert('An error occurred while fetching transactions');
           }
-    };
+    };  
 
     const logout = ()=>
       {
+        const collectedOffset = localStorage.getItem('collectedOffset');
+        if (collectedOffset) {
+          sessionStorage.setItem('collectedOffset', collectedOffset);
+        }
         window.localStorage.clear();
         console.log("Token cleared");
         window.location.href = "./"
@@ -168,11 +180,19 @@ function DashboardLayout() {
       const departmentData = getDepartmentData();
 
       const percentComputaion = () => {
-        const percent = Math.ceil((totals.highestTotalBottle / 500) * 100); 
-        return `${percent}%`; // Return as a string with a percentage sign
-      };  
+        // Calculate the effective total for the percentage display
+        const effectiveTotal = Math.max(0, totals.highestTotalBottle - collectedOffset);
+        const percent = Math.min(100, Math.ceil((effectiveTotal / MAX_BOTTLES) * 100));
+        return `${percent}%`;
+      };
     
-
+    
+    
+      const handleCollectedClick = () => {
+        setCollectedOffset(totals.highestTotalBottle); // Set the current total as the reset point
+      };
+    
+    
   return (
     <>
         <header className="header">
@@ -271,6 +291,9 @@ function DashboardLayout() {
                       <p style={styles.percent}>{percentComputaion()}</p>
                   </div>
               </div>
+              <button onClick={handleCollectedClick}>Collected</button>
+
+              
 
 
             </div>

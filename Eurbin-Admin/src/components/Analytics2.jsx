@@ -701,7 +701,7 @@
         </tbody>
       </table>
     </div>
-    <button onClick={() => setSelectedMonth(null)} style={{ marginLeft: '450px' }}>Back to Graph</button>
+    <button onClick={() => setSelectedMonth(null)} >Back to Graph</button>
   </div>
 )}
 
@@ -755,7 +755,7 @@
                   }}
                 />
               </BarChart>
-              <button onClick={() => setSelectedDepartment(null) } style={{ marginLeft: '400px' }}>Back to Department</button>
+              <button onClick={() => setSelectedDepartment(null) } >Back to Department</button>
             </ResponsiveContainer>
           
 
@@ -798,7 +798,7 @@
                     </table>
                   </div>
                 </div>
-                <button onClick={() => setSelectedProgram(null)} style={{ marginLeft: '980px' }} >Back to Programs</button>
+                <button onClick={() => setSelectedProgram(null)}  >Back to Programs</button>
               </div>
             )}
   <br />
@@ -879,7 +879,7 @@
           )}
         </tbody>
       </table>
-      <button className="w3-button w3-blue" onClick={() => setSelectedReward(null)} style={{ marginLeft: '940px', marginBottom: '20px' }}>Back to Line Graph</button>
+      <button className="w3-button w3-blue" onClick={() => setSelectedReward(null)} >Back to Line Graph</button>
     </>
   )}
 </div>
