@@ -13,7 +13,7 @@ const userRoutes = require('../routes/userRoutes');
 const totalRoutes = require('../routes/totalRoutes');
 const contentRoutes = require('../routes/contentRoutes');
 const rankRoutes = require('../routes/rankRoutes');
-
+const collectedBottleRoutes = require('../routes/collectedBottleRoutes');
 
 
 const app = express();
@@ -62,6 +62,7 @@ app.use('/user',  userRoutes);
 app.use('/total', totalRoutes);
 app.use('/contents', contentRoutes);
 app.use('/rank', rankRoutes);
+app.use('/collected', collectedBottleRoutes);
 
 
 // Error handling middleware
