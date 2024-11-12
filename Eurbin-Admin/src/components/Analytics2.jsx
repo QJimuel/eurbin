@@ -316,9 +316,9 @@
       return (
         <div className="custom-tooltip">
           <h4>{`Date: ${payload[0].payload.formattedDate}`}</h4>
-          <p>{`Users: ${payload[0].value}`}</p>
-          <p>{`Bottles: ${payload[1].value}`}</p>
-          <p>{`CO2: ${payload[2].value}`}</p>
+          <p>{`Bottles: ${payload[0].value}`}</p>
+          <p>{`Co2: ${payload[1].value}`}</p>
+          <p>{`User: ${payload[2].value}`}</p>
         </div>
       );
     }
@@ -712,7 +712,7 @@
       <br />
               <h3>User Distribution by Department</h3>
 
-      <div style={{ display: 'flex', justifyContent: 'space-around', height: '300px', marginRight: '50px'}}>
+      <div style={{ display: 'flex', justifyContent: 'space-around', height: '300px', margin: '50px'}}>
       <div style={{ flex: 1 }}>
         <ResponsiveContainer  height="100%">
           <PieChart>
@@ -722,7 +722,7 @@
               cy="50%"
               labelLine={false}
               label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-              outerRadius={125}
+              outerRadius={120}
               dataKey="value"
               onClick={(entry) => setSelectedDepartment(entry.name)} // Drill down feature
             >

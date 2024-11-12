@@ -30,32 +30,69 @@ import {
 import { colors } from "@mui/material";
 
 
+
+
 function DashboardLayout() {
   const API_URL = 'https://eurbin.vercel.app/transactions';
   const total_API_URL = 'https://eurbin.vercel.app/total/highest';
   const user_API_URL = 'https://eurbin.vercel.app/user';
+  const collected_API_URL = 'https://eurbin.vercel.app/collected'; 
 
   const [transactions, setTransactions] = useState([]);
   const [totals, settotals] = useState({});
   const [user, setUser] = useState([]);
   const [greetingName, setGreetingName] = useState('');
-  const [collectedOffset, setCollectedOffset] = useState(
-    Number(localStorage.getItem('collectedOffset')) || 0
-  );
+  const [collectedOffset, setCollectedOffset] = useState(0);
   const MAX_BOTTLES = 500;
+  const [collectedData, setCollectedData] = useState([]);
+
   useEffect(() => {
     fetchTotal();
     fetchUser();
+    fetchCollectedData();
     const email = localStorage.getItem('username');
     if (email) {
       setGreetingName(email);
     }
   }, []);
 
-  useEffect(() => {
-    // Store collectedOffset in localStorage whenever it changes
-    localStorage.setItem('collectedOffset', collectedOffset);
-  }, [collectedOffset]);
+
+  const [error, setError] = useState(null);
+
+
+  const fetchCollectedData = async () => {
+   
+    
+    try {
+      const response = await axios.get(collected_API_URL);
+      
+      if (response.status === 200 && response.data.collectedBottles) {
+        // Extract the collectedBottles array
+        const collectedBottles = response.data.collectedBottles;
+        console.log('Collected Bottles:', collectedBottles);
+        // Calculate the difference in bottle count for each entry
+        const formattedData = collectedBottles.map((item, index) => {
+          const previousBottleCount = index > 0 ? collectedBottles[index - 1].bottleCount : 0;
+          const bottleCountDifference = item.bottleCount - previousBottleCount;
+          
+          return {
+            date: new Date(item.date).toLocaleDateString(),
+            bottleCountDifference: bottleCountDifference, // Difference between current and previous bottleCount
+          };
+        });
+        console.log('Formatted Data:', formattedData);
+        // Assuming you're setting the state here
+        setCollectedData(formattedData);
+      } else {
+        console.error('Unexpected data format:', response.data);
+        alert('An error occurred: Unexpected data format');
+      }
+    } catch (err) {
+      console.error('Error fetching collected data:', err);
+      alert('An error occurred while fetching collected data');
+    }
+  };
+
 
   const fetchTotal = async () => {
     try {
@@ -120,10 +157,7 @@ function DashboardLayout() {
 
     const logout = ()=>
       {
-        const collectedOffset = localStorage.getItem('collectedOffset');
-        if (collectedOffset) {
-          sessionStorage.setItem('collectedOffset', collectedOffset);
-        }
+        
         window.localStorage.clear();
         console.log("Token cleared");
         window.location.href = "./"
@@ -180,17 +214,49 @@ function DashboardLayout() {
       const departmentData = getDepartmentData();
 
       const percentComputaion = () => {
-        // Calculate the effective total for the percentage display
-        const effectiveTotal = Math.max(0, totals.highestTotalBottle - collectedOffset);
+        const storedOffset = Number(localStorage.getItem('collectedOffset')) || 0;
+        const effectiveTotal = Math.max(0, totals.highestTotalBottle - storedOffset);
         const percent = Math.min(100, Math.ceil((effectiveTotal / MAX_BOTTLES) * 100));
         return `${percent}%`;
-      };
+    };
+      
     
     
+      
+      
+      const handleCollectedClick = async () => {
+        try {
+            // Prepare the payload with collectedOffset as bottleCount
+            const newBottles = totals.highestTotalBottle - collectedOffset;
+       
+            const payload = {
+                bottleCount: newBottles,
+            };
     
-      const handleCollectedClick = () => {
-        setCollectedOffset(totals.highestTotalBottle); // Set the current total as the reset point
-      };
+            // Send POST request to /collected endpoint
+            const response = await fetch('https://eurbin.vercel.app/collected', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log('Bottle data saved:', data); // Log the response for confirmation
+
+            setCollectedOffset(totals.highestTotalBottle);
+            localStorage.setItem('collectedOffset', totals.highestTotalBottle);
+    
+            // Optionally, you can update the collectedOffset or any other state based on the response here.
+        } catch (error) {
+            console.error('Error posting collected bottles:', error.message);
+        }
+    };
     
     
   return (
@@ -352,7 +418,7 @@ function DashboardLayout() {
 
             <div className="dataBox">
         
-            
+            {/*
             <div className="userActivityBox">
               <h1 className="dTitle">Recent Transaction</h1>
 
@@ -405,7 +471,20 @@ function DashboardLayout() {
 
 
 
-
+  */}
+         <div style={{ width: '100%', height: 300, justifyContent:'center', textAlign:'center'}}>
+<h3>Collected Bottle Counts from Bins</h3>
+<ResponsiveContainer width="100%" height={350}>
+      <BarChart data={collectedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="bottleCountDifference" fill={colors.blue[500]} />
+      </BarChart>
+    </ResponsiveContainer>
+    </div>
 
 
           <div style={{ width: '100%', height: 300, justifyContent:'center', textAlign:'center'}}>
@@ -439,7 +518,17 @@ function DashboardLayout() {
         
             </div>
 
-
+            <div style={{ width: '100%', height: '350px', position: 'absolute', bottom: '0', zIndex: -1 }}>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <defs>
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style={{ stopColor: 'rgba(239, 64, 64, 1)', stopOpacity: 1 }} />
+        <stop offset="100%" style={{ stopColor: 'rgba(255, 255, 255, 255)', stopOpacity: .1 }} />
+      </linearGradient>
+    </defs>
+    <path fill="url(#grad1)" d="M0,288L48,272C96,256,192,224,288,192C384,160,480,128,576,133.3C672,139,768,181,864,181.3C960,181,1056,139,1152,112C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+  </svg>
+</div>
  
         </div>
         

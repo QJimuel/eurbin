@@ -15,47 +15,63 @@ function Login() {
   // Function to check token expiration
  
 
-  const loginAdmin = async () => {
-    if (!email || !password) {
-        alert('Email and password are required');
-        return;
-    }
+    const loginAdmin = async () => {
+        if (!email || !password) {
+            alert('Email and password are required');
+            return;
+        }
 
-    try {
-        const response = await axiosInstance.post('/admin/login', { email, password });
+        try {
+            const response = await axiosInstance.post('/admin/login', { email, password });
 
-        if (response.status === 200) { 
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('userEmail', response.data.email);
-            localStorage.setItem('userId', response.data.userId);
-            localStorage.setItem('username', response.data.username);
-            console.log(response.data)
+            if (response.status === 200) { 
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('userEmail', response.data.email);
+                localStorage.setItem('userId', response.data.userId);
+                localStorage.setItem('username', response.data.username);
+                console.log(response.data)
 
-            const sessionCollectedOffset = sessionStorage.getItem('collectedOffset');
-            if (sessionCollectedOffset) {
-              localStorage.setItem('collectedOffset', sessionCollectedOffset);
-              sessionStorage.removeItem('collectedOffset'); // Clear it from sessionStorage
-            }
+            
 
-            alert('Login successful');
+                alert('Login successful');
 
-            if (response.data.email === "admin") {
-                navigate('/Dashboard2');
+                if (response.data.email === "admin") {
+
+                    const collectedResponse = await axiosInstance.get('/collected', {
+                        headers: { Authorization: `Bearer ${response.data.token}` }
+                    });
+    
+                    if (collectedResponse.status === 200) {
+                        const collectedBottles = collectedResponse.data.collectedBottles;
+    
+                        if (collectedBottles.length > 0) {
+                            // Get the last recorded bottle count
+                            const lastCollected = collectedBottles[collectedBottles.length - 1].bottleCount;
+                            localStorage.setItem('collectedOffset', lastCollected);
+                        } else {
+                            // If no records, initialize collectedOffset to 0
+                            localStorage.setItem('collectedOffset', 0);
+                        }
+                    } else {
+                        console.error('Failed to fetch collected bottles data');
+                    }
+    
+                    navigate('/Dashboard2');
+                } else {
+                    navigate('/BinStatus');
+                }
             } else {
-                navigate('/BinStatus');
+                alert('Login failed');
             }
-        } else {
-            alert('Login failed');
+        } catch (err) {
+            if (err.response && err.response.status === 401) {
+                alert('Invalid credentials');
+            } else {
+                console.error('Error logging in:', err);
+                alert('An error occurred during login or your account is not verified');
+            }
         }
-    } catch (err) {
-        if (err.response && err.response.status === 401) {
-            alert('Invalid credentials');
-        } else {
-            console.error('Error logging in:', err);
-            alert('An error occurred during login or your account is not verified');
-        }
-    }
-  };
+    };
     return (
         <>
         {/* Adding <style> tag for the ::placeholder pseudo-element */}
