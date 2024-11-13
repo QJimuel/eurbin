@@ -15,6 +15,8 @@ const contentRoutes = require('../routes/contentRoutes');
 const rankRoutes = require('../routes/rankRoutes');
 const collectedBottleRoutes = require('../routes/collectedBottleRoutes');
 
+const authenticateToken = require('../middlewares/authMiddleware');
+
 
 const app = express();
 

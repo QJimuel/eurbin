@@ -36,7 +36,7 @@ function DashboardLayout() {
   const API_URL = 'https://eurbin.vercel.app/transactions';
   const total_API_URL = 'https://eurbin.vercel.app/total/highest';
   const user_API_URL = 'https://eurbin.vercel.app/user';
-  const collected_API_URL = 'https://eurbin.vercel.app/collected'; 
+  const collected_API_URL = 'http://localhost:7000/collected'; 
 
   const [transactions, setTransactions] = useState([]);
   const [totals, settotals] = useState({});
@@ -60,38 +60,46 @@ function DashboardLayout() {
   const [error, setError] = useState(null);
 
 
-  const fetchCollectedData = async () => {
-   
-    
-    try {
-      const response = await axios.get(collected_API_URL);
+    const fetchCollectedData = async () => {
+
       
-      if (response.status === 200 && response.data.collectedBottles) {
-        // Extract the collectedBottles array
-        const collectedBottles = response.data.collectedBottles;
-        console.log('Collected Bottles:', collectedBottles);
-        // Calculate the difference in bottle count for each entry
-        const formattedData = collectedBottles.map((item, index) => {
-          const previousBottleCount = index > 0 ? collectedBottles[index - 1].bottleCount : 0;
-          const bottleCountDifference = item.bottleCount - previousBottleCount;
-          
-          return {
-            date: new Date(item.date).toLocaleDateString(),
-            bottleCountDifference: bottleCountDifference, // Difference between current and previous bottleCount
-          };
+    
+      
+      try {
+        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+
+        const response = await axios.get(collected_API_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            },
         });
-        console.log('Formatted Data:', formattedData);
-        // Assuming you're setting the state here
-        setCollectedData(formattedData);
-      } else {
-        console.error('Unexpected data format:', response.data);
-        alert('An error occurred: Unexpected data format');
+        
+        if (response.status === 200 && response.data.collectedBottles) {
+          // Extract the collectedBottles array
+          const collectedBottles = response.data.collectedBottles;
+          console.log('Collected Bottles:', collectedBottles);
+          // Calculate the difference in bottle count for each entry
+          const formattedData = collectedBottles.map((item, index) => {
+            const previousBottleCount = index > 0 ? collectedBottles[index - 1].bottleCount : 0;
+            const bottleCountDifference = item.bottleCount - previousBottleCount;
+            
+            return {
+              date: new Date(item.date).toLocaleDateString(),
+              bottleCountDifference: bottleCountDifference, // Difference between current and previous bottleCount
+            };
+          });
+          console.log('Formatted Data:', formattedData);
+          // Assuming you're setting the state here
+          setCollectedData(formattedData);
+        } else {
+          console.error('Unexpected data format:', response.data);
+          alert('An error occurred: Unexpected data format');
+        }
+      } catch (err) {
+        console.error('Error fetching collected data:', err);
+        alert('An error occurred while fetching collected data');
       }
-    } catch (err) {
-      console.error('Error fetching collected data:', err);
-      alert('An error occurred while fetching collected data');
-    }
-  };
+    };
 
 
   const fetchTotal = async () => {

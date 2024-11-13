@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const contentController = require('../controllers/contentController');
+const adminAuthMiddleware = require('../middlewares/adminMiddleware');
 
 router.get('/', contentController.getAllContents);
-router.post('/', contentController.createContent);
-router.patch('/:contentId', contentController.updateContent);
-router.patch('/disable/:contentId', contentController.disableContent);
-router.delete('/:contentId',  contentController.deleteContent);
+router.post('/',adminAuthMiddleware, contentController.createContent);
+router.patch('/:contentId',adminAuthMiddleware, contentController.updateContent);
+router.patch('/disable/:contentId',adminAuthMiddleware, contentController.disableContent);
+router.delete('/:contentId',adminAuthMiddleware,  contentController.deleteContent);
 
 
 
