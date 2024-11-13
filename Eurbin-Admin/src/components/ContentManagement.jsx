@@ -33,7 +33,17 @@ function ContentManagement() {
     
     const updateIsPosted = async (contentId) => {
         try {
-            const response = await axios.patch(`${API_URL}/${contentId}`, { isPosted: true });
+            const token = localStorage.getItem('token'); // Retrieve the token from local storage
+            
+            const response = await axios.patch(
+                `${API_URL}/${contentId}`,
+                { isPosted: true },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Add the token as a Bearer token in the header
+                    }
+                }
+            );
     
             if (response.status === 200) {
                 await fetchContents(); 
@@ -44,10 +54,20 @@ function ContentManagement() {
         }
     };
 
+    const token = localStorage.getItem('token'); // Retrieve token from local storage
+
     const disableContent = async (contentId) => {
         try {
-            const response = await axios.patch(`${API_URL}/disable/${contentId}`);
-    
+            const response = await axios.patch(
+                `${API_URL}/disable/${contentId}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Add the token to the headers
+                    }
+                }
+            );
+
             if (response.status === 200) {
                 await fetchContents();
             }
@@ -56,11 +76,15 @@ function ContentManagement() {
             alert('An error occurred while disabling the content');
         }
     };
-    
+
     const deleteContent = async (contentId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${contentId}`);
-            
+            const response = await axios.delete(`${API_URL}/${contentId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Add the token to the headers
+                }
+            });
+
             if (response.status === 200) {
                 await fetchContents(); // Refresh the contents list after deletion
             }
@@ -77,7 +101,11 @@ function ContentManagement() {
                 description,
             };
 
-            const response = await axios.post(API_URL, newContent);
+            const response = await axios.post(API_URL, newContent, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Add the token to the headers
+                }
+            });
 
             if (response.status === 201) {
                 await fetchContents(); 
@@ -89,6 +117,7 @@ function ContentManagement() {
             alert('An error occurred while creating the content');
         }
     };
+
 
     const clearInput = () => {
         setSubject('');
