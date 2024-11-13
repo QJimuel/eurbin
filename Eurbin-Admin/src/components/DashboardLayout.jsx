@@ -36,7 +36,7 @@ function DashboardLayout() {
   const API_URL = 'https://eurbin.vercel.app/transactions';
   const total_API_URL = 'https://eurbin.vercel.app/total/highest';
   const user_API_URL = 'https://eurbin.vercel.app/user';
-  const collected_API_URL = 'http://localhost:7000/collected'; 
+  const collected_API_URL = 'https://eurbin.vercel.app/collected'; 
 
   const [transactions, setTransactions] = useState([]);
   const [totals, settotals] = useState({});
