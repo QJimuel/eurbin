@@ -233,6 +233,7 @@ function DashboardLayout() {
       
       
       const handleCollectedClick = async () => {
+        const token = localStorage.getItem('token');
         try {
             // Prepare the payload with collectedOffset as bottleCount
             const newBottles = totals.highestTotalBottle - collectedOffset;
@@ -246,6 +247,7 @@ function DashboardLayout() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}` 
                 },
                 body: JSON.stringify(payload),
             });

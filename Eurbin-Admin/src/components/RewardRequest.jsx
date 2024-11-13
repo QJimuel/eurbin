@@ -26,10 +26,21 @@ function RequestReward() {
             alert('An error occurred while fetching transactions');
         }
     };
+    
+    const token = localStorage.getItem('token'); // Retrieve token from local storage
 
     const handleAccept = async (id) => {
         try {
-            await axios.put(`${API_URL}/${id}`, { isAccepted: true });
+            await axios.put(
+                `${API_URL}/${id}`,
+                { isAccepted: true },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Add the token to the headers
+                    }
+                }
+            );
+    
             setTransactions((prevTransactions) =>
                 prevTransactions.map((transaction) =>
                     transaction._id === id
@@ -42,10 +53,19 @@ function RequestReward() {
             alert('An error occurred while accepting the transaction');
         }
     };
-
+    
     const handleDecline = async (id) => {
         try {
-            await axios.put(`${API_URL}/${id}`, { isAccepted: false });
+            await axios.put(
+                `${API_URL}/${id}`,
+                { isAccepted: false },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Add the token to the headers
+                    }
+                }
+            );
+    
             setTransactions((prevTransactions) =>
                 prevTransactions.map((transaction) =>
                     transaction._id === id
@@ -58,7 +78,7 @@ function RequestReward() {
             alert('An error occurred while declining the transaction');
         }
     };
-
+    
     
 
     const handleSearch = (e) => {
