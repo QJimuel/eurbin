@@ -20,6 +20,8 @@ function EditReward() {
 
     const location = useLocation();  
 
+    const token = localStorage.getItem('token')
+
     useEffect(() => {
         fetchReward(); 
     }, []); // Run only once on component mount
@@ -55,7 +57,9 @@ function EditReward() {
     
             const response = await axios.post(API_URL, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`
+                    
                 }
             });
     
@@ -88,7 +92,8 @@ function EditReward() {
     
             const response = await axios.put(`${API_URL}/${rewardId}`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                      Authorization: `Bearer ${token}` 
                 }
             });
     
@@ -107,10 +112,14 @@ function EditReward() {
 
     const deleteReward = async (id) => {
         try {
-            const response = await axios.delete(`${API_URL}/${id}`);
-
+            const response = await axios.delete(`${API_URL}/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Add the token to the headers
+                }
+            });
+    
             if (response.status === 200) {
-                await fetchReward();
+                await fetchReward(); // Refresh the rewards list after deletion
             }
         } catch (err) {
             console.error('Error deleting reward:', err);

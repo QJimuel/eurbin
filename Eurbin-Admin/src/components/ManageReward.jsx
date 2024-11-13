@@ -20,6 +20,8 @@ function ManageReward() {
 
     const location = useLocation();  
 
+    const token = localStorage.getItem('token')
+
     useEffect(() => {
         fetchReward(); 
     }, []);
@@ -56,7 +58,8 @@ function ManageReward() {
     
             const response = await axios.post(API_URL, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}` 
                 }
             });
     
@@ -89,7 +92,9 @@ function ManageReward() {
     
             const response = await axios.put(`${API_URL}/${rewardId}`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}` 
+
                 }
             });
     
