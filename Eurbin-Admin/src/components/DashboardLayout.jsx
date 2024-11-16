@@ -169,7 +169,7 @@ function DashboardLayout() {
   };
 
 
-  useEffect(() => {
+  /*useEffect(() => {
     fetchTransactions();
   }, []);
 
@@ -186,7 +186,7 @@ function DashboardLayout() {
             console.error('Error fetching transactions:', err);
             alert('An error occurred while fetching transactions');
           }
-    };  
+    };  */
 
     const logout = ()=>
       {
