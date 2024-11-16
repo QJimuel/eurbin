@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const redeemCodeController = require('../controllers/redeemCodeController');
+const adminAuthMiddleware = require('../middlewares/adminMiddleware'); 
 
-router.get('/', redeemCodeController.getAllCode);
+router.get('/',adminAuthMiddleware, redeemCodeController.getAllCode);
 router.post('/', redeemCodeController.createCode);
 router.put('/', redeemCodeController.redeemCode)
 
