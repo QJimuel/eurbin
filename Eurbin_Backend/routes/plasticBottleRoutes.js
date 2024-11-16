@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const plasticBottleController = require('../controllers/plasticBottleController');
-const adminAuthMiddleware = require('../middlewares/adminMiddleware'); 
 
-router.get('/',adminAuthMiddleware, plasticBottleController.getAllBottles);
+const authenticateToken = require('../middlewares/authMiddleware');
+
+router.get('/',authenticateToken, plasticBottleController.getAllBottles);
 router.post('/', plasticBottleController.createBottle);
 
 module.exports = router;
