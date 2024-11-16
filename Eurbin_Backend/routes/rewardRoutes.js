@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 const rewardController = require('../controllers/rewardController');
 const adminAuthMiddleware = require('../middlewares/adminMiddleware'); 
+const authMiddleware =  require('../middlewares/authMiddleware');
 
 
 
-router.get('/', rewardController.getAllRewards);
+router.get('/',authMiddleware, rewardController.getAllRewards);
 
-router.get('/:id', rewardController.getRewardById);
+router.get('/:id',authMiddleware, rewardController.getRewardById);
 
-router.patch('/:id', rewardController.updateReward2)
+router.patch('/:id',authMiddleware, rewardController.updateReward2)
 
 router.put('/:id',adminAuthMiddleware ,rewardController.upload, rewardController.updateReward); 
 
