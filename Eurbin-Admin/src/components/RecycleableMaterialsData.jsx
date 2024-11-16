@@ -22,7 +22,13 @@ function RecycleableData() {
 
     const fetchBottleData = async () => {
         try {
-            const response = await axios.get(BOTTLES_API_URL);
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+            const response = await axios.get(BOTTLES_API_URL, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                },
+            });
+    
             console.log(response.data);  // Log the response to ensure the format
             if (response.status === 200 && Array.isArray(response.data.bottles)) {  // Access bottles array
                 const smallBottles = response.data.bottles.filter(bottle => bottle.Size === 'Small').length;
@@ -30,7 +36,6 @@ function RecycleableData() {
     
                 setSmallBottleCount(smallBottles);
                 setLargeBottleCount(largeBottles);
-                
             } else {
                 console.error('Unexpected data format:', response.data);
                 alert('An error occurred: Unexpected data format');
@@ -41,8 +46,6 @@ function RecycleableData() {
         }
     };
     
-  
-
     return (
         <>
             <h1 className='headings'>Management</h1>

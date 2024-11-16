@@ -28,10 +28,17 @@ function EditReward() {
     
     const fetchReward = async () => {
         try {
-            const response = await axios.get(API_URL);
-
+            console.log('Fetching rewards...');
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+            const response = await axios.get(API_URL, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                },
+            });
+    
             if (response.status === 200 && Array.isArray(response.data.rewards)) {
                 setRewards(response.data.rewards);
+                console.log('Rewards fetched successfully:', response.data.rewards);
             } else {
                 console.error('Unexpected data format:', response.data);
                 alert('An error occurred: Unexpected data format');
@@ -40,7 +47,8 @@ function EditReward() {
             console.error('Error fetching rewards:', err);
             alert('An error occurred while fetching rewards');
         }
-    }
+    };
+    
 
     const createReward = async () => {
         try {

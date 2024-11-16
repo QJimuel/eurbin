@@ -58,65 +58,90 @@ function DashboardLayout() {
 
 
   const [error, setError] = useState(null);
-
-
-    const fetchCollectedData = async () => {
-
-      
-    
-      
-      try {
+  const fetchCollectedData = async () => {
+    try {
         const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-
         const response = await axios.get(collected_API_URL, {
             headers: {
                 Authorization: `Bearer ${token}`, // Include the token in the Authorization header
             },
         });
-        
+
         if (response.status === 200 && response.data.collectedBottles) {
-          // Extract the collectedBottles array
-          const collectedBottles = response.data.collectedBottles;
-          console.log('Collected Bottles:', collectedBottles);
-          // Calculate the difference in bottle count for each entry
-          const formattedData = collectedBottles.map((item, index) => {
-            const previousBottleCount = index > 0 ? collectedBottles[index - 1].bottleCount : 0;
-            const bottleCountDifference = item.bottleCount - previousBottleCount;
-            
-            return {
-              date: new Date(item.date).toLocaleDateString(),
-              bottleCountDifference: bottleCountDifference, // Difference between current and previous bottleCount
-            };
-          });
-          console.log('Formatted Data:', formattedData);
-          // Assuming you're setting the state here
-          setCollectedData(formattedData);
+            // Extract the collectedBottles array
+            const collectedBottles = response.data.collectedBottles;
+            console.log('Collected Bottles:', collectedBottles);
+
+            // Group by month and year, keeping the latest entry for each month
+            const groupedData = collectedBottles.reduce((acc, item) => {
+                const date = new Date(item.date);
+                const monthYear = `${date.getMonth() + 1}-${date.getFullYear()}`; // Format as "MM-YYYY"
+                
+                // Store only the latest bottleCount for each month
+                if (!acc[monthYear] || new Date(acc[monthYear].date) < new Date(item.date)) {
+                    acc[monthYear] = {
+                        date: item.date,
+                        bottleCount: item.bottleCount,
+                    };
+                }
+                return acc;
+            }, {});
+
+            // Format the grouped data for the chart, calculating the bottleCount difference
+            let previousMonthCount = 0;
+            const formattedData = Object.keys(groupedData).map(monthYear => {
+                const [month, year] = monthYear.split('-');
+                const currentBottleCount = groupedData[monthYear].bottleCount;
+
+                // Calculate the difference for the current month
+                const bottleCountDifference = previousMonthCount === 0 ? currentBottleCount : currentBottleCount - previousMonthCount;
+
+                // Update the previous month count for the next iteration
+                previousMonthCount = currentBottleCount;
+
+                return {
+                    date: `${month}-${year}`,  // "MM-YYYY" format
+                    bottleCountDifference: bottleCountDifference,  // Difference in bottle count
+                };
+            });
+
+            console.log('Formatted Data:', formattedData);
+            // Update the state with the formatted data
+            setCollectedData(formattedData);
+        } else {
+            console.error('Unexpected data format:', response.data);
+            alert('An error occurred: Unexpected data format');
+        }
+    } catch (err) {
+        console.error('Error fetching collected data:', err);
+        alert('An error occurred while fetching collected data');
+    }
+};
+
+
+
+    const fetchTotal = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+        const response = await axios.get(total_API_URL, {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Add the token to the Authorization header
+          },
+        });
+    
+        if (response.status === 200 && response.data.highestTotals) {
+          // Set the state with the highestTotals object
+          settotals(response.data.highestTotals);
         } else {
           console.error('Unexpected data format:', response.data);
           alert('An error occurred: Unexpected data format');
         }
       } catch (err) {
-        console.error('Error fetching collected data:', err);
-        alert('An error occurred while fetching collected data');
+        console.error('Error fetching totals:', err);
+        alert('An error occurred while fetching totals');
       }
     };
-
-
-  const fetchTotal = async () => {
-    try {
-      const response = await axios.get(total_API_URL);
-      if (response.status === 200 && response.data.highestTotals) {
-        // Set the state with the highestTotals object
-        settotals(response.data.highestTotals);
-      } else {
-        console.error('Unexpected data format:', response.data);
-        alert('An error occurred: Unexpected data format');
-      }
-    } catch (err) {
-      console.error('Error fetching totals:', err);
-      alert('An error occurred while fetching totals');
-    }
-  };
+    
 
   const fetchUser = async () => {
     try {
@@ -482,19 +507,34 @@ function DashboardLayout() {
 
 
   */}
-         <div style={{ width: '100%', height: 300, justifyContent:'center', textAlign:'center'}}>
-<h3>Collected Bottle Counts from Bins</h3>
-<ResponsiveContainer width="100%" height={350}>
-      <BarChart data={collectedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="bottleCountDifference" fill={colors.blue[500]} />
-      </BarChart>
+
+<div style={{ width: '80%', height: 300, justifyContent: 'center', textAlign: 'center' }}>
+    <h3>Collected Bottle Counts by Month</h3>
+    <ResponsiveContainer width="100%" height={250}>
+        <BarChart data={collectedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+            {/* Remove CartesianGrid to hide the grid */}
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip content={({ payload }) => {
+                if (payload && payload.length) {
+                    return (
+                        <div className="custom-tooltip">
+                            <p>{`${payload[0].name}: ${payload[0].value} bottles`}</p>
+                        </div>
+                    );
+                }
+                return null;
+            }} />
+            <Legend />
+            <Bar dataKey="bottleCountDifference" barSize={80}> {/* barSize property to make the bars slimmer */}
+                {collectedData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#ff9f40', '#4bc0c0', '#36a2eb'][index % 7]} />
+                ))}
+            </Bar>
+        </BarChart>
     </ResponsiveContainer>
-    </div>
+</div>
+
 
 
           <div style={{ width: '100%', height: 300, justifyContent:'center', textAlign:'center'}}>

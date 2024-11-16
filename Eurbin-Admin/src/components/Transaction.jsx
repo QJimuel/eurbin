@@ -14,9 +14,20 @@ function Transaction() {
 
     const fetchTransactions = async () => {
         try {
-            const response = await axios.get(API_URL);
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+            const response = await axios.get(API_URL, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                },
+            });
+    
             if (response.status === 200 && Array.isArray(response.data.transactions)) {
-                setTransactions(response.data.transactions.filter(transaction => transaction.isAccepted === true || transaction.isAccepted === false));
+                // Filter transactions where isAccepted is true or false
+                const filteredTransactions = response.data.transactions.filter(
+                    transaction => transaction.isAccepted === true || transaction.isAccepted === false
+                );
+    
+                setTransactions(filteredTransactions); // Set the state with filtered transactions
             } else {
                 console.error('Unexpected data format:', response.data);
                 alert('An error occurred: Unexpected data format');
@@ -26,6 +37,7 @@ function Transaction() {
             alert('An error occurred while fetching transactions');
         }
     };
+    
 
     function formatDate(dateString) {
         const date = new Date(dateString);

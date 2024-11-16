@@ -125,11 +125,15 @@
         setGreetingName(email);
       }
     }, []);
-
     const fetchTotal = async () => {
       try {
-        const response = await axios.get(total_API_URL);
-      
+        const token = localStorage.getItem('token'); // Retrieve token
+        const response = await axios.get(total_API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token
+          },
+        });
+    
         if (response.status === 200 && Array.isArray(response.data.total)) {
           settotals(response.data.total);
         } else {
@@ -141,11 +145,16 @@
         alert('An error occurred while fetching totals');
       }
     };
-
+    
     const fetchHighestTotal = async () => {
       try {
-        const response = await axios.get(highest_API_URL);
-        
+        const token = localStorage.getItem('token'); // Retrieve token
+        const response = await axios.get(highest_API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token
+          },
+        });
+    
         if (response.status === 200 && response.data.highestTotals) {
           setHightotals(response.data.highestTotals);
         } else {
@@ -153,96 +162,104 @@
           alert('An error occurred: Unexpected data format');
         }
       } catch (err) {
-        console.error('Error fetching totals:', err);
-        alert('An error occurred while fetching totals');
+        console.error('Error fetching highest totals:', err);
+        alert('An error occurred while fetching highest totals');
       }
     };
-
+    
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem('token'); // Adjust this according to your implementation
-
+        const token = localStorage.getItem('token'); // Retrieve token
         const response = await axios.get(user_API_URL, {
           headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
+            Authorization: `Bearer ${token}`, // Include token
           },
         });
-      
+    
         if (response.status === 200 && response.data.users) {
-
           const activeUsers = response.data.users.filter(user => user.isActive);
-              setUser(activeUsers);
-      
+          setUser(activeUsers);
         } else {
           console.error('Unexpected data format:', response.data);
           alert('An error occurred: Unexpected data format');
         }
       } catch (err) {
-        console.error('Error fetching totals:', err);
-        alert('An error occurred while fetching totals');
+        console.error('Error fetching users:', err);
+        alert('An error occurred while fetching users');
       }
     };
-
+    
     const fetchReward = async () => {
       try {
-          
-          const response = await axios.get(reward_API_URL);
-          if (response.status === 200 && Array.isArray(response.data.rewards)) {
-              setRewards(response.data.rewards);
-              console.log('Rewards fetched successfully:', response.data.rewards);
-
-              await calculateRewardTransactions(response.data.rewards);
-              console.log(rewardTransactionData) 
-          } else {
-              console.error('Unexpected data format:', response.data);
-              alert('An error occurred: Unexpected data format');
-          }
+        const token = localStorage.getItem('token'); // Retrieve token
+        const response = await axios.get(reward_API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token
+          },
+        });
+    
+        if (response.status === 200 && Array.isArray(response.data.rewards)) {
+          setRewards(response.data.rewards);
+          console.log('Rewards fetched successfully:', response.data.rewards);
+    
+          await calculateRewardTransactions(response.data.rewards);
+          console.log(rewardTransactionData);
+        } else {
+          console.error('Unexpected data format:', response.data);
+          alert('An error occurred: Unexpected data format');
+        }
       } catch (err) {
-          console.error('Error fetching rewards:', err);
-          alert('An error occurred while fetching rewards');
+        console.error('Error fetching rewards:', err);
+        alert('An error occurred while fetching rewards');
       }
-  }
-
-  const fetchTransactions = async () => {
-    try {
-      const response = await axios.get(transaction_API_URL);
-      console.log('Transaction response:', response); // Log the entire response
-      
-      if (response.status === 200 && Array.isArray(response.data.transactions)) {
-        setTransactions(response.data.transactions);
-        return response.data.transactions; // Return the fetched transactions
-      } else {
-        console.error('Unexpected data format:', response.data);
-        alert('An error occurred: Unexpected data format');
-        return []; // Return an empty array on error to prevent further issues
+    };
+    
+    const fetchTransactions = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve token
+        const response = await axios.get(transaction_API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token
+          },
+        });
+        console.log('Transaction response:', response);
+    
+        if (response.status === 200 && Array.isArray(response.data.transactions)) {
+          setTransactions(response.data.transactions);
+          return response.data.transactions; // Return the fetched transactions
+        } else {
+          console.error('Unexpected data format:', response.data);
+          alert('An error occurred: Unexpected data format');
+          return []; // Return an empty array on error to prevent further issues
+        }
+      } catch (err) {
+        console.error('Error fetching transactions:', err);
+        alert('An error occurred while fetching transactions');
+        return []; // Return an empty array on error
       }
-    } catch (err) {
-      console.error('Error fetching transactions:', err);
-      alert('An error occurred while fetching transactions');
-      return []; // Return an empty array on error
-    }
-  };
-  const calculateRewardTransactions = async (rewards) => {
-    const transactions = await fetchTransactions(); // Await the transaction fetching
-
-    // Ensure transactions is an array
-    if (!Array.isArray(transactions)) {
-      console.error('Expected an array of transactions, but got:', transactions);
-      return; // Exit if the data is not as expected
-    }
-
-    const rewardCounts = rewards.map(reward => {
-      const transactionCount = transactions.filter(transaction => transaction.transactionName === reward.RewardName).length;
-
-      return {
-        rewardName: reward.RewardName,
-        transactionCount,
-      };
-    });
-
-    setRewardTransactionData(rewardCounts);
-    console.log('Calculated reward transactions:', rewardCounts);
-  };
+    };
+    
+    const calculateRewardTransactions = async (rewards) => {
+      const transactions = await fetchTransactions(); // Await the transaction fetching
+    
+      if (!Array.isArray(transactions)) {
+        console.error('Expected an array of transactions, but got:', transactions);
+        return; // Exit if the data is not as expected
+      }
+    
+      const rewardCounts = rewards.map(reward => {
+        const transactionCount = transactions.filter(transaction => transaction.transactionName === reward.RewardName).length;
+    
+        return {
+          rewardName: reward.RewardName,
+          transactionCount,
+        };
+      });
+    
+      setRewardTransactionData(rewardCounts);
+      console.log('Calculated reward transactions:', rewardCounts);
+    };
+    
 
   function formatDate(dateString) {
     const date = new Date(dateString);

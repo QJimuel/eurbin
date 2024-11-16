@@ -15,10 +15,15 @@ function ContentManagement() {
     useEffect(() => {
         fetchContents();
     }, []); 
-
     const fetchContents = async () => {
         try {
-            const response = await axios.get(API_URL);
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+            const response = await axios.get(API_URL, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                },
+            });
+    
             if (response.status === 200 && Array.isArray(response.data.content)) {
                 setContents(response.data.content); 
             } else {
@@ -30,6 +35,7 @@ function ContentManagement() {
             alert('An error occurred while fetching contents');
         }
     };
+    
     
     const updateIsPosted = async (contentId) => {
         try {

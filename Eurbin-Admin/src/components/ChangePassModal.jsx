@@ -10,21 +10,31 @@ const ChangePassModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevents the default form submission behavior
     try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token'); // Retrieve token from localStorage
+
+        // Check if token exists
+        if (!token) {
+            setMessage('No token found. Please log in again.');
+            return;
+        }
+
+        // Send PATCH request to change password
         const response = await axios.patch(
             'https://eurbin.vercel.app/admin/change-password',
             { oldPassword, newPassword },
             { headers: { Authorization: `Bearer ${token}` } }
         );
-        setMessage(response.data.message);
+
+        setMessage(response.data.message); // Set the success message from response
     
     } catch (error) {
         console.error('Error changing password:', error);
-        setMessage('Error changing password');
+        setMessage('Error changing password. Please try again.');
     }
-  };
+};
+
 
   return (
     <div className="cpModal">

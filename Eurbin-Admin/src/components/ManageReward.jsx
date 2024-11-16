@@ -29,7 +29,13 @@ function ManageReward() {
     const fetchReward = async () => {
         try {
             console.log('Fetching rewards...');
-            const response = await axios.get(API_URL);
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+            const response = await axios.get(API_URL, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                },
+            });
+    
             if (response.status === 200 && Array.isArray(response.data.rewards)) {
                 setRewards(response.data.rewards);
                 console.log('Rewards fetched successfully:', response.data.rewards);
@@ -41,7 +47,8 @@ function ManageReward() {
             console.error('Error fetching rewards:', err);
             alert('An error occurred while fetching rewards');
         }
-    }
+    };
+    
 
     const createReward = async () => {
         try {

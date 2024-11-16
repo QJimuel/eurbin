@@ -16,7 +16,13 @@ function Activity() {
 
     const fetchBottle = async () => {
         try {
-            const response = await axios.get(API_URL);
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+            const response = await axios.get(API_URL, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                },
+            });
+    
             if (response.status === 200 && Array.isArray(response.data.bottles)) {
                 setBottles(response.data.bottles);
                 console.log('Bottles fetched successfully:', response.data.bottles);
@@ -28,7 +34,8 @@ function Activity() {
             console.error('Error fetching bottles:', err);
             alert('An error occurred while fetching bottles');
         }
-    }
+    };
+    
 
     const location = useLocation();
 
