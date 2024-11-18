@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer'); 
 const bcrypt = require('bcryptjs');
 
+const crypto = require('crypto'); // For generating random OTPs
+
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com', // or your provider's host
     port: 465,
