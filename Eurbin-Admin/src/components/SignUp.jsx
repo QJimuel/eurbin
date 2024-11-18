@@ -19,14 +19,16 @@ function SignUp() {
     const [hover, setHover] = useState(false);
     const [redirect, setRedirect] = useState(false);
 
-    // Modal State
+ 
     const [modalMessage, setModalMessage] = useState('');
+    const [modalType, setModalType] = useState(''); // State to track the alert type
     const [isModalVisible, setIsModalVisible] = useState(false);
+
 
     const registerAdmin = async (event) => {
         event.preventDefault();
 
-        // Validation
+  
         if (!username || username.length < 4) {
             showAlert('Username must be at least 4 characters long');
             return;
@@ -44,7 +46,7 @@ function SignUp() {
         }
 
         if (password !== confirmPassword) {
-            showAlert('c');
+            showAlert('Passwords do not match');
             return;
         }
 
@@ -83,10 +85,13 @@ function SignUp() {
     };
 
     const showAlert = (message, callback) => {
+        const type = message.toLowerCase().includes("success") ? 'success' : 'error'; // Set type based on message
+    
         setModalMessage(message);
+        setModalType(type); // Save the type in the state
         setIsModalVisible(true);
     
-        if (message.toLowerCase().includes("success")) {
+        if (type === 'success') {
             setTimeout(() => {
                 setIsModalVisible(false);
                 callback && callback(); // Only call callback after success
@@ -98,20 +103,21 @@ function SignUp() {
         }
     };
     
+    
 
     if (redirect) {
         return <Navigate to="/Login" />;
     }
 
-    
 
     return (
         <>
-            <Modal
-                show={isModalVisible}
-                message={modalMessage}
-                onClose={() => setIsModalVisible(false)}
-            />
+            <Modal 
+    show={isModalVisible} 
+    message={modalMessage} 
+    type={modalType} 
+    onClose={() => setIsModalVisible(false)} 
+/>
             <div style={styles.container}>
                 <div style={styles.formBox}>
                     <img src={logo} alt="Logo" style={{ width: '100px', height: '130px', marginTop: '-20px' }} />
@@ -226,6 +232,17 @@ function SignUp() {
                         </p>
                     </form>
                 </div>
+                <div style={{ width: '100%', height: '70%', position: 'absolute', bottom: '0', zIndex: -1 }}>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <defs>
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style={{ stopColor: 'rgba(239, 64, 64, 1)', stopOpacity: 1 }} />
+        <stop offset="200%" style={{ stopColor: 'rgba(255, 255, 255, 255)', stopOpacity: .5 }} />
+      </linearGradient>
+    </defs>
+    <path fill="url(#grad1)" d="M0,288L48,272C96,256,192,224,288,192C384,160,480,128,576,133.3C672,139,768,181,864,181.3C960,181,1056,139,1152,112C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+  </svg>
+</div>
             </div>
         </>
     );
@@ -237,7 +254,7 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        background: 'linear-gradient(to bottom right, #800000, #f0f0f0)',
+        //background: 'linear-gradient(to bottom right, #800000, #f0f0f0)',
     },
     formBox: {
         padding: '30px',
@@ -336,10 +353,10 @@ const styles = {
     },
     checkedCheckbox: {
         marginRight: '5px',
-        color: '#800000'  // Checkbox color when checked
+        color: '#800000'  
     },
     signUpBtnHover: {
-        backgroundColor: '#bf1e2e',
+        backgroundColor: '#A00000',
     },
     signUp: {
         fontSize: '12px',

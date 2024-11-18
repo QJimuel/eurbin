@@ -107,6 +107,18 @@ function Login() {
                     </p>
                 </form>
             </div>
+
+            <div style={{ width: '100%', height: '70%', position: 'absolute', bottom: '0', zIndex: -1 }}>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <defs>
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style={{ stopColor: 'rgba(239, 64, 64, 1)', stopOpacity: 1 }} />
+        <stop offset="200%" style={{ stopColor: 'rgba(255, 255, 255, 255)', stopOpacity: .5 }} />
+      </linearGradient>
+    </defs>
+    <path fill="url(#grad1)" d="M0,288L48,272C96,256,192,224,288,192C384,160,480,128,576,133.3C672,139,768,181,864,181.3C960,181,1056,139,1152,112C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+  </svg>
+</div>
         </div>
     );
 }
@@ -119,7 +131,7 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        background: 'linear-gradient(to bottom right, #800000, #f0f0f0)',
+       
     },
     loginBox: {
         padding: '30px',

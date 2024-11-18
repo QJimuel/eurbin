@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import ModalSignUp from './ModalSignUp'; 
+import logo from '../Images/eurbinLoginIcon.png';
 
 const API_URL = 'https://eurbin.vercel.app/admin/forgot-password';
 
@@ -9,6 +11,8 @@ const ForgotPassword = () => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false); 
+    const [hover, setHover] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -19,135 +23,188 @@ const ForgotPassword = () => {
         try {
             const response = await axios.post(API_URL, { email });
             setMessage(response.data.message);
-            setShowModal(true); // Show the modal after success
+            setShowModal(true);
         } catch (err) {
-            setError(err.response?.data?.message || 'An error occurred. Please try again.');
+           
+            if (err.response?.data?.message === 'Admin not found') {
+                setError('No admin found with this email address.');
+            } else {
+                setError(err.response?.data?.message || 'An error occurred. Please try again.');
+            }
+            setShowErrorModal(true); 
         }
     };
 
     const handleModalClose = () => {
         setShowModal(false);
-        navigate('/Login'); // Navigate to login after closing the modal
+        navigate('/Login'); 
+    };
+
+    const handleErrorModalClose = () => {
+        setShowErrorModal(false); 
     };
 
     return (
-        <div style={styles.container}>
-            <h1 style={styles.header}>Forgot Password</h1>
-            <form onSubmit={handleSubmit} style={styles.form}>
-                <label htmlFor="email" style={styles.label}>Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={styles.input}
-                    placeholder="Enter your email"
-                    required
-                />
-                <button type="submit" style={styles.button}>Reset Password</button>
-            </form>
-            {message && <p style={styles.success}>{message}</p>}
-            {error && <p style={styles.error}>{error}</p>}
+        <>
+            {/* Success Modal */}
+            <ModalSignUp
+                show={showModal}
+                message={message}
+                type="success"
+                onClose={handleModalClose}
+            />
 
-            {/* Modal */}
-            {showModal && (
-                <div style={styles.modalOverlay}>
-                    <div style={styles.modalContent}>
-                        <h2 style={styles.modalHeader}>Success</h2>
-                        <p style={styles.modalMessage}>{message}</p>
-                        <button onClick={handleModalClose} style={styles.modalButton}>Go to Login</button>
-                    </div>
+            {/* Error Modal */}
+            <ModalSignUp
+                show={showErrorModal}
+                message={error}
+                type="error"
+                onClose={handleErrorModalClose}
+            />
+
+            <div style={styles.container}>
+                <div style={styles.loginBox}>
+                <img src={logo} alt="Logo" style={{ width: '100px', height: '130px', marginTop: '-20px' }} />
+                    <h1 style={styles.header}>Forgot Password</h1>
+                    <form>
+                        <div style={styles.inputContainer}>
+                            <label
+                                htmlFor="email"
+                                style={{
+                                    ...styles.label,
+                                    color: email ? '#800000' : '#2B0100',
+                                }}
+                            >
+                                Email Address
+                            </label>
+                            <input
+                                id="email"
+                                style={email ? { ...styles.input, ...styles.inputActiveStyle } : styles.input}
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Enter your email"
+                            />
+                        </div>
+                        {message && <p style={{ color: 'green', fontSize: '14px' }}>{message}</p>}
+                        {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
+                        <button
+                            type="button"
+                            style={hover ? { ...styles.loginBtn, ...styles.loginBtnHover } : styles.loginBtn}
+                            onMouseEnter={() => setHover(true)}
+                            onMouseLeave={() => setHover(false)}
+                            onClick={handleSubmit}
+                        >
+                            Reset Password
+                        </button>
+                        <p style={styles.signUp}>
+                            Back to{' '}
+                            <Link
+                                to="/Login"
+                                style={{
+                                    color: '#800000',
+                                    paddingLeft: '1%',
+                                    textDecoration: 'none',
+                                }}
+                            >
+                                Login
+                            </Link>
+                        </p>
+                    </form>
                 </div>
-            )}
-        </div>
+
+                            <div style={{ width: '100%', height: '70%', position: 'absolute', bottom: '0', zIndex: -1 }}>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <defs>
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style={{ stopColor: 'rgba(239, 64, 64, 1)', stopOpacity: 1 }} />
+        <stop offset="200%" style={{ stopColor: 'rgba(255, 255, 255, 255)', stopOpacity: .5 }} />
+      </linearGradient>
+    </defs>
+    <path fill="url(#grad1)" d="M0,288L48,272C96,256,192,224,288,192C384,160,480,128,576,133.3C672,139,768,181,864,181.3C960,181,1056,139,1152,112C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+  </svg>
+</div>
+            </div>
+        </>
     );
 };
 
 const styles = {
     container: {
-        maxWidth: '400px',
-        margin: '50px auto',
-        padding: '20px',
-        border: '1px solid #ddd',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-        fontFamily: 'Arial, sans-serif',
-    },
-    header: {
-        textAlign: 'center',
-        marginBottom: '20px',
-        color: '#333',
-    },
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    label: {
-        marginBottom: '8px',
-        fontWeight: 'bold',
-    },
-    input: {
-        padding: '10px',
-        marginBottom: '20px',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-    },
-    button: {
-        padding: '10px',
-        backgroundColor: '#007bff',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontSize: '16px',
-    },
-    success: {
-        marginTop: '20px',
-        color: 'green',
-        textAlign: 'center',
-    },
-    error: {
-        marginTop: '20px',
-        color: 'red',
-        textAlign: 'center',
-    },
-    modalOverlay: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 1000,
+        height: '100vh',
+        //background: 'linear-gradient(to bottom right, #800000, #f0f0f0)',
     },
-    modalContent: {
-        background: '#fff',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-        maxWidth: '300px',
-        width: '100%',
+    loginBox: {
+        padding: '30px',
+        borderRadius: '18px',
+        boxShadow: '0 6px 15px rgba(0, 0, 0, 0.2)',
+        backgroundColor: 'white',
+        width: '20%',
+        maxWidth: '400px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
-    modalHeader: {
+    header: {
+        color: '#800000',
+        fontFamily: 'Poppins, sans-serif',
+        fontSize: '25px',
         marginBottom: '10px',
-        fontSize: '20px',
-        fontWeight: 'bold',
+        marginTop: '-10px',
+        fontWeight: '700',
     },
-    modalMessage: {
-        marginBottom: '20px',
+    inputContainer: {
+        width: '100%',
+        marginBottom: '15px',
     },
-    modalButton: {
-        padding: '10px',
-        backgroundColor: '#007bff',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '4px',
+    label: {
+        fontSize: '12px',
+        fontWeight: '600',
+        fontFamily: 'Poppins, sans-serif',
+        marginBottom: '5px',
+        display: 'block',
+    },
+    input: {
+        width: '18vw',
+        padding: '12px',
+        paddingLeft: '12px',
+        borderRadius: '8px',
+        border: '1px solid #ddd',
+        outline: 'none',
+        fontSize: '12px',
+        fontFamily: 'Poppins, sans-serif',
+        boxSizing: 'border-box',
+    },
+    inputActiveStyle: {
+        border: '1px solid #800000',
+        boxShadow: '0 0 5px rgba(128, 0, 0, 0.5)',
+    },
+    loginBtnHover: {
+        backgroundColor: '#A00000',
+    },
+    loginBtn: {
+        display: 'block',
+        backgroundColor: '#800000',
+        color: 'white',
+        padding: '12px',
+        width: '99%',
+        borderRadius: '8px',
+        fontWeight: '600',
+        fontFamily: 'Poppins, sans-serif',
+        fontSize: '14px',
         cursor: 'pointer',
-        fontSize: '16px',
+        border: 'none',
+        marginLeft: '0.5%',
+    },
+    signUp: {
+        marginTop: '10px',
+        fontSize: '12px',
+        fontFamily: 'Poppins, sans-serif',
+        textAlign: 'center',
+        width: '100%',
     },
 };
 
