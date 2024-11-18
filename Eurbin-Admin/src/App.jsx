@@ -26,6 +26,7 @@ import ContentManagement from "./components/ContentManagement";
 import DeactivatedUser from "./components/DeactivatedUser";
 import About2 from "./components/About2";
 import Activity2 from "./components/Activity2";
+import ForgotPassword from "./components/ForgotPassword";
 import { useState, useEffect } from 'react';
 
 function PrivateRoute({ element: Component, ...rest }) {
@@ -56,6 +57,8 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Signup" element={<SignUp />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
 
           {/* Protected Routes */}
           <Route path="/" element={<Navigate to="/Login" />} />

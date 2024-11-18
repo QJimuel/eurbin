@@ -89,7 +89,7 @@ function Login() {
                             </button>
                         </div>
                     </div>
-                    <p style={styles.forgotPass}>Forgot password?</p>
+                    <Link to="/forgot-password" style={styles.forgotPass}>Forgot password?</Link>
                     <button
                         type="button"
                         style={hover ? { ...styles.loginBtn, ...styles.loginBtnHover } : styles.loginBtn}
