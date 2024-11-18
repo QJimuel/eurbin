@@ -1,13 +1,15 @@
-  import React, { useEffect, useState } from 'react';
-  import dashbboard from '../Images/speedometer.png'
-  import analytics from '../Images/analysis.png'
-  import userManagement from '../Images/people.png'
-  import rewardManagement from '../Images/reward.png'
-  import editProfile from '../Images/edit.png'
-  import changePass from '../Images/padlock.png'
-  import about from '../Images/information.png'
-  import logOut from '../Images/exit.png'
-  import content from '../Images/content.png'
+import React, { useEffect, useState } from 'react';
+import {useLocation } from "react-router-dom";
+import logo from '../Images/EURBinLogo.png'
+import dashboard from '../Images/speedometer1.png'
+import analytics from '../Images/analysis1.png'
+import userManagement from '../Images/people1.png'
+import rewardManagement from '../Images/reward1.png'
+import editProfile from '../Images/edit1.png'
+import changePass from '../Images/padlock1.png'
+import about from '../Images/information1.png'
+import logOut from '../Images/exit1.png'
+import content from '../Images/content1.png'
 
 
   import { Outlet, Link } from 'react-router-dom';
@@ -58,6 +60,8 @@
     const [rewardTransactionData, setRewardTransactionData] = useState([])
 
     const [greetingName, setGreetingName] = useState('');
+
+    const location = useLocation();
 
     const colors = [
       '#FF5733', // Red
@@ -442,82 +446,99 @@
     return (
       <>
       <header className="header">
-        <p className="header-title">EURBin</p>
+        <p className="header-title"></p>
         <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
       </header>
 
       <div className="container">
       <aside style={styles.sidebar}>
-          <ul style={styles.sidebarList}>
-            <li style={styles.sidebarItem}>
-              <Link to="/Dashboard2" style={styles.sidebarLink}>
-                <span role="img" aria-label="dashboard">
-                  <img className="icons" src={dashbboard}/>
-                </span> 
-                Dashboard
-              </Link>
-            </li>
-            <li style={styles.sidebarItem}>
-              <Link to="/Analytics2" style={styles.sidebarLink}>
-                <span role="img" aria-label="analytics">
-                  <img className="icons" src={analytics}/>
-                </span> 
-                Analytics
-              </Link>
-            </li>
-            <li style={styles.sidebarItem}>
-                  <Link to="/ManageUser" style={styles.sidebarLink}>
-                    <span role="img" aria-label="instructions">
-                      <img className="icons" src={userManagement}/>
-                    </span>
-                    User Management
-                  </Link>
-                </li>
-            <li style={styles.sidebarItem}>
-              <Link to="/Manage" style={styles.sidebarLink}>
-                <span role="img" aria-label="management">
-                  <img className="icons" src={rewardManagement}/>
-                </span> Reward Management 
-              </Link>
-            </li>
-            <li style={styles.sidebarItem}>
-              <Link to="/ContentManagement" style={styles.sidebarLink}>
-                <span role="img" aria-label="management">
-                  <img className="icons" src={content}/>
-                </span> Content Management
-              </Link>
-            </li>
-            <li style={styles.sidebarItem}>
-              <a onClick={handleOpenEPModal}  style={styles.sidebarLink}>
-                <span role="img" aria-label="edit-profile">
-                  <img className="icons" src={editProfile}/>
-                </span> Edit Profile
-              </a>
-            </li>
-            <li style={styles.sidebarItem}>
-              <a onClick={handleOpenCPModal}  style={styles.sidebarLink}>
-                <span role="img" aria-label="change-password">
-                  <img className="icons" src={changePass}/>
-                </span> Change Password
-              </a>
-            </li>
-            <li style={styles.sidebarItem}>
-              <Link to="/About" style={styles.sidebarLink}>
-                <span role="img" aria-label="about">
-                <img className="icons" src={about}/>
-                </span> About
-              </Link>
-            </li>
-            <li style={styles.sidebarItem}>
-              <a onClick= {logout}to="/Login" style={styles.sidebarLink}>
-                <span role="img" aria-label="logout">
-                <img className="icons" src={logOut}/>  
-                </span> Logout
-              </a>
-            </li>
-          </ul>
+        <div className="logoContainer">
+          <img src={logo} alt="Logo" className="logo" />
+        </div>
+        <ul style={styles.sidebarList}>
+        <li style={styles.sidebarItem}>
+          <Link 
+            to="/Dashboard2" 
+            className={location.pathname === "/Dashboard2" ? "active-page" : "inactive-page"} 
+            style={{ display: "inline-flex", gap: "20px" }}>
+            <img className="dashboardIcon" src={dashboard} alt="Dashboard Icon" />
+            <span className="sidebarText">Dashboard</span>
+          </Link>
+        </li>
+        <li style={styles.sidebarItem}>
+          <Link 
+              to="/Analytics2" 
+              className={location.pathname === "/Analytics2" ? "active-page" : "inactive-page"} 
+              style={{ display: "inline-flex", gap: "20px" }}>
+              <img className="analyticsIcon" src={analytics} alt="Analytics Icon" />
+              <span className="sidebarText">Analytics</span>
+          </Link>
+        </li>
+        <li style={styles.sidebarItem}>
+          <Link 
+            to="/ManageUser" 
+            className={location.pathname === "/ManageUser" ? "active-page" : "inactive-page"} 
+            style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+            <img className="userMIcon" src={userManagement} alt="User Management Icon" />
+            <span className="sidebarText">User Management</span>
+          </Link>
+        </li>
+        <li style={styles.sidebarItem}>
+          <Link 
+            to="/Manage" 
+            className={location.pathname === "/Manage" ? "active-page" : "inactive-page"} 
+            style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+            <img className="rewardMIcon" src={rewardManagement} alt="Reward Management Icon" />
+            <span className="sidebarText">Reward Management</span>
+          </Link>
+        </li>
+        <li style={styles.sidebarItem}>
+          <Link 
+            to="/ContentManagement" 
+            className={location.pathname === "/ContentManagement" ? "active-page" : "inactive-page"} 
+            style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+            <img className="contentMIcon" src={content} alt="Content Management Icon" />
+            <span className="sidebarText">Content Management</span>
+          </Link>
+        </li>
+        <li style={styles.sidebarItem}>
+          <a 
+            onClick={handleOpenEPModal} 
+            className="inactive-page" 
+            style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+            <img className="editPIcon" src={editProfile} alt="Edit Profile Icon" />
+            <span className="sidebarText">Edit Profile</span>
+          </a>
+        </li>
+        <li style={styles.sidebarItem}>
+          <a 
+            onClick={handleOpenCPModal} 
+            className="inactive-page" 
+            style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+            <img className="changePIcon" src={changePass} alt="Change Password Icon" />
+            <span className="sidebarText">Change Password</span>
+          </a>
+        </li>
+        <li style={styles.sidebarItem}>
+          <Link 
+            to="/About" 
+            className={location.pathname === "/About" ? "active-page" : "inactive-page"} 
+            style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+            <img className="aboutIcon" src={about} alt="About Icon" />
+            <span className="sidebarText">About</span>
+          </Link>
+        </li>
+        <li style={styles.sidebarItem}>
+          <a 
+            onClick={logout} 
+            className="inactive-page" 
+            style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+            <img className="logoutIcon" src={logOut} alt="Logout Icon" />
+            <span className="sidebarText">Logout</span>
+          </a>
+        </li>
+        </ul>
       </aside> 
-
       <div className='analyticsBox'>
           <div className="rmdHeaders1"> 
             <h1 className="anaHeader">Analytics</h1>
@@ -939,27 +960,29 @@
       marginTop: '15%', 
     },
     sidebar: {
-      width: '253px',
+      width: '213px',       // Fixed width
+      minWidth: '213px',    // Ensures it cannot shrink below 230px
+      maxWidth: '213px',    // Ensures it cannot grow beyond 230px
       height: '100vh',
       backgroundColor: '#800000',
       color: 'white',
       padding: '20px',
-      paddingTop: "6vh",
+      paddingTop: '6vh',
     },
     sidebarList: {
       listStyle: 'none',
       padding: 0,
     },
     sidebarItem: {
-      marginBottom: '20px',
+      paddingBottom: 10
     },
     sidebarLink: {
       color: 'white',
       textDecoration: 'none',
-      display: 'flex',
+      display: 'inline-flex',
       alignItems: 'center',
-      gap: '20px',
-      marginLeft: '20px',
+      gap: '20px',             
+      cursor: "pointer",
     },
     logo: {
       fontSize: '24px',

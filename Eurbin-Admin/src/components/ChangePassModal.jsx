@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import padlock from '../Images/padlock.png';
+import padlockIcon from '../Images/padlockIcon.png';
 import axios from 'axios';
 
 const ChangePassModal = ({ isOpen, onClose }) => {
@@ -10,58 +11,54 @@ const ChangePassModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevents the default form submission behavior
+    e.preventDefault();
     try {
-        const token = localStorage.getItem('token'); // Retrieve token from localStorage
-
-        // Check if token exists
-        if (!token) {
-            setMessage('No token found. Please log in again.');
-            return;
-        }
-
-        // Send PATCH request to change password
+        const token = localStorage.getItem('token');
         const response = await axios.patch(
             'https://eurbin.vercel.app/admin/change-password',
             { oldPassword, newPassword },
             { headers: { Authorization: `Bearer ${token}` } }
         );
-
-        setMessage(response.data.message); // Set the success message from response
+        setMessage(response.data.message);
     
     } catch (error) {
         console.error('Error changing password:', error);
-        setMessage('Error changing password. Please try again.');
+        setMessage('Error changing password');
     }
-};
-
+  };
 
   return (
-    <div className="cpModal">
-      <div className="cpModalContent">
-        <button onClick={onClose} className="cpCloseBtn">&times;</button>
-        <div className="cpForm">
-            <img src={padlock} alt="Padlock" />
-            <h2 className="cpTitle">Change Password</h2>
-            <div className="cpInputContainer">
+    <div className="epModal">
+      <div className="epModalContent">
+        <button onClick={onClose} className="epCloseBtn">&times;</button>
+        <div className="epForm">
+            <img src={padlock} alt="Padlock" className='modalIcon'/>
+            <h2 className="epTitle">Change Password</h2>
+            <div className="inputContainer">
+              <span role="img" aria-label="user" className="inputIcon">
+                <img src={padlockIcon} alt="lock" />
+              </span>
                 <input 
                     type="password" 
                     placeholder="Enter Old Password" 
                     value={oldPassword} 
                     onChange={(e) => setOldPassword(e.target.value)} 
-                    className="cpInput"
+                    className="epInput"
                 />
             </div>
-            <div className="cpInputContainer">
+            <div className="inputContainer">
+            <span role="img" aria-label="user" className="inputIcon">
+                <img src={padlockIcon} alt="lock" />
+              </span>
                 <input 
                     type="password" 
                     placeholder="Enter New Password" 
                     value={newPassword} 
                     onChange={(e) => setNewPassword(e.target.value)} 
-                    className="cpInput"
+                    className="epInput"
                 />
             </div>
-            <button className='cpBtn' onClick={handleSubmit}>Change Password</button>
+            <button className='epUpdateBtn' onClick={handleSubmit}>Change Password</button>
         </div>
         {message && <p className="cpMessage">{message}</p>}
       </div>

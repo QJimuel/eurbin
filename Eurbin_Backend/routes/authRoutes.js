@@ -11,6 +11,7 @@ router.post('/login', adminController.login);
 router.patch('/update-profile',authenticateToken, adminController.updateProfile); 
 router.patch('/change-password',authenticateToken, adminController.changePassword);
 router.get('/verify-email', adminController.verifyEmail);
+router.post('/forgot-password', adminController.forgotPassword);
 // Add this route
 
 module.exports = router;

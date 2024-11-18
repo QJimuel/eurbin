@@ -24,9 +24,82 @@ body, h1, h2, p {
 
   }
 
-  .icons{
-    width: 30px;
-    height: 30px;
+  /*Side bar font and classnames*/
+  .sidebarText{
+    font-size: 15px;
+    padding-top: 5px;
+    margin-left: -5px;
+  }
+
+
+  .dashboardIcon{ 
+    width: 20px;
+    height: 20px;
+  }
+
+  .analyticsIcon{
+    width: 17px;
+    height: 17px;
+    padding-right: 2px;
+    padding-left: 2PX;
+  }
+
+  .userMIcon{
+    width: 21px;
+    height: 22px
+  }
+
+  .rewardMIcon{
+    width: 15px;
+    height: 15px;
+    padding-left: 3px;
+    padding-right: 4px;
+  }
+
+  .contentMIcon{
+    width: 19px;
+    height: 19px;
+    padding-left: 1px;
+    padding-right: 2px;
+  }
+
+  .editPIcon{
+    width: 22px;
+    height: 22px;
+    padding-left: 1px;
+    margin-right: -1px;
+  }
+
+  .changePIcon{
+    width: 23px;
+    height: 23px;
+    margin-left: -1px;
+  }
+
+  .aboutIcon{
+    width: 20px;
+    height: 20px;
+    padding-left: 1px;
+    padding-right: 2px;
+  }
+
+  .logoutIcon{
+    width: 20px;
+    height: 20px;
+    padding-left: 1px;
+    padding-right: 2px;
+  }
+
+  .logoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo {
+    margin-top: -80px;
+    margin-bottom: -50px;
+    width: 150px;
   }
 
   .header {
@@ -257,13 +330,36 @@ body, h1, h2, p {
     transition: 0.3s ease-in;
   }
   
+  .active-page {
+    color: white;
+    background-color: #2B0100;
+    width: 89%;
+    text-decoration: none;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    gap: 20px;  
+    padding: 7px 10px;
+    border-radius: 5px;
+  }
+  
+  .inactive-page {
+    color: white;
+    width: 89%;
+    text-decoration: none;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    gap: 20px;  
+    padding: 7px 10px;
+    border-radius: 10px;
+
+  }
 
   .active-btn {
     background-color: maroon;
     color: white;
     cursor: pointer;
-      
-   
   }
 
   .edit-reward-button {
@@ -517,6 +613,7 @@ body, h1, h2, p {
   margin-bottom: 2%;
   font-family: 'Manjari';
   display: flex;
+  width: 184px;
   gap: 5px; 
   padding: 10px 10px 5px 10px;
   border: 1px solid #2B0100;
@@ -871,7 +968,18 @@ body, h1, h2, p {
   
 }
 
+
 /*EDIT PROFILE CSS*/
+.modalIcon {
+  width: 65px;
+  height: 65px;
+}
+
+.epTitle {
+  font-size: 22px;
+  color: #2B0100;
+  margin-bottom: 20px;
+}
 
 .epModal {
   position: fixed;
@@ -968,13 +1076,13 @@ body, h1, h2, p {
 }
 
 .inputContainer {
-  border: 1px solid #f2ecec;
+  border: 1px solid #B3B3B3;
   display: flex;
   align-items: center;
-  background-color: transparent;
+  background-color: #f9f9f9;
   border-radius: 5px;
-  padding: 10px;
-  width: 300px;
+  padding: 15px;
+  width: 100%;
 }
 
 .inputIcon img {
@@ -999,7 +1107,7 @@ body, h1, h2, p {
   border-radius: 5px;
   cursor: pointer;
   font-size: 12px;
-  width: 320px;
+  width: 330px;
   justify-content: center;
 }
 /*EDIT PROFILE CSS END*/

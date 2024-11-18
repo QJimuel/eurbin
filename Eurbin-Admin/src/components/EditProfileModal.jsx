@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import camera from '../Images/camera.png';
+import editIcon from '../Images/edit.png';
 import phone from '../Images/phone.png';
 import name from '../Images/name.png';
 import emailIcon from '../Images/email.png';
@@ -35,9 +35,9 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     <div className="epModal">
       <div className="epModalContent">
         <button onClick={onClose} className="epCloseBtn">&times;</button>
-
-        <h2 className="cpTitle">Edit Profile</h2>
         <form onSubmit={handleSubmit} className="epForm">
+        <img src={editIcon} alt="Padlock" className='modalIcon'/>
+        <h2 className="cpTitle">Edit Profile</h2>
           <div className="inputContainer">
             <span role="img" aria-label="user" className="inputIcon">
               <img src={name} alt="Name" />

@@ -1,4 +1,5 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
+import logo from '../Images/EURBinLogo.png'
 import bottleIcon from '../Images/5.png'
 import step1 from '../Images/1.png'
 import step2 from '../Images/2.png'
@@ -7,11 +8,11 @@ import step4 from '../Images/4.png'
 import bottle from '../Images/bottle.png'
 import co2 from '../Images/co2.png'
 import point from '../Images/point.png'
-import dashbboard from '../Images/speedometer.png'
-import editProfile from '../Images/edit.png'
-import changePass from '../Images/padlock.png'
-import about from '../Images/information.png'
-import logOut from '../Images/exit.png'
+import dashboard from '../Images/speedometer1.png'
+import editProfile from '../Images/edit1.png'
+import changePass from '../Images/padlock1.png'
+import about from '../Images/information1.png'
+import logOut from '../Images/exit1.png'
 
 import { useEffect, useState } from 'react';
 
@@ -20,6 +21,7 @@ import ChangePassModal from "./ChangePassModal";
 
 
 function About2() {
+  const location = useLocation();
     
   
       const logout = ()=>
@@ -56,50 +58,63 @@ function About2() {
         <>
 
     <header className="header">
-        <h1 className="header-title">EURBin</h1>
+        <h1 className="header-title"></h1>
     </header>
 
     <div className="container">
     <aside style={styles.sidebar}>
+        <div className="logoContainer">
+          <img src={logo} alt="Logo" className="logo" />
+        </div>
           <ul style={styles.sidebarList}>
           <li style={styles.sidebarItem}>
-            <Link to="/BinStatus" style={styles.sidebarLink}>
-              <span role="img" aria-label="dashboard">
-                <img className="icons" src={dashbboard}/>
-              </span> 
-              Bin Status
+            <Link 
+              to="/BinStatus" 
+              className={location.pathname === "/BinStatus" ? "active-page" : "inactive-page"} 
+              style={{ display: "inline-flex", gap: "20px" }}>
+              <img className="dashboardIcon" src={dashboard} alt="Dashboard Icon" />
+              <span className="sidebarText">Dashboard</span>
             </Link>
           </li>
           <li style={styles.sidebarItem}>
-            <a onClick={handleOpenEPModal}  style={styles.sidebarLink}>
-              <span role="img" aria-label="edit-profile">
-                <img className="icons" src={editProfile}/>
-              </span> Edit Profile
+            <a 
+              onClick={handleOpenEPModal} 
+              className="inactive-page" 
+              style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+              <img className="editPIcon" src={editProfile} alt="Edit Profile Icon" />
+              <span className="sidebarText">Edit Profile</span>
             </a>
           </li>
           <li style={styles.sidebarItem}>
-            <a onClick={handleOpenCPModal}  style={styles.sidebarLink}>
-              <span role="img" aria-label="change-password">
-                <img className="icons" src={changePass}/>
-              </span> Change Password
+            <a 
+              onClick={handleOpenCPModal} 
+              className="inactive-page" 
+              style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+              <img className="changePIcon" src={changePass} alt="Change Password Icon" />
+              <span className="sidebarText">Change Password</span>
             </a>
           </li>
           <li style={styles.sidebarItem}>
-            <Link to="/About2" style={styles.sidebarLink}>
-                <span role="img" aria-label="about">
-              <img className="icons" src={about}/>
-              </span> About
+            <Link 
+              to="/About2" 
+              className={location.pathname === "/About2" ? "active-page" : "inactive-page"} 
+              style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+              <img className="aboutIcon" src={about} alt="About Icon" />
+              <span className="sidebarText">About</span>
             </Link>
           </li>
           <li style={styles.sidebarItem}>
-            <a onClick= {logout}to="/" style={styles.sidebarLink}>
-              <span role="img" aria-label="logout">
-              <img className="icons" src={logOut}/>  
-              </span> Logout
+            <a 
+              onClick={logout} 
+              className="inactive-page" 
+              style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
+              <img className="logoutIcon" src={logOut} alt="Logout Icon" />
+              <span className="sidebarText">Logout</span>
             </a>
           </li>
           </ul>
         </aside>
+
 
         <div style={styles.container}>
         <div style={styles.about}>
@@ -292,27 +307,28 @@ const styles = {
         height: 'auto',
     },
     sidebar: {
-      width: '257px',
+      width: '213px',       // Fixed width
+      minWidth: '213px',    // Ensures it cannot shrink below 230px
+      maxWidth: '213px',    // Ensures it cannot grow beyond 230px
       height: '100vh',
       backgroundColor: '#800000',
       color: 'white',
       padding: '20px',
-      paddingTop: "6vh",
+      paddingTop: '6vh',
     },
     sidebarList: {
       listStyle: 'none',
       padding: 0,
     },
     sidebarItem: {
-      marginBottom: '20px',
+      paddingBottom: 10
     },
     sidebarLink: {
       color: 'white',
       textDecoration: 'none',
-      display: 'flex',
+      display: 'inline-flex',
       alignItems: 'center',
       gap: '20px',             
-      marginLeft: '20px',
       cursor: "pointer",
     },
     logo: {
