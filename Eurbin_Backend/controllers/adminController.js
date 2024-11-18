@@ -222,10 +222,10 @@ exports.forgotPassword = async (req, res) => {
 
         // Generate new password
         const newPassword = crypto.randomBytes(4).toString('hex'); // Generate a 4-byte random password
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+   
 
         // Update user's password
-        admin.password = hashedPassword;
+        admin.password = newPassword;
         await admin.save();
 
         // Send email with the username and new password
