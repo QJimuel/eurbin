@@ -27,6 +27,8 @@ import {
   PieChart,
   Pie,
   Cell,
+  ScatterChart,
+  Scatter
 } from 'recharts';
 import { colors } from "@mui/material";
 
@@ -530,7 +532,7 @@ function DashboardLayout() {
 <div style={{ width: '80%', height: 300, justifyContent: 'center', textAlign: 'center' }}>
     <h3>Collected Bottle Counts by Month</h3>
     <ResponsiveContainer width="100%" height={250}>
-        <BarChart data={collectedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <LineChart data={collectedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             {/* Remove CartesianGrid to hide the grid */}
             <XAxis dataKey="date" />
             <YAxis />
@@ -545,14 +547,18 @@ function DashboardLayout() {
                 return null;
             }} />
             <Legend />
-            <Bar dataKey="bottleCountDifference" barSize={80}> {/* barSize property to make the bars slimmer */}
-                {collectedData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#ff9f40', '#4bc0c0', '#36a2eb'][index % 7]} />
-                ))}
-            </Bar>
-        </BarChart>
+            <Line 
+                type="monotone" 
+                dataKey="bottleCountDifference" 
+                stroke="#8884d8" 
+                strokeWidth={2}
+                dot={{ r: 4 }} // Adds dots at each data point
+            />
+        </LineChart>
     </ResponsiveContainer>
 </div>
+
+
 
 
 
