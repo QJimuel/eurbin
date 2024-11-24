@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from "react-router-dom";
 import Modal from './Modal'; // Import the Modal component
+import ModalConfirmation from './ModalConfirmation';
 
 function ManageReward() {
     const API_URL = 'https://eurbin.vercel.app/rewards';
@@ -117,16 +118,31 @@ function ManageReward() {
         }
     };
 
+ 
+    const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+        const [hoverAdd, setHoverAdd] = useState(false);
+        const [hoverEdit, setHoverEdit] = useState(false);
     const handleAddClick = () => {
-        clearInput();
-        setIsModalOpen(true);
-        setModalTitle('Add Reward');
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        clearInput(); // Clear inputs when closing the modal
-    };
+            setIsModalOpen(true); 
+        };
+    
+        const handleCreateClick = () => {
+            setIsConfirmationModalOpen(true); 
+        };
+    
+        const handleConfirm = () => {
+            createReward();  
+            setIsConfirmationModalOpen(false); 
+        };
+    
+        const handleCancel = () => {
+            setIsConfirmationModalOpen(false); 
+        };
+    
+        const handleCloseModal = () => {
+            setIsModalOpen(false);
+            clearInput(); // Clear inputs when closing the modal
+        };
 
     const clearInput = () => {
         setName('');
@@ -173,6 +189,8 @@ function ManageReward() {
         }
     };    
 
+    
+
     return (
         <>
         <h1 className='headings'>Management</h1>
@@ -209,31 +227,43 @@ function ManageReward() {
             </li>
             </ul>
         </nav>
-
         <div className="header-buttons">
-            <button onClick={handleAddClick}> Add </button>
-            <Link to="/Edit" className="activityLink">
-                <button> Edit </button>
+            <button
+                onClick={handleAddClick}
+                className={hoverAdd ? "hButton hButtonHover addButton" : "hButton addButton"}
+                onMouseEnter={() => setHoverAdd(true)}
+                onMouseLeave={() => setHoverAdd(false)}
+            >
+                Add
+            </button>
+            <Link
+                to="/Edit"
+                className={hoverEdit ? "hButton hButtonHover editButton activityLink" : "hButton editButton activityLink"}
+                onMouseEnter={() => setHoverEdit(true)}
+                onMouseLeave={() => setHoverEdit(false)}
+            >
+                Edit
             </Link>
         </div>
 
-        <div className="sort-container">
-            <label htmlFor="sort">Sort by:</label>
-            <select id="sort" onChange={(e) => setSortOption(e.target.value)} value={sortOption}>
-                <option value="rewardName">Reward Name</option>
-                <option value="quantity">Quantity</option>
-            </select>
-        </div>
-
         {/* Modal for Add/Edit Reward */}
+    
         <Modal
             isOpen={isModalOpen}
             onClose={handleCloseModal}
-            onSubmit={isEditing ? updateReward : createReward}
+            onSubmit={handleCreateClick}
             formData={{ name, category, quantity, price }}
             onChange={handleChange}
-            onImageChange={handleImageChange} // Pass the image change handler
+            onImageChange={handleImageChange}
             modalTitle={modalTitle}
+        />
+
+       
+        <ModalConfirmation
+            isOpen={isConfirmationModalOpen}
+            message="Are you sure you want to create this reward?"
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
         />
 
         <div className="table-container">
@@ -267,6 +297,8 @@ function ManageReward() {
             </table>
         </div>
         </>
+
+        
     );
 }
 

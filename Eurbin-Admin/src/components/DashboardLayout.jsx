@@ -13,7 +13,7 @@ import changePass from '../Images/padlock1.png'
 import about from '../Images/information1.png'
 import logOut from '../Images/exit1.png'
 import content from '../Images/content1.png'
-
+import ModalConfirmation from './ModalConfirmation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -40,28 +40,62 @@ function DashboardLayout() {
   const total_API_URL = 'https://eurbin.vercel.app/total/highest';
   const user_API_URL = 'https://eurbin.vercel.app/user';
   const collected_API_URL = 'https://eurbin.vercel.app/collected'; 
+  const BOTTLES_API_URL = 'https://eurbin.vercel.app/bottles';
 
   const [transactions, setTransactions] = useState([]);
   const [totals, settotals] = useState({});
   const [user, setUser] = useState([]);
   const [greetingName, setGreetingName] = useState('');
   const [collectedOffset, setCollectedOffset] = useState(0);
-  const MAX_BOTTLES = 500;
+  const MAX_BOTTLES = 100;
   const [collectedData, setCollectedData] = useState([]);
   const location = useLocation();
+  const [smallBottleCount, setSmallBottleCount] = useState(0);
+  const [largeBottleCount, setLargeBottleCount] = useState(0);
+  const [hoverCollect, setHoverCollect] = useState(false);
 
   useEffect(() => {
     fetchTotal();
     fetchUser();
     fetchCollectedData();
+    fetchBottleData();
     const email = localStorage.getItem('username');
     if (email) {
       setGreetingName(email);
     }
+
   }, []);
+
+  const fetchBottleData = async () => {
+    try {
+        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+        const response = await axios.get(BOTTLES_API_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            },
+        });
+
+        console.log(response.data);  // Log the response to ensure the format
+        if (response.status === 200 && Array.isArray(response.data.bottles)) {  // Access bottles array
+            const smallBottles = response.data.bottles.filter(bottle => bottle.Size === 'Small').length;
+            const largeBottles = response.data.bottles.filter(bottle => bottle.Size === 'Large').length;
+
+            setSmallBottleCount(smallBottles);
+            setLargeBottleCount(largeBottles);
+        } else {
+            console.error('Unexpected data format:', response.data);
+            alert('An error occurred: Unexpected data format');
+        }
+    } catch (err) {
+        console.error('Error fetching bottle data:', err);
+        alert('An error occurred while fetching bottle data');
+    }
+};
 
 
   const [error, setError] = useState(null);
+
+  /*
   const fetchCollectedData = async () => {
     try {
         const token = localStorage.getItem('token'); // Retrieve the token from localStorage
@@ -76,11 +110,22 @@ function DashboardLayout() {
             const collectedBottles = response.data.collectedBottles;
             console.log('Collected Bottles:', collectedBottles);
 
+            // Find the latest bottleCount from collectedBottles
+            const latestBottleCount = collectedBottles.length
+                ? collectedBottles.reduce((latest, item) =>
+                    new Date(item.date) > new Date(latest.date) ? item : latest
+                  ).bottleCount
+                : 0;
+
+            // Save the latest bottleCount to localStorage
+            localStorage.setItem('collectedOffset', latestBottleCount);
+            console.log('Updated collectedOffset in localStorage:', latestBottleCount);
+
             // Group by month and year, keeping the latest entry for each month
             const groupedData = collectedBottles.reduce((acc, item) => {
                 const date = new Date(item.date);
                 const monthYear = `${date.getMonth() + 1}-${date.getFullYear()}`; // Format as "MM-YYYY"
-                
+
                 // Store only the latest bottleCount for each month
                 if (!acc[monthYear] || new Date(acc[monthYear].date) < new Date(item.date)) {
                     acc[monthYear] = {
@@ -121,7 +166,58 @@ function DashboardLayout() {
         alert('An error occurred while fetching collected data');
     }
 };
+*/
 
+const fetchCollectedData = async () => {
+  try {
+      const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+      const response = await axios.get(collected_API_URL, {
+          headers: {
+              Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+      });
+
+      if (response.status === 200 && response.data.collectedBottles) {
+          const collectedBottles = response.data.collectedBottles;
+          console.log('Collected Bottles:', collectedBottles);
+
+          // Find the latest bottleCount and store it in localStorage
+          const latestBottleCount = collectedBottles.length
+              ? collectedBottles.reduce((latest, item) =>
+                  new Date(item.date) > new Date(latest.date) ? item : latest
+                ).bottleCount
+              : 0;
+
+          localStorage.setItem('collectedOffset', latestBottleCount);
+          console.log('Updated collectedOffset in localStorage:', latestBottleCount);
+
+          // Map collected data directly for chart
+          let previousBottleCount = 0;
+          const formattedData = collectedBottles.map((item) => {
+              const date = new Date(item.date).toLocaleDateString(); // Format as readable date
+              const bottleCountDifference = previousBottleCount === 0 
+                  ? item.bottleCount 
+                  : item.bottleCount - previousBottleCount;
+
+              previousBottleCount = item.bottleCount;
+
+              return {
+                  date, // Format: "MM/DD/YYYY"
+                  bottleCountDifference,
+              };
+          });
+
+          console.log('Formatted Data:', formattedData);
+          setCollectedData(formattedData); // Update the state with formatted data
+      } else {
+          console.error('Unexpected data format:', response.data);
+          alert('An error occurred: Unexpected data format');
+      }
+  } catch (err) {
+      console.error('Error fetching collected data:', err);
+      alert('An error occurred while fetching collected data');
+  }
+};
 
 
     const fetchTotal = async () => {
@@ -136,6 +232,8 @@ function DashboardLayout() {
         if (response.status === 200 && response.data.highestTotals) {
           // Set the state with the highestTotals object
           settotals(response.data.highestTotals);
+     
+   
         } else {
           console.error('Unexpected data format:', response.data);
           alert('An error occurred: Unexpected data format');
@@ -191,15 +289,13 @@ function DashboardLayout() {
             alert('An error occurred while fetching transactions');
           }
     };  */
-
-    const logout = ()=>
-      {
-        
-        window.localStorage.clear();
-        console.log("Token cleared");
-        window.location.href = "./"
-        console.log(window.localStorage.getItem('token'));
-      }
+    const handleLogout = () => setIsLogoutConfirmationOpen(true); 
+    const confirmLogout = () => {
+      window.localStorage.clear();
+      console.log("Token cleared");
+      window.location.href = "./";  // Redirect to login page
+    };
+    const cancelLogout = () => setIsLogoutConfirmationOpen(false);
 
 
       const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
@@ -250,13 +346,27 @@ function DashboardLayout() {
     
       const departmentData = getDepartmentData();
 
-      const percentComputaion = () => {
+      const percentComputation = () => {
         const storedOffset = Number(localStorage.getItem('collectedOffset')) || 0;
-        const effectiveTotal = Math.max(0, totals.highestTotalBottle - storedOffset);
+        const effectiveTotal = Math.max(0, (smallBottleCount + largeBottleCount) - storedOffset);
         const percent = Math.min(100, Math.ceil((effectiveTotal / MAX_BOTTLES) * 100));
+        console.log(percent)
         return `${percent}%`;
     };
+
+    const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+    const [isLogoutConfirmationOpen, setIsLogoutConfirmationOpen] = useState(false);
+
+    const handleConfirm = () => {
+      setIsConfirmationModalOpen(true); 
+    };
+  
+    const handleCancel = () => {
+        setIsConfirmationModalOpen(false); 
+    };
       
+    
+
     
     
       
@@ -265,7 +375,7 @@ function DashboardLayout() {
         const token = localStorage.getItem('token');
         try {
             // Prepare the payload with collectedOffset as bottleCount
-            const newBottles = totals.highestTotalBottle - collectedOffset;
+            const newBottles = (smallBottleCount + largeBottleCount) - collectedOffset;
        
             const payload = {
                 bottleCount: newBottles,
@@ -280,16 +390,17 @@ function DashboardLayout() {
                 },
                 body: JSON.stringify(payload),
             });
-    
+         
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
     
             const data = await response.json();
             console.log('Bottle data saved:', data); // Log the response for confirmation
-
-            setCollectedOffset(totals.highestTotalBottle);
-            localStorage.setItem('collectedOffset', totals.highestTotalBottle);
+            setIsChangePassModalOpen(false);
+    
+            setCollectedOffset((smallBottleCount + largeBottleCount));
+            localStorage.setItem('collectedOffset', (smallBottleCount + largeBottleCount));
     
             // Optionally, you can update the collectedOffset or any other state based on the response here.
         } catch (error) {
@@ -387,7 +498,7 @@ function DashboardLayout() {
         </li>
         <li style={styles.sidebarItem}>
           <a 
-            onClick={logout} 
+            onClick={handleLogout} 
             className="inactive-page" 
             style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
             <img className="logoutIcon" src={logOut} alt="Logout Icon" />
@@ -397,8 +508,6 @@ function DashboardLayout() {
         </ul>
       </aside>
 
-      
-
         <div className="dashboardBox">
 
           <div className="rmdHeaders1">
@@ -407,68 +516,82 @@ function DashboardLayout() {
               
             <div className="pasokLang">
             <h1 className="dTitle">EURBin Status:</h1>
-              <div style={styles.binLevelStyle}>
-                
-                  <div style={styles.binPercentStyle}>
-                      <p style={styles.percent}>{percentComputaion()}</p>
-                  </div>
-              </div>
-              <button onClick={handleCollectedClick}>Collected</button>
-
-              
-
-
+            <div style={styles.binLevelStyle}>
+              <p style={styles.percent}>{percentComputation()}</p>
+                <div 
+                    style={{
+                        ...styles.binPercentStyle, 
+                        width: `${percentComputation()}` // Adjust width dynamically
+                    }}
+                > 
+                </div>
             </div>
-          
+
+            <button 
+              onClick={handleConfirm}
+              style={
+                  percentComputation() === '0%' 
+                      ? { ...styles.collectButton, ...styles.disabledButton } 
+                      : hoverCollect 
+                          ? { ...styles.collectButton, ...styles.collectButtonHover } 
+                          : styles.collectButton
+              }
+              onMouseEnter={() => setHoverCollect(true)}
+              onMouseLeave={() => setHoverCollect(false)}
+              disabled={percentComputation() === '0%'}
+              >
+                  {percentComputation() === '0%' ? 'Collected' : 'Collect'}
+              </button>  
+            </div>
            
 
           </div>
 
           
 
-            <div className="dbParent">
+          <div className="dbParent">
 
-                <div className="dashboardBox1">
-                <div className="dbox">
-                    <img src={user1} alt="" />
-                    <div>
-                    <b>{totals.highestTotalUser}</b>
-                    <p>Total Users</p>
-                    </div>
-                </div>
-                </div>
+<div className="dashboardBox1">
+    <div className="dbox">
+        <img src={user1} alt="" />
+        <div>
+            <b>{totals.highestTotalUser}</b>
+            <p>Total Users</p>
+        </div>
+    </div>
+</div>
 
-                <div className="dashboardBox1">
-                <div className="dbox">
-                    <img src={bottle} alt="" />
-                    <div>
-                    <b>{totals.highestTotalBottle}</b>
-                    <p>Total Bottles</p>
-                    </div>
-                </div>
-                </div>
+<div className="dashboardBox1">
+    <div className="dbox">
+        <img src={bottle} alt="" />
+        <div>
+            <b>{smallBottleCount + largeBottleCount}</b>
+            <p>Total Bottles</p>
+        </div>
+    </div>
+</div>
 
-                <div className="dashboardBox1">
-                <div className="dbox">
-                    <img src={co2} alt="" />
-                    <div>
-                    <b> {totals.highestTotalCo2} kg</b>
-                    <p>Total CO₂</p>
-                    </div>
-                </div>
-                </div>
+<div className="dashboardBox1">
+    <div className="dbox">
+        <img src={co2} alt="" />
+        <div>
+            <b>{Number(totals.highestTotalCo2).toFixed(2)} kg</b>
+            <p>Total CO₂</p>
+        </div>
+    </div>
+</div>
 
-                <div className="dashboardBox1">
-                <div className="dbox">
-                    <img src={point} alt="" />
-                    <div>
-                    <b>{totals.highestTotalSmartPoints}</b>
-                    <p>Total Points</p>
-                    </div>
-                </div>
-                </div>
+<div className="dashboardBox1">
+    <div className="dbox">
+        <img src={point} alt="" />
+        <div>
+            <b>{Number(totals.highestTotalSmartPoints).toFixed(2)}</b>
+            <p>Total Points</p>
+        </div>
+    </div>
+</div>
 
-            </div>
+</div>
             
 
 
@@ -623,6 +746,32 @@ function DashboardLayout() {
         onClose={handleCloseCPModal}
       />
 
+<ModalConfirmation
+        isOpen={isLogoutConfirmationOpen}
+        message="Are you sure you want to logout?"
+        onConfirm={confirmLogout}  // Confirm logout
+        onCancel={cancelLogout}    // Cancel logout
+      />
+
+        <ModalConfirmation
+            isOpen={isConfirmationModalOpen}
+            message="Are you sure you want to collect the bin?"
+            onConfirm={handleCollectedClick}
+            onCancel={handleCancel}
+        />
+
+
+    <EditProfileModal
+        isOpen={isEditProfileModalOpen}
+        onClose={handleCloseEPModal}
+      
+      />
+
+      {/* CHANGE PASS MODAL */}
+      <ChangePassModal
+        isOpen={isChangePassModalOpen}
+        onClose={handleCloseCPModal}
+      />
 
         
        
@@ -705,27 +854,60 @@ const styles = {
   title: {
     color: 'darkred',
   },
-  binLevelStyle:{
+  binLevelStyle: {
     padding: '1%',
     height: '30px',
     width: '130px',
     borderRadius: '10px',
-    border: 'solid 1px black',
+    border: 'none',
+    backgroundColor: '#D3D3D3',
+    position: 'relative', 
+    overflow: 'hidden', 
   },
-
-  binPercentStyle:{
+  binPercentStyle: {
     display: 'flex',
     height: '100%',
-    width:'80%',
-    backgroundColor: '#800000',
+    background: 'linear-gradient(to right, #800000, #ff7b7b)', // Gradient from light to dark red
     borderRadius: '8px',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#fff'
+    color: '#fff',
+    transition: 'width 0.3s ease-in-out', // Smooth transition for dynamic width
   },
-  percent:{
-    color: 'white'
-  }
+  percent: {
+    position: 'absolute', 
+    top: '50%', 
+    left: '50%', 
+    paddingTop: '2px',
+    transform: 'translate(-50%, -50%)',
+    color: 'white',
+    fontSize: '15px', 
+    fontWeight: 'bold',
+    pointerEvents: 'none',
+  },
+  collectButton: {
+    display: 'block',
+    backgroundColor: '#800000',  
+    color: 'white',
+    fontWeight: 'bold',
+    border: 'none',
+    paddingTop: '12.5px',
+    paddingBottom: '9px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    transition: 'background-color 0.3s ease',
+    width: '20%',
+  },
+  collectButtonHover: {
+    backgroundColor: '#A00000', 
+  },
+  disabledButton: {
+    opacity: 0.5, // Example: make the button look faded when disabled
+    pointerEvents: 'none', // Prevent interaction when disabled
+  },
 };
 
 export default DashboardLayout;

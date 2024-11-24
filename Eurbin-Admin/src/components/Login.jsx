@@ -10,6 +10,9 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false); 
     const navigate = useNavigate();
     const [hover, setHover] = useState(false);
+    const collected_API_URL = 'https://eurbin.vercel.app/collected'; 
+
+    
 
     const loginAdmin = async () => {
         if (!email || !password) {

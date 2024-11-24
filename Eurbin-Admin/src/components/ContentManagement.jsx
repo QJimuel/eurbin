@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ModalAddContent from './ModalAddContent'; 
+import ModalConfirmation from './ModalConfirmation';
 
 function ContentManagement() {
     const API_URL = 'https://eurbin.vercel.app/contents';
@@ -11,6 +12,22 @@ function ContentManagement() {
     const [contents, setContents] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState('Add Content');
+
+    
+    const [isConfirmationOpen, setIsConfirmationOpen] = useState(false); // Modal confirmation state
+const [hoverAdd, setHoverAdd] = useState(false);
+    const handleSubmitClick = () => {
+        setIsConfirmationOpen(true); // Open the confirmation modal when submit is clicked
+    };
+
+    const handleConfirmSubmit = () => {
+        setIsConfirmationOpen(false); // Close the confirmation modal
+        createContent(); // Proceed with creating content
+    };
+
+    const handleCancelSubmit = () => {
+        setIsConfirmationOpen(false); // Close the confirmation modal without submitting
+    };
 
     useEffect(() => {
         fetchContents();
@@ -145,20 +162,33 @@ function ContentManagement() {
         <>
             <h1 className='headings'>Content Management</h1>
 
-            <div className="header-buttons">
-                <button onClick={handleAddClick}>Add Content</button>
+            <div className="header-button">
+            <button
+                onClick={handleAddClick}
+                className={hoverAdd ? "hButton hButtonHover addButton" : "hButton addButton"}
+                onMouseEnter={() => setHoverAdd(true)}
+                onMouseLeave={() => setHoverAdd(false)}
+            >
+                Add
+            </button>
             </div>
 
             <ModalAddContent
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
-                onSubmit={createContent}
+                onSubmit={handleSubmitClick} // Pass handleSubmitClick for submission
                 subject={subject}
                 setSubject={setSubject}
                 description={description}
                 setDescription={setDescription}
             />
 
+            <ModalConfirmation
+                isOpen={isConfirmationOpen}
+                message="Are you sure you want to add this content?"
+                onConfirm={handleConfirmSubmit}
+                onCancel={handleCancelSubmit}
+            />
             <div className="table-container">
                 <table className="w3-table-all">
                     <thead>

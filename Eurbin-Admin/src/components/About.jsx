@@ -22,18 +22,23 @@ import { useEffect, useState } from 'react';
 
 import EditProfileModal from "./EditProfileModal";
 import ChangePassModal from "./ChangePassModal";
+import ModalConfirmation from './ModalConfirmation';
 
 
 function About() {
   const location = useLocation();
   
-      const logout = ()=>
-        {
-          window.localStorage.clear();
-          console.log("Token cleared");
-          window.location.href = "./"
-          console.log(window.localStorage.getItem('token'));
-        }
+
+
+const [isLogoutConfirmationOpen, setIsLogoutConfirmationOpen] = useState(false);
+  const handleLogout = () => setIsLogoutConfirmationOpen(true);  
+const cancelLogout = () => setIsLogoutConfirmationOpen(false);  
+  
+    const confirmLogout = () => {
+      window.localStorage.clear();
+      console.log("Token cleared");
+      window.location.href = "./"; 
+    };
 
         const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
     
@@ -142,7 +147,7 @@ function About() {
         </li>
         <li style={styles.sidebarItem}>
           <a 
-            onClick={logout} 
+            onClick={handleLogout} 
             className="inactive-page" 
             style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
             <img className="logoutIcon" src={logOut} alt="Logout Icon" />
@@ -152,6 +157,13 @@ function About() {
         </ul>
       </aside> 
 
+            {/* LOGOUT CONFIRMATION MODAL */}
+            <ModalConfirmation
+        isOpen={isLogoutConfirmationOpen}
+        message="Are you sure you want to logout?"
+        onConfirm={confirmLogout}  // Confirm logout
+        onCancel={cancelLogout}    // Cancel logout
+      />
 
         <div style={styles.container}>
         <div style={styles.about}>

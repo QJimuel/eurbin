@@ -14,6 +14,7 @@ import content from '../Images/content1.png'
 import EditProfileModal from "./EditProfileModal";
 import ChangePassModal from "./ChangePassModal";
 
+import ModalConfirmation from './ModalConfirmation';
 
 
 function Layout() {
@@ -49,14 +50,14 @@ function Layout() {
   };
 
 
-
-  const logout = ()=>
-    {
-      window.localStorage.clear();
-      console.log("Token cleared");
-      window.location.href = "./"
-      console.log(window.localStorage.getItem('token'));
-    }
+const [isLogoutConfirmationOpen, setIsLogoutConfirmationOpen] = useState(false);
+  const handleLogout = () => setIsLogoutConfirmationOpen(true);
+  const confirmLogout = () => {
+    window.localStorage.clear();
+    console.log("Token cleared");
+    window.location.href = "./";  // Redirect to login page
+  };
+  const cancelLogout = () => setIsLogoutConfirmationOpen(false);
 
 
 
@@ -96,7 +97,7 @@ function Layout() {
         <li style={styles.sidebarItem}>
           <Link 
             to="/ManageUser" 
-            className={location.pathname === "/ManageUser" ? "active-page" : "inactive-page"} 
+            className={location.pathname === "/ManageUser" || location.pathname === "/DeactivatedUser" ? "active-page" : "inactive-page"}
             style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
             <img className="userMIcon" src={userManagement} alt="User Management Icon" />
             <span className="sidebarText">User Management</span>
@@ -105,7 +106,7 @@ function Layout() {
         <li style={styles.sidebarItem}>
           <Link 
             to="/Manage" 
-            className={location.pathname === "/Manage" ? "active-page" : "inactive-page"} 
+            className={location.pathname === "/Manage" || location.pathname === "/Request" || location.pathname === "/Transaction" || location.pathname === "/Activity" || location.pathname === "/Recycleables" || location.pathname === "/Edit" ? "active-page" : "inactive-page"}
             style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
             <img className="rewardMIcon" src={rewardManagement} alt="Reward Management Icon" />
             <span className="sidebarText">Reward Management</span>
@@ -149,7 +150,7 @@ function Layout() {
         </li>
         <li style={styles.sidebarItem}>
           <a 
-            onClick={logout} 
+            onClick={handleLogout} 
             className="inactive-page" 
             style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
             <img className="logoutIcon" src={logOut} alt="Logout Icon" />
@@ -166,8 +167,8 @@ function Layout() {
         </main>
       </div>
 
-      {/* EDIT PROFILE MODAL */}
-      <EditProfileModal
+    {/* EDIT PROFILE MODAL */}
+    <EditProfileModal
         isOpen={isEditProfileModalOpen}
         onClose={handleCloseEPModal}
       
@@ -177,6 +178,14 @@ function Layout() {
       <ChangePassModal
         isOpen={isChangePassModalOpen}
         onClose={handleCloseCPModal}
+      />
+
+      {/* LOGOUT CONFIRMATION MODAL */}
+      <ModalConfirmation
+        isOpen={isLogoutConfirmationOpen}
+        message="Are you sure you want to logout?"
+        onConfirm={confirmLogout}  // Confirm logout
+        onCancel={cancelLogout}    // Cancel logout
       />
     </>
   );

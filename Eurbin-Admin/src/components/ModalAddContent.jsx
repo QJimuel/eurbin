@@ -1,32 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function ModalAddContent({ isOpen, onClose, onSubmit, subject, setSubject, description, setDescription }) {
-    if (!isOpen) return null; 
+    const [hoverClose, setHoverClose] = useState(false);
+    const [hoverSubmit, setHoverSubmit] = useState(false);
+
+    if (!isOpen) return null;
 
     return (
         <div style={modalOverlayStyle}>
             <div style={modalContentStyle}>
-                <h2>Add Content</h2>
-                <div style={formGroupStyle}>
-                    <input
-                        type="text"
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
-                        placeholder="Subject"
-                        style={inputStyle}
-                    />
+                <div style={headerStyle}>
+                    <h2 style={headerTitleStyle}>Add Content</h2>
                 </div>
-                <div style={formGroupStyle}>
-                    <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Description"
-                        style={{ ...inputStyle, height: '100px', resize: 'none' }} 
-                    />
+
+                <div style={infoContainerStyle}>
+                    <div style={infoColumnStyle}>
+                        <div style={formGroupStyle}>
+                            <strong>Subject:</strong>
+                            <input
+                                value={subject}
+                                onChange={(e) => setSubject(e.target.value)}
+                                placeholder="Enter Subject"
+                                style={inputStyle}
+                            />
+                        </div>
+                        <div style={formGroupStyle}>
+                            <strong>Description:</strong>
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Enter Description"
+                                style={{ ...inputStyle, height: '100px', resize: 'none' }}
+                            />
+                        </div>
+                    </div>
                 </div>
+
+                <div style={lineStyle}></div>
+
                 <div style={modalButtonsStyle}>
-                    <button onClick={onSubmit} style={submitButtonStyle}>Submit</button>
-                    <button onClick={onClose} style={cancelButtonStyle}>Close</button>
+                    <button
+                        onClick={onClose}
+                        style={hoverClose ? { ...closeButtonStyle, ...closeButtonHoverStyle } : closeButtonStyle}
+                        onMouseEnter={() => setHoverClose(true)}
+                        onMouseLeave={() => setHoverClose(false)}
+                    >
+                        Close
+                    </button>
+                    <button
+                        onClick={onSubmit}
+                        style={hoverSubmit ? { ...submitButtonStyle, ...submitButtonHoverStyle } : submitButtonStyle}
+                        onMouseEnter={() => setHoverSubmit(true)}
+                        onMouseLeave={() => setHoverSubmit(false)}
+                    >
+                        Submit
+                    </button>
                 </div>
             </div>
         </div>
@@ -48,51 +76,109 @@ const modalOverlayStyle = {
 
 const modalContentStyle = {
     background: 'white',
-    padding: '20px 30px', 
-    borderRadius: '8px',
-    width: '300px', 
+    padding: '25px 25px',
+    borderRadius: '15px',
+    width: '400px',
     maxHeight: '90vh',
-    overflowY: 'auto', 
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    overflowY: 'auto',
+    boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)',
     display: 'flex',
     flexDirection: 'column',
 };
 
+const headerStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center', 
+    marginBottom: '20px',
+    backgroundColor: '#800000', 
+    borderRadius: '10px',
+    paddingTop: '9px',
+};
+
+
+const headerTitleStyle = {
+    fontSize: '24px',
+    color: 'white',
+    fontWeight: 'bold',
+    margin: 0,
+};
+
+
+const infoContainerStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '30px',
+    paddingLeft: '5px',
+    marginBottom: '-20px',
+};
+
+const infoColumnStyle = {
+    flex: 1,
+    paddingRight: '15px',
+};
+
 const formGroupStyle = {
-    marginBottom: '15px',
+    marginBottom: '10px',
+    fontSize: '16px',
+    lineHeight: '1.5',
 };
 
 const inputStyle = {
-    marginBottom: '10px',
     padding: '8px',
     border: '1px solid #ddd',
     borderRadius: '4px',
-    width: '100%', 
-    boxSizing: 'border-box', 
+    width: '100%',
+    boxSizing: 'border-box',
+};
+
+const lineStyle = {
+    borderBottom: '1px solid #ddd',
+    margin: '20px 0',
 };
 
 const modalButtonsStyle = {
-    marginTop: '10px',
     display: 'flex',
-    justifyContent: 'flex-end', 
+    justifyContent: 'space-between',
+};
+
+const closeButtonStyle = {
+    display: 'block',
+    paddingTop: '12.8px',
+    paddingBottom: '9px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    backgroundColor: '#d3d3d3',
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: '14px',
+    transition: 'background-color 0.3s ease',
+    width: '48%',
 };
 
 const submitButtonStyle = {
-    padding: '10px 15px', 
+    display: 'block',
+    paddingTop: '12.8px',
+    paddingBottom: '9px',
     border: 'none',
-    borderRadius: '4px',
+    borderRadius: '5px',
     cursor: 'pointer',
-    backgroundColor: '#007bff',
+    backgroundColor: '#800000',
     color: 'white',
-    marginRight: '10px', 
+    fontWeight: 'bold',
+    fontSize: '14px',
+    width: '48%',
 };
 
-const cancelButtonStyle = {
-    padding: '10px 15px',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    backgroundColor: '#ccc',
+// Hover effects for the buttons
+const closeButtonHoverStyle = {
+    backgroundColor: '#b3b3b3',
+};
+
+const submitButtonHoverStyle = {
+    backgroundColor: '#A00000',
 };
 
 export default ModalAddContent;

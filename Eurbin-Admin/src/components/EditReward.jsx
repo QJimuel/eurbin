@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import Modal from './Modal'; // Import the Modal component
+import ModalConfirmation from './ModalConfirmation';
 
 function EditReward() {
     const API_URL = 'https://eurbin.vercel.app/rewards';
@@ -16,6 +17,16 @@ function EditReward() {
     const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
     const [modalTitle, setModalTitle] = useState('Add Reward');
     const [isEditing, setIsEditing] = useState(false); // New state to differentiate between adding and editing
+
+
+    const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+
+    const [isConfirmationAddModalOpen, setIsConfirmationAddModalOpen] = useState(false);
+    
+    const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] = useState(false);
+    const [hoverAdd, setHoverAdd] = useState(false);
+    const [hoverEdit, setHoverEdit] = useState(false);
+
     
 
     const location = useLocation();  
@@ -191,6 +202,59 @@ function EditReward() {
         console.log('Selected image:', file.name);
         setSelectedImage(file); // Update selected image
     };
+
+    const handleEdit = () => {
+        setIsConfirmationModalOpen(true); 
+    };
+
+    // confirmation edit modal buttons
+    const handleConfirmEdit = () => {
+        updateReward();
+        setIsConfirmationModalOpen(false); 
+    };
+
+    const handleCancelEdit = () => {
+        setIsConfirmationModalOpen(false); 
+    };
+
+
+   
+
+    const handleCreateClick = () => {
+     // Clear inputs before adding new reward
+        setIsConfirmationAddModalOpen(true); 
+        setSelectedImage(null);  // Explicitly reset the selected image
+    };
+
+    const handleConfirm = () => {
+        createReward();  
+        setIsConfirmationAddModalOpen(false); 
+    };
+
+
+
+    const handleCancel = () => {
+        setIsConfirmationModalOpen(false); 
+        setIsConfirmationAddModalOpen(false); 
+    };
+
+
+
+    //DELETE 
+    const handleDeleteClick = (id) => {
+        setIsDeleteConfirmationModalOpen(true);
+        setRewardId(id); // Store the reward ID for later deletion
+    };
+    
+    const handleConfirmDelete = () => {
+        deleteReward(rewardId);  // Pass the stored reward ID for deletion
+        setIsDeleteConfirmationModalOpen(false);
+    };
+    
+
+    const handleCancelDelete = () => {
+        setIsDeleteConfirmationModalOpen(false); // Close the modal without doing anything
+    };
     return (
         <>
         <h1 className='headings'>Management</h1>
@@ -230,9 +294,21 @@ function EditReward() {
         
         
         <div className="header-buttons">
-            <button onClick={handleAddClick}> Add </button>
-            <Link to="/Edit" className="activityLink">
-                <button> Edit </button>
+            <button
+                onClick={handleAddClick}
+                className={hoverAdd ? "hButton hButtonHover addButton" : "hButton addButton"}
+                onMouseEnter={() => setHoverAdd(true)}
+                onMouseLeave={() => setHoverAdd(false)}
+            >
+                Add
+            </button>
+            <Link
+                to="/Edit"
+                className={hoverEdit ? "hButton hButtonHover editButton activityLink" : "hButton editButton activityLink"}
+                onMouseEnter={() => setHoverEdit(true)}
+                onMouseLeave={() => setHoverEdit(false)}
+            >
+                Edit
             </Link>
         </div>
 
@@ -245,6 +321,42 @@ function EditReward() {
             onChange={handleChange}
             onImageChange={handleImageChange} // Pass the image change handler
             modalTitle={modalTitle}
+        />
+
+           {/* Modal for Add/Edit Reward */}
+           <Modal
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            onSubmit={isEditing ? handleEdit : handleCreateClick}
+            formData={{ name, category, quantity, price }}
+            onChange={handleChange}
+            onImageChange={handleImageChange} // Pass the image change handler
+            modalTitle={modalTitle}
+        />
+
+        <ModalConfirmation
+            isOpen={isConfirmationModalOpen}
+            message="Are you sure you want to edit this reward?"
+            onConfirm={handleConfirmEdit}
+            onCancel={handleCancelEdit}
+        />
+        {/* handle edit */}
+
+
+        <ModalConfirmation
+            isOpen={isConfirmationAddModalOpen}
+            message="Are you sure you want to create this reward?"
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+        />
+
+
+
+        <ModalConfirmation
+            isOpen={isDeleteConfirmationModalOpen}
+            message="Are you sure you want to delete this reward?"
+            onConfirm={handleConfirmDelete} 
+            onCancel={handleCancelDelete}
         />
 
         <div className="table-container">
@@ -274,10 +386,10 @@ function EditReward() {
                             <td>{reward.Quantity}</td>
                             <td>{reward.Price}</td>
                             <td className="rrBtn">
-                                <button  style={{ backgroundColor: '#4CAF50' }} onClick={() => handleEditClick(reward)} className="btn-edit">
+                            <button  style={{ backgroundColor: '#4CAF50' }} onClick={() => handleEditClick(reward)} className="btn-edit">
                                     <i className="fas fa-pencil-alt"></i>
                                 </button>
-                                <button style={{ backgroundColor: '#F44336' }}  onClick={() => deleteReward(reward._id)} className="btn-delete">
+                                <button style={{ backgroundColor: '#F44336' }}  onClick={() => handleDeleteClick(reward._id)} className="btn-delete">
                                     <i className="fas fa-trash"></i>
                                 </button>
                             </td>

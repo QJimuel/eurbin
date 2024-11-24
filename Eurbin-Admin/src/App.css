@@ -21,7 +21,6 @@ body, h1, h2, p {
     display: flex;
     height: 100%;
     margin: 0;
-
   }
 
   /*Side bar font and classnames*/
@@ -103,14 +102,19 @@ body, h1, h2, p {
   }
 
   .header {
+    position: sticky; 
+    top: 0; 
     background-color: #800000; 
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top:1%;
+    padding-left: 0%;
+    padding-right: 6%;
+    padding-top: 0%;
+    padding-bottom: 1%;
     display: flex;
+    margin-left: -10%;
     justify-content: space-between;
     align-items: center;
-  }
+    z-index: 100; 
+  }  
 
   .headings {
     color: white;
@@ -167,14 +171,17 @@ body, h1, h2, p {
     border-collapse: separate;
     border-spacing: 0 15px; 
     overflow-y: hidden; 
+    padding-bottom: 30px;
   }
 
   thead th {
     border: none; 
+    position: sticky;
     text-align: center; 
     padding: 10px;
     font-weight: bold;
     color: #2B0100;
+    white-space: nowrap;
   }
 
   .table-container tbody tr {
@@ -317,11 +324,12 @@ body, h1, h2, p {
   }
   
   button {
+    padding-top: 10.5px;
+    padding-bottom: 7px;
     font-family: "Manjari", system-ui;
     background-color: white;
     border: 1px solid #2B0100;
     border-radius: 10px;
-    padding: 10px 10px 5px 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -388,11 +396,68 @@ body, h1, h2, p {
 
 .header-buttons {
   display: flex;
-  gap: 5px; 
+  gap: 10px; /* Consistent spacing between buttons */
+  justify-content: flex-end; /* Align buttons to the right */
   margin-top: 2%;
-  margin-left: 90%;
   margin-bottom: 2%;
+  padding-right: 1%; /* Adjust spacing from the right side */
 }
+
+.header-button { /*CSS FOR ADD BUTTON IN CONTENT MANAGEMENT*/
+  display: flex;
+  gap: 10px; /* Consistent spacing between buttons */
+  justify-content: flex-end; /* Align buttons to the right */
+  margin-top: 2%;
+  margin-bottom: 0%;
+  padding-right: 1%; /* Adjust spacing from the right side */
+}
+
+/* Button common styles */
+.hButton {
+  display: inline-block;
+  color: #FFF;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  /* padding: 12.5px 15px; */
+  padding-top: 15px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 25px;
+  border: none;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+/* Add button specific styles */
+.addButton {
+  width: 80px; /* Use fixed width for consistency */
+  background-color: #800000;
+}
+
+/* Edit button specific styles */
+.editButton {
+  width: 55px; /* Use fixed width for consistency */
+  background-color: #800000;
+}
+
+
+/* Hover styles */
+.hButtonHover {
+  background-color: #a00000; /* Default hover effect for Add button */
+}
+
+.editButton.hButtonHover {
+  background-color: #a00000; /* Hover effect for Edit button */
+}
+
+/* For links behaving like buttons */
+.activityLink {
+  text-decoration: none;
+}
+
 
 .addContBtn {
   background-color: #4CAF50; 
@@ -416,6 +481,7 @@ body, h1, h2, p {
 
 .rrBtn {
   display: flex;
+  margin-top: 8%;
   justify-content: center;
   align-items: center; 
 }
@@ -589,7 +655,9 @@ body, h1, h2, p {
 
 
 .btn-edit {
+  height: 30px;
   background: none;
+  border-radius: 5px;
   cursor: pointer;
   color: black; /* Change color if needed */
 }
@@ -600,7 +668,6 @@ body, h1, h2, p {
   border-radius: 5px;
   cursor: pointer;
   color: black; /* Change color if needed */
-
 }
 
 .status {
@@ -615,14 +682,16 @@ body, h1, h2, p {
   display: flex;
   width: 184px;
   gap: 5px; 
-  padding: 10px 10px 5px 10px;
+  padding-top: 10.5px;
+  padding-bottom: 7px;
+  padding-left: 10px;
   border: 1px solid #2B0100;
-  border-radius: 15px;
+  border-radius: 5px;
 }
 
 .sort-container {
   font-family: 'Manjari';
-  margin-left: 84%; 
+  margin-left: 85%; 
   display: inline-block;
 }
 
@@ -644,6 +713,7 @@ body, h1, h2, p {
 }
 
 .rmdHeaders1 {
+  padding-top: 40px;
   display: flex; /* Use flexbox layout */
   align-items: center; /* Center items vertically */
   justify-content: space-between; /* Space items evenly */
@@ -652,14 +722,11 @@ body, h1, h2, p {
 
 .pasokLang{
   display: flex;
-  margin-right: 5%;
+  margin-right: 5.3%;
   width: 400px;
   justify-content: space-evenly;
   align-items: center;
 }
-
-
-
 
 .rmdHeaders p{
   font-size: 13px;
@@ -692,7 +759,7 @@ body, h1, h2, p {
 
 .activityButton {
   margin-top: 1%;
-  margin-left: auto; 
+  margin-left: 92.5%; 
   margin-bottom: 2%;
 }
 
@@ -701,9 +768,9 @@ body, h1, h2, p {
 }
 
 .analyticsBox{
-  height: 550px;
+  height: 100vh;
   width: 90%;
-  padding-top: 3%;
+  padding-top: 0%;
   margin-right: -2.5%;
   justify-content: center;
   align-items: center;
@@ -754,7 +821,7 @@ body, h1, h2, p {
 
 .dashboardBox{
   width: 90%;
-  padding-top: 3%;
+  padding-top: 0%;
   overflow-y: auto;
 }
 
@@ -782,6 +849,8 @@ body, h1, h2, p {
   padding: 5px;
   box-sizing: border-box;
   max-width: 100%; 
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .dbox {
@@ -845,7 +914,10 @@ body, h1, h2, p {
 }
 
 .dTitle{
+  padding-top: 5px;
   font-size: 2.5vh;
+  white-space: nowrap;
+  margin-right: 5px
 }
 
 .headerAndBinBox{
@@ -1099,16 +1171,47 @@ body, h1, h2, p {
   flex: 1;
 }
 
-.epUpdateBtn {
-  background-color: #800000;
-  color: white;
+.modalButton {
+  display: block;
+  background-color: #800000;  
+  color: #fff;
+  font-weight: bold;
   border: none;
-  padding: 10px;
+  padding-top: 12.5px;
+  padding-bottom: 9px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 12px;
-  width: 330px;
-  justify-content: center;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  width: 21.5vw;
+}
+
+.showPasswordBtn {
+  position: absolute;
+  right: 40px;
+  top: 45%;
+  transform: translateY(35%);
+  background: none;
+  border: none;
+  color: #800000;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.showPasswordBtnN {
+  position: absolute;
+  right: 40px;
+  top: 61%;
+  transform: translateY(35%);
+  background: none;
+  border: none;
+  color: #800000;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.modalButtonHover {
+  background-color: #a00000; /* Default hover effect for Add button */
 }
 /*EDIT PROFILE CSS END*/
 

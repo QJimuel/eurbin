@@ -84,12 +84,7 @@ function RecycleableData() {
             </nav>
 
             <div className="rmdHeaders">
-                <p>EURBin Status: </p>
-                <div className="binLevel">
-                    <div className="binPercent">
-                        <p>80%</p>
-                    </div>
-                </div>
+          
                 <div className="activityButton">
                     <Link to="/Activity" className="activityLink">
                         <button>Activity</button>

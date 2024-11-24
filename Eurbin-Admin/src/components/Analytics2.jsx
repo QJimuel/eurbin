@@ -50,6 +50,9 @@ import content from '../Images/content1.png'
     const [selectedReward, setSelectedReward] = useState(null); // Store the selected reward name
     const [rewardTransactions, setRewardTransactions] = useState([]); // Store the selected reward transactions
 
+    const [selectedYear, setSelectedYear] = useState(2024); // Default to 2024
+    const years = [2019, 2020, 2021, 2022, 2023, 2024]; // Dropdown options 
+
 
 
     const [totals, settotals] = useState([]);
@@ -270,66 +273,64 @@ import content from '../Images/content1.png'
     const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
     return date.toLocaleString('en-US', options);
 }
-    const processData = (data) => {
-      // Define all months of the year with default values
-      const months = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-      ];
+const processData = (data, year) => {
+  // Filter data for the selected year
+  const filteredData = data.filter((item) => {
+    const itemYear = new Date(item.date).getFullYear();
+    return itemYear === year;
+  });
 
-      // Initialize a map with all months and default values
-      const monthlyData = months.reduce((acc, month) => {
-        acc[`${month} 2024`] = {
-          formattedDate: `${month} `,
-          totalUser: 0,
-          totalBottle: 0,
-          totalCo2: 0,  // Add totalCo2 here
-        };
-        return acc;
-      }, {});
+  // The rest of your processData logic remains unchanged
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
 
-      // Process the data to get the highest values for each month
-      data.forEach(item => {
-        const date = new Date(item.date);
-        const monthYear = `${date.toLocaleDateString('default', { month: 'short' })} ${date.getFullYear()}`;
+  const monthlyData = months.reduce((acc, month) => {
+    acc[`${month} ${year}`] = {
+      formattedDate: `${month} ${year}`,
+      totalUser: 0,
+      totalBottle: 0,
+      totalCo2: 0,
+    };
+    return acc;
+  }, {});
 
-        if (monthlyData[monthYear]) {
-          // Update the highest value for the current month
-          monthlyData[monthYear].totalUser = Math.max(monthlyData[monthYear].totalUser, item.totalUser || 0);
-          monthlyData[monthYear].totalBottle = Math.max(monthlyData[monthYear].totalBottle, item.totalBottle || 0);
-          monthlyData[monthYear].totalCo2 = Math.max(monthlyData[monthYear].totalCo2, item.totalCo2 || 0); // Add this line
-        }
-      });
+  filteredData.forEach((item) => {
+    const date = new Date(item.date);
+    const monthYear = `${date.toLocaleDateString("default", { month: "short" })} ${date.getFullYear()}`;
 
-      // Extract and sort the data
-      const sortedMonthlyData = Object.values(monthlyData)
-        .sort((a, b) => new Date(a.formattedDate) - new Date(b.formattedDate));
+    if (monthlyData[monthYear]) {
+      monthlyData[monthYear].totalUser = Math.max(monthlyData[monthYear].totalUser, item.totalUser || 0);
+      monthlyData[monthYear].totalBottle = Math.max(monthlyData[monthYear].totalBottle, item.totalBottle || 0);
+      monthlyData[monthYear].totalCo2 = Math.max(monthlyData[monthYear].totalCo2, item.totalCo2 || 0);
+    }
+  });
 
-      // Adjust values for each month
-      let lastMonthData = { totalUser: 0, totalBottle: 0, totalCo2: 0 }; // Initialize totalCo2
+  const sortedMonthlyData = Object.values(monthlyData)
+    .sort((a, b) => new Date(a.formattedDate) - new Date(b.formattedDate));
 
-      return sortedMonthlyData.map((monthData, index) => {
-        // Calculate the difference between the current month and the last month
-        const currentMonthUser = monthData.totalUser - lastMonthData.totalUser;
-        const currentMonthBottle = monthData.totalBottle - lastMonthData.totalBottle;
-        const currentMonthCo2 = monthData.totalCo2 - lastMonthData.totalCo2; // Add this line
+  let lastMonthData = { totalUser: 0, totalBottle: 0, totalCo2: 0 };
 
-        // Update last month's data for the next iteration
-        lastMonthData = {
-          totalUser: monthData.totalUser,
-          totalBottle: monthData.totalBottle,
-          totalCo2: monthData.totalCo2, // Add this line
-        };
+  return sortedMonthlyData.map((monthData) => {
+    const currentMonthUser = monthData.totalUser - lastMonthData.totalUser;
+    const currentMonthBottle = monthData.totalBottle - lastMonthData.totalBottle;
+    const currentMonthCo2 = monthData.totalCo2 - lastMonthData.totalCo2;
 
-        // Ensure values don't go negative
-        return {
-          formattedDate: monthData.formattedDate,
-          totalUser: Math.max(currentMonthUser, 0),
-          totalBottle: Math.max(currentMonthBottle, 0),
-          totalCo2: Math.max(currentMonthCo2, 0), // Add this line
-        };
-      });
-  };
+    lastMonthData = {
+      totalUser: monthData.totalUser,
+      totalBottle: monthData.totalBottle,
+      totalCo2: monthData.totalCo2,
+    };
+
+    return {
+      formattedDate: monthData.formattedDate,
+      totalUser: Math.max(currentMonthUser, 0),
+      totalBottle: Math.max(currentMonthBottle, 0),
+      totalCo2: Math.max(currentMonthCo2, 0),
+    };
+  });
+};
 
 
   const CustomizedTooltip = ({ active, payload }) => {
@@ -347,8 +348,8 @@ import content from '../Images/content1.png'
   };
 
 
-    
-    const formattedData = processData(totals);
+  const formattedData = processData(totals, selectedYear);
+
 
     const logout = () => {
       window.localStorage.clear();
@@ -440,7 +441,7 @@ import content from '../Images/content1.png'
     
       console.log("Filtered Transactions:", filteredTransactions); // Verify the result
     };
-    
+      
     
 
     return (
@@ -559,18 +560,37 @@ import content from '../Images/content1.png'
            
             <ResponsiveContainer width="95%" height={300}>
   <h3>Monthly Contributions Overview</h3>
-  <AreaChart
-    data={formattedData}
-    onClick={(data, index) => {
-      const clickedMonthName = data.activeLabel.trim(); // Example: "Oct"
-      const year = '2024'; // You can fetch this dynamically based on the data
-
-      // Convert "Oct" to "2024-10"
-      const selectedMonth = `${year}-${monthNames[clickedMonthName]}`;
-
-      setSelectedMonth(selectedMonth);
-    }}
+  <div>
+  <label htmlFor="yearDropdown">Select Year: </label>
+  <select
+    id="yearDropdown"
+    value={selectedYear}
+    onChange={(e) => setSelectedYear(Number(e.target.value))}
   >
+    {years.map((year) => (
+      <option key={year} value={year}>
+        {year}
+      </option>
+    ))}
+  </select>
+</div>
+    <AreaChart
+      data={formattedData}
+      onClick={(data, index) => {
+        const clickedMonthName = data.activeLabel.trim(); // Example: "Oct 2024"
+    
+        // Extract the month and year from the clicked label
+        const [monthName, year] = clickedMonthName.split(" "); // ["Oct", "2024"]
+    
+        // Convert "Oct 2024" to "2024-10"
+        const monthIndex = new Date(`${monthName} 1`).getMonth() + 1; // Get month index (1-12)
+        const formattedMonthIndex = monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
+        const selectedMonth = `${year}-${formattedMonthIndex}`;
+    
+        // Update the state
+        setSelectedMonth(selectedMonth);
+      }}
+    >
   
   <CartesianGrid strokeDasharray="1 0" stroke="#ccc" horizontal={true} vertical={false} />
     <XAxis
