@@ -37,6 +37,26 @@ function ModalUser({ isOpen, onClose, user , button}) {
         }
     };
 
+    
+    const handleActivate = async () => {
+        try {
+            // Make the API request to deactivate the user
+            const response = await axios.delete(`https://eurbin.vercel.app/user/${user._id}`);
+
+            if (response.status === 200) {
+                alert('User deactivated successfully');
+                onClose();
+  // Refresh the user list after deactivation
+            } else {
+                console.error('Error deactivating user:', response);
+                alert('Error deactivating user');
+            }
+        } catch (err) {
+            console.error('Error during deactivation:', err);
+            alert('An error occurred during deactivation');
+        }
+    };
+
     return (
         <div style={modalOverlayStyle}>
             <div style={modalContentStyle}>

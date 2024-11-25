@@ -18,6 +18,8 @@ router.get('/',authenticateToken,  userController.getAllUsers);//--
 router.get('/:id',authenticateToken,  userController.getUserById); //--
 
 router.put('/:id',authenticateToken ,userController.upload,userController.updateUser);
+router.put('/reactivate/:id', authenticateToken, userController.reactivateUser);
+
 
 router.delete('/:id', authenticateToken, userController.deleteUser); //--
 
