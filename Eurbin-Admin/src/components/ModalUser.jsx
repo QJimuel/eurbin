@@ -20,13 +20,17 @@ function ModalUser({ isOpen, onClose, user , button}) {
 
     const handleDeactivate = async () => {
         try {
-            // Make the API request to deactivate the user
-            const response = await axios.delete(`https://eurbin.vercel.app/user/${user._id}`);
-
+            const token = localStorage.getItem('token'); // Replace with the method you're using to store the token
+            const response = await axios.delete(`https://eurbin.vercel.app/user/${user._id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+    
             if (response.status === 200) {
                 alert('User deactivated successfully');
                 onClose();
-  // Refresh the user list after deactivation
+                // Refresh the user list after deactivation
             } else {
                 console.error('Error deactivating user:', response);
                 alert('Error deactivating user');
@@ -36,26 +40,34 @@ function ModalUser({ isOpen, onClose, user , button}) {
             alert('An error occurred during deactivation');
         }
     };
-
     
     const handleActivate = async () => {
         try {
-            // Make the API request to deactivate the user
-            const response = await axios.delete(`https://eurbin.vercel.app/user/${user._id}`);
-
+            const token = localStorage.getItem('token'); // Replace with the method you're using to store the token
+            const response = await axios.put(
+                `https://eurbin.vercel.app/user/reactivate/${user._id}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+    
             if (response.status === 200) {
-                alert('User deactivated successfully');
+                alert('User reactivated successfully');
                 onClose();
-  // Refresh the user list after deactivation
+                // Refresh the user list after reactivation
             } else {
-                console.error('Error deactivating user:', response);
-                alert('Error deactivating user');
+                console.error('Error reactivating user:', response);
+                alert('Error reactivating user');
             }
         } catch (err) {
-            console.error('Error during deactivation:', err);
-            alert('An error occurred during deactivation');
+            console.error('Error during reactivation:', err);
+            alert('An error occurred during reactivation');
         }
     };
+    
 
     return (
         <div style={modalOverlayStyle}>

@@ -54,6 +54,8 @@ function DashboardLayout() {
   const [largeBottleCount, setLargeBottleCount] = useState(0);
   const [hoverCollect, setHoverCollect] = useState(false);
 
+
+  const [selectedOption, setSelectedOption] = useState('perMonth');
   useEffect(() => {
     fetchTotal();
     fetchUser();
@@ -65,6 +67,15 @@ function DashboardLayout() {
     }
 
   }, []);
+
+  useEffect(() => {
+    // Fetch data based on selected option
+    if (selectedOption === 'perMonth') {
+        fetchCollectedDataPerMonth();
+    } else {
+        fetchCollectedData();
+    }
+}, [selectedOption]);
 
   const fetchBottleData = async () => {
     try {
@@ -95,8 +106,8 @@ function DashboardLayout() {
 
   const [error, setError] = useState(null);
 
-  /*
-  const fetchCollectedData = async () => {
+  
+  const fetchCollectedDataPerMonth = async () => {
     try {
         const token = localStorage.getItem('token'); // Retrieve the token from localStorage
         const response = await axios.get(collected_API_URL, {
@@ -166,7 +177,7 @@ function DashboardLayout() {
         alert('An error occurred while fetching collected data');
     }
 };
-*/
+
 
 const fetchCollectedData = async () => {
   try {
@@ -575,7 +586,11 @@ const fetchCollectedData = async () => {
     <div className="dbox">
         <img src={co2} alt="" />
         <div>
-            <b>{Number(totals.highestTotalCo2).toFixed(2)} kg</b>
+            <b>  {(
+                    smallBottleCount * 0.1 + 
+                    largeBottleCount * 0.2
+                ).toFixed(2)}{" "}
+                kg</b>
             <p>Total CO₂</p>
         </div>
     </div>
@@ -653,9 +668,21 @@ const fetchCollectedData = async () => {
   */}
 
 <div style={{ width: '80%', height: 300, justifyContent: 'center', textAlign: 'center' }}>
-    <h3>Collected Bottle Counts by Month</h3>
+    <h3>Collected Bottle Counts</h3>
+    <div style={{ marginBottom: '20px' }}>
+                <label htmlFor="dataType">Select Data Type: </label>
+                <select
+                    id="dataType"
+                    value={selectedOption}
+                    onChange={(e) => setSelectedOption(e.target.value)}
+                >
+                    <option value="perMonth">Per Month</option>
+                    <option value="perCollected">Per Collected</option>
+                </select>
+            </div>
+
     <ResponsiveContainer width="100%" height={250}>
-        <LineChart data={collectedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <BarChart data={collectedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             {/* Remove CartesianGrid to hide the grid */}
             <XAxis dataKey="date" />
             <YAxis />
@@ -670,14 +697,12 @@ const fetchCollectedData = async () => {
                 return null;
             }} />
             <Legend />
-            <Line 
-                type="monotone" 
+            <Bar 
                 dataKey="bottleCountDifference" 
-                stroke="#8884d8" 
-                strokeWidth={2}
-                dot={{ r: 4 }} // Adds dots at each data point
+                fill="#8884d8" 
+                barSize={30} // Adjust the width of the bars
             />
-        </LineChart>
+        </BarChart>
     </ResponsiveContainer>
 </div>
 

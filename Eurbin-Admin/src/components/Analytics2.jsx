@@ -14,16 +14,28 @@ import content from '../Images/content1.png'
 
   import { Outlet, Link } from 'react-router-dom';
   import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend as RechartsLegend,
     LineChart, Line,
     ResponsiveContainer,
     PieChart,
     Pie,
     Cell,
     AreaChart,
-    Area
+    Area,
+    
   } from 'recharts';
   import axios from 'axios';
+
+  import {
+    Chart as ChartJS,
+    ArcElement,
+    Tooltip as ChartJSTooltip,
+    Legend as ChartJSLegend,
+  
+    DoughnutController,
+  } from 'chart.js';
+  import { Doughnut } from 'react-chartjs-2';
+  ChartJS.register(ArcElement, ChartJSTooltip, ChartJSLegend,  DoughnutController);
 
   import EditProfileModal from "./EditProfileModal";
   import ChangePassModal from "./ChangePassModal";
@@ -34,6 +46,10 @@ import content from '../Images/content1.png'
     const user_API_URL = 'https://eurbin.vercel.app/user';
     const reward_API_URL = 'https://eurbin.vercel.app/rewards';
     const transaction_API_URL = 'https://eurbin.vercel.app/transactions';
+    const BOTTLES_API_URL = 'https://eurbin.vercel.app/bottles';
+
+    const [smallBottleCount, setSmallBottleCount] = useState(0);
+    const [largeBottleCount, setLargeBottleCount] = useState(0);
 
     const [selectedDepartment, setSelectedDepartment] = useState(null);
     const [selectedMonth, setSelectedMonth] = useState(null); 
@@ -43,6 +59,9 @@ import content from '../Images/content1.png'
 
     const [selectedRole, setSelectedRole] = useState("");
     const [selectedYearLevel, setSelectedYearLevel] = useState("");
+
+    const [selectedRole1, setSelectedRole1] = useState(null);
+
 
     const yearLevels = ["1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year"];
 
@@ -66,6 +85,9 @@ import content from '../Images/content1.png'
 
     const location = useLocation();
 
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [chartData, setChartData] = useState(null);
     const colors = [
       '#FF5733', // Red
       '#33FF57', // Green
@@ -107,6 +129,11 @@ import content from '../Images/content1.png'
       Dec: '12',
     };
 
+    const getUsersByRole = (role) => {
+      return user.filter((user) => user.role === role);
+    };
+    
+
     const departments = [
       "CIHTM",
       "CCMS",
@@ -125,13 +152,40 @@ import content from '../Images/content1.png'
       fetchTotal();
       fetchHighestTotal();
       fetchUser();
-    
       fetchTransactions();
+      fetchBottleData();
       const email = localStorage.getItem('username');
       if (email) {
         setGreetingName(email);
       }
     }, []);
+
+    
+    const fetchBottleData = async () => {
+      try {
+          const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+          const response = await axios.get(BOTTLES_API_URL, {
+              headers: {
+                  Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+              },
+          });
+  
+          console.log(response.data);  // Log the response to ensure the format
+          if (response.status === 200 && Array.isArray(response.data.bottles)) {  // Access bottles array
+              const smallBottles = response.data.bottles.filter(bottle => bottle.Size === 'Small').length;
+              const largeBottles = response.data.bottles.filter(bottle => bottle.Size === 'Large').length;
+  
+              setSmallBottleCount(smallBottles);
+              setLargeBottleCount(largeBottles);
+          } else {
+              console.error('Unexpected data format:', response.data);
+              alert('An error occurred: Unexpected data format');
+          }
+      } catch (err) {
+          console.error('Error fetching bottle data:', err);
+          alert('An error occurred while fetching bottle data');
+      }
+  };
     const fetchTotal = async () => {
       try {
         const token = localStorage.getItem('token'); // Retrieve token
@@ -173,7 +227,7 @@ import content from '../Images/content1.png'
         alert('An error occurred while fetching highest totals');
       }
     };
-    
+/*    
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token'); // Retrieve token
@@ -186,6 +240,54 @@ import content from '../Images/content1.png'
         if (response.status === 200 && response.data.users) {
           const activeUsers = response.data.users.filter(user => user.isActive);
           setUser(activeUsers);
+        } else {
+          console.error('Unexpected data format:', response.data);
+          alert('An error occurred: Unexpected data format');
+        }
+      } catch (err) {
+        console.error('Error fetching users:', err);
+        alert('An error occurred while fetching users');
+      }
+    };
+*/
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve token
+        const response = await axios.get(user_API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token
+          },
+        });
+  
+        if (response.status === 200 && response.data.users) {
+          const activeUsers = response.data.users.filter((user) => user.isActive);
+          setUser(activeUsers);
+  
+          // Process roles for chart data
+          const roleCounts = activeUsers.reduce(
+            (acc, user) => {
+              acc[user.role] = (acc[user.role] || 0) + 1;
+              return acc;
+            },
+            { Student: 0, Staff: 0, ETEEAP: 0, Faculty: 0 } // Ensure all roles are accounted for
+          );
+  
+          // Prepare chart data
+          const data = {
+            labels: ['Student', 'Staff', 'ETEEAP', 'Faculty'],
+            datasets: [
+              {
+                data: [
+                  roleCounts.Student,
+                  roleCounts.Staff,
+                  roleCounts.ETEEAP,
+                  roleCounts.Faculty,
+                ],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A'], // Colors for each role
+              },
+            ],
+          };
+          setChartData(data);
         } else {
           console.error('Unexpected data format:', response.data);
           alert('An error occurred: Unexpected data format');
@@ -546,10 +648,13 @@ const processData = (data, year) => {
           </div>
           <div className="boxes" style={styles.boxes}>
             <div className="co2Box" style={styles.co2Box}>
-              <p style={styles.boxText}> Highest CO2: { !isNaN(Number(highTotals.highestTotalCo2)) ? Number(highTotals.highestTotalCo2).toFixed(2) : '0.00' }</p>
+              <p style={styles.boxText}> Highest CO2:  {(
+                    smallBottleCount * 0.1 + 
+                    largeBottleCount * 0.2
+                ).toFixed(2)}</p>
             </div>
             <div className="bottleKgBox" style={styles.bottleKgBox}>
-              <p style={styles.boxText}>Highest Bottle (kg): {(highTotals.highestTotalBottle / 50)}</p>
+              <p style={styles.boxText}>Highest Bottle (kg): {((smallBottleCount + largeBottleCount) / 50)}</p>
             </div>
           </div>
             
@@ -607,8 +712,8 @@ const processData = (data, year) => {
       
       
     />
-    <Tooltip content={<CustomizedTooltip />} />
-    <Legend />
+    <RechartsTooltip content={<CustomizedTooltip />} />
+    <RechartsLegend />
 
     <Area
       type="monotone"
@@ -768,6 +873,115 @@ const processData = (data, year) => {
       <br />
       <br />
       <br />
+
+    <div style={{ display: 'flex', justifyContent: 'space-between', height: '400px', margin: '50px' }}>
+      {/* Doughnut Chart */}
+      <div
+        style={{
+          flex: 1,
+          transition: 'transform 0.5s ease-out', // Smooth transition for movement
+          transform: selectedRole ? 'translateX(-20%)' : 'none', // Move chart slightly left when a role is selected
+          textAlign: 'center',
+        }}
+      >
+        <h3>User Role Distribution</h3>
+        <Doughnut
+          data={chartData}
+          options={{
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom',
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const label = context.label || '';
+                    const value = context.raw || 0;
+                    return `${label}: ${value}`;
+                  },
+                },
+              },
+            },
+            onClick: (evt, elements) => {
+              if (elements.length > 0) {
+                const clickedIndex = elements[0].index;
+                const role = chartData.labels[clickedIndex];
+                setSelectedRole(role); // Set the selected role
+              }
+            },
+          }}
+        />
+      </div>
+
+      {/* User Table */}
+      <div
+        style={{
+          flex: 1,
+          transition: 'transform 0.5s ease-out', // Smooth transition for movement
+          transform: selectedRole ? 'translateX(0)' : 'translateX(100%)', // Move table into view when a role is selected
+        }}
+      >
+        {selectedRole && (
+          <>
+            <h3>Users in {selectedRole} Role</h3>
+
+            {/* Search Field */}
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Search by username..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            <div className="table-container-analytics">
+              <div className="table-container">
+                <table className="w3-table-all">
+                  <thead>
+                    <tr className="w3-light-grey">
+                      <th>Username</th>
+                      <th>Plastic Bottle</th>
+                      <th>Role</th>
+                      <th>CO2</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {getUsersByRole(selectedRole)
+                      .filter((u) =>
+                        u.userName.toLowerCase().includes(searchQuery.toLowerCase())
+                      )
+                      .map((u, index) => (
+                        <tr key={index}>
+                          <td>{u.userName}</td>
+                          <td>{u.plasticBottle}</td>
+                          <td>{u.role}</td>
+                          <td>{u.co2}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Back Button */}
+            <button
+              style={{ marginTop: '20px' }}
+              onClick={() => setSelectedRole(null)}
+            >
+              Back to Chart
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+
+
+    <br />
+      <br />
+      <br />
+      <br />
               <h3>User Distribution by Department</h3>
 
       <div style={{ display: 'flex', justifyContent: 'space-around', height: '300px', margin: '50px'}}>
@@ -788,7 +1002,7 @@ const processData = (data, year) => {
                 <Cell key={`cell-${index}`} fill={['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#ff9f40', '#4bc0c0', '#36a2eb'][index % 7]} />
               ))}
             </Pie>
-            <Tooltip />
+            <RechartsTooltip />
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -803,8 +1017,8 @@ const processData = (data, year) => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="program" />
                 <YAxis />
-                <Tooltip />
-                <Legend />
+                <RechartsTooltip />
+                <RechartsLegend />
                 <Bar 
                   dataKey="userCount" 
                   fill="#36a2eb" 
@@ -830,35 +1044,51 @@ const processData = (data, year) => {
     <br />
      {/* Display user details when a bar is clicked */}
      {selectedProgram && (
-              <div style={{ marginTop: '20px' }}>
-                <h4>Users in {selectedProgram}</h4>
-                <div className="table-container-analytics">
-                  <div className="table-container">
-                    <table className="w3-table-all">
-                      <thead>
-                        <tr className="w3-light-grey">
-                          <th>Username</th>
-                          <th>Plastic Bottle</th>
-                          <th>Program</th>
-                          <th>CO2</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {getUsersByProgram(selectedProgram).map((u, index) => (
-                          <tr key={index}>
-                            <td>{u.userName}</td>
-                            <td>{u.plasticBottle}</td>
-                            <td>{u.program}</td>
-                            <td>{u.co2}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <button onClick={() => setSelectedProgram(null)}  >Back to Programs</button>
-              </div>
-            )}
+  <div style={{ marginTop: '20px' }}>
+    <h4>Users in {selectedProgram}</h4>
+
+    {/* Search Field */}
+    <div className="search-container">
+      <input
+        type="text"
+        placeholder="Search by username..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+    
+      />
+    </div>
+
+    <div className="table-container-analytics">
+      <div className="table-container">
+        <table className="w3-table-all">
+          <thead>
+            <tr className="w3-light-grey">
+              <th>Username</th>
+              <th>Plastic Bottle</th>
+              <th>Program</th>
+              <th>CO2</th>
+            </tr>
+          </thead>
+          <tbody>
+            {getUsersByProgram(selectedProgram)
+              .filter((u) =>
+                u.userName.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((u, index) => (
+                <tr key={index}>
+                  <td>{u.userName}</td>
+                  <td>{u.plasticBottle}</td>
+                  <td>{u.program}</td>
+                  <td>{u.co2}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <button onClick={() => setSelectedProgram(null)}>Back to Programs</button>
+  </div>
+)}
   <br />
       <br />
     
@@ -886,8 +1116,8 @@ const processData = (data, year) => {
       axisLine={{ stroke: '#fff', strokeWidth: 1 }}
       tickLine={{ stroke: '#fff', strokeWidth: 1 }}
     />
-    <Tooltip />
-    <Legend />
+    <RechartsTooltip />
+    <RechartsLegend />
     <Line
   type="monotone"
   dataKey="transactionCount"
