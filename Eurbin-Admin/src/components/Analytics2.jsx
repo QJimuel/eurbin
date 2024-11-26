@@ -874,18 +874,35 @@ const processData = (data, year) => {
       <br />
       <br />
 
-    <div style={{ display: 'flex', justifyContent: 'space-between', height: '400px', margin: '50px' }}>
+  
+      {chartData ? (
+  <>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: selectedRole ? 'space-between' : 'center',
+        alignItems: 'center',
+        flexWrap:'wrap',
+        height: '300px',
+        margin: '50px',
+     
+        transition: 'justify-content 0.5s ease-out',
+      }}
+    >
       {/* Doughnut Chart */}
       <div
         style={{
-          flex: 1,
-          transition: 'transform 0.5s ease-out', // Smooth transition for movement
-          transform: selectedRole ? 'translateX(-20%)' : 'none', // Move chart slightly left when a role is selected
+          flex: selectedRole ? 1 : 'none',
           textAlign: 'center',
+          transition: 'transform 0.5s ease-out',
+          height: '300px',
+          
         }}
       >
-        <h3>User Role Distribution</h3>
+           <h3>User Role Distribution</h3>
+     
         <Doughnut
+        
           data={chartData}
           options={{
             responsive: true,
@@ -915,67 +932,69 @@ const processData = (data, year) => {
       </div>
 
       {/* User Table */}
-      <div
-        style={{
-          flex: 1,
-          transition: 'transform 0.5s ease-out', // Smooth transition for movement
-          transform: selectedRole ? 'translateX(0)' : 'translateX(100%)', // Move table into view when a role is selected
-        }}
-      >
-        {selectedRole && (
-          <>
-            <h3>Users in {selectedRole} Role</h3>
+      {selectedRole && (
+        <div
+          style={{
+            flex: -1,
+            marginLeft: '20px',
+          }}
+        >
+          <h4>Users in {selectedRole} Role</h4>
 
-            {/* Search Field */}
-            <div className="search-container">
-              <input
-                type="text"
-                placeholder="Search by username..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+          {/* Search Field */}
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="Search by username..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          <div className="table-container-analytics">
+            <div className="table-container">
+              <table className="w3-table-all">
+                <thead>
+                  <tr className="w3-light-grey">
+                    <th>Username</th>
+                    <th>Plastic Bottle</th>
+                    <th>Role</th>
+                    <th>CO2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getUsersByRole(selectedRole)
+                    .filter((u) =>
+                      u.userName.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    .map((u, index) => (
+                      <tr key={index}>
+                        <td>{u.userName}</td>
+                        <td>{u.plasticBottle}</td>
+                        <td>{u.role}</td>
+                        <td>{u.co2}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
             </div>
+          </div>
 
-            <div className="table-container-analytics">
-              <div className="table-container">
-                <table className="w3-table-all">
-                  <thead>
-                    <tr className="w3-light-grey">
-                      <th>Username</th>
-                      <th>Plastic Bottle</th>
-                      <th>Role</th>
-                      <th>CO2</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {getUsersByRole(selectedRole)
-                      .filter((u) =>
-                        u.userName.toLowerCase().includes(searchQuery.toLowerCase())
-                      )
-                      .map((u, index) => (
-                        <tr key={index}>
-                          <td>{u.userName}</td>
-                          <td>{u.plasticBottle}</td>
-                          <td>{u.role}</td>
-                          <td>{u.co2}</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Back Button */}
-            <button
-              style={{ marginTop: '20px' }}
-              onClick={() => setSelectedRole(null)}
-            >
-              Back to Chart
-            </button>
-          </>
-        )}
-      </div>
+          {/* Back Button */}
+          <button
+            style={{ marginTop: '20px' }}
+            onClick={() => setSelectedRole(null)}
+          >
+            Back to Chart
+          </button>
+        </div>
+      )}
     </div>
+  </>
+) : (
+  <p>Loading chart...</p>
+)}
+
 
 
     <br />
