@@ -173,7 +173,7 @@ function SignUp() {
                                     onClick={() => setShowPassword(!showPassword)}
                                     style={styles.showPasswordButton}
                                 >
-                                    <i className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} />
+                                    <i className={`fa ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`} />
                                 </button>
                             </div>
                         </div>
@@ -197,7 +197,7 @@ function SignUp() {
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     style={styles.showConfirmPasswordButton}
                                 >
-                                    <i className={`fa ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`} />
+                                    <i className={`fa ${showConfirmPassword ? 'fa-eye' : 'fa-eye-slash'}`} />
                                 </button>
                             </div>
                         </div>

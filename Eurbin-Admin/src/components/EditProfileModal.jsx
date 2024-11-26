@@ -25,6 +25,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       setFullName(''); 
       setEmail(''); 
       setIsConfirmationModalOpen(false); 
+      EditProfileModal(false);
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Error updating profile'); 

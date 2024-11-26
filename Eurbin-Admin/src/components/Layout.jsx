@@ -63,12 +63,7 @@ const [isLogoutConfirmationOpen, setIsLogoutConfirmationOpen] = useState(false);
 
   return (
     <>
-      <header className="header">
-        <p className="header-title"></p>
-        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
-    
-       
-      </header>
+
 
       <div className="container">
       <aside style={styles.sidebar}>

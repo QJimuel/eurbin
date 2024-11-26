@@ -47,17 +47,12 @@ function Activity2() {
 
     return (
         <>
+        <p style={{ color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, marginTop: '-30px', textAlign: 'right', paddingRight: '10px'}}>Hello, Admin!</p>
             <h1 className='headings'>Bin Management</h1>
 
             
 
-            <div className="rmdHeaders">
-            <p>EURBin Status: </p>
-            <div className="binLevel">
-                <div className="binPercent">
-                    <p>80%</p>
-                </div>
-            </div>
+            <div style={{paddingTop: '21px'}}className="rmdHeadersAct2">
             <div className="activityButton">      
                 <Link to="/Activity2" >
                     <button className={location.pathname === "/Activity2" ? "active-btn" : "inactive-btn"} >
@@ -67,7 +62,7 @@ function Activity2() {
             </div>
         </div>
 
-            <div className="table-container">
+            <div className="table-containerAct2">
                 <table className="w3-table-all">
                     <thead>
                         <tr className="w3-light-grey">

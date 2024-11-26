@@ -153,6 +153,7 @@ body, h1, h2, p {
     overflow-x: hidden; 
     padding-left: 1px;
     padding-right: 1px;
+    min-height: 50px; 
 }
 
 
@@ -242,6 +243,110 @@ body, h1, h2, p {
 }
 
 .table-container-analytics tbody tr:hover {
+  background-color: #f9f9f9; 
+}
+
+
+  /*TABLE CSS*/
+
+  .table-containerAct2 {
+    width: 100%;
+    max-height: 800px; 
+    border-collapse: separate;
+    overflow-y: scroll; 
+    overflow-x: hidden; 
+    padding-left: 1px;
+    padding-right: 1px;
+    min-height: 50px; 
+}
+
+
+  /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+  .table-containerAct2::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar */
+  }
+
+  /* Hide scrollbar for Firefox */
+  .table-containerAct2 {
+    scrollbar-width: none; /* Hides the scrollbar */
+  }
+
+  .w3-table-all {
+    width: 99%;
+    border-collapse: separate;
+    border-spacing: 0 15px; 
+    overflow-y: hidden; 
+    padding-bottom: 30px;
+  }
+
+  thead th {
+    border: none; 
+    position: sticky;
+    text-align: center; 
+    padding: 10px;
+    font-weight: bold;
+    color: #2B0100;
+    white-space: nowrap;
+  }
+
+  .table-containerAct2 tbody tr {
+    outline: 1px solid #2B0100 ; 
+    border-radius: 20px; 
+    background-color: #fff; 
+  }
+
+  .table-containerAct2 tbody tr td {
+    padding: 10px;
+    border: none; 
+    text-align: center; 
+  }
+
+  .table-containerAct2 tbody tr {
+    border-radius: 20px; 
+    overflow: hidden; 
+  }
+
+  .table-containerAct2 tbody tr:hover {
+    background-color: #f9f9f9; 
+  }
+
+
+  .table-containerAct2-analytics {
+  max-height: 200px; 
+  border-collapse: separate;
+  overflow-y: scroll; 
+  overflow-x: hidden; 
+  padding-left: 30px;
+  padding-right: 25px;
+}
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.table-containerAct2-analytics::-webkit-scrollbar {
+  display: none; /* Hides the scrollbar */
+}
+
+/* Hide scrollbar for Firefox */
+.table-containerAct2-analytics {
+  scrollbar-width: none; /* Hides the scrollbar */
+}
+
+.table-containerAct2-analytics tbody tr {
+  outline: 1px solid #2B0100; 
+  border-radius: 20px; 
+  background-color: #fff; 
+}
+
+.table-containerAct2-analytics tbody tr td {
+  padding: 8px;
+  border: none; 
+  text-align: center; 
+}
+
+.table-containerAct2-analytics tbody tr {
+  border-radius: 20px; 
+  overflow: hidden; 
+}
+
+.table-containerAct2-analytics tbody tr:hover {
   background-color: #f9f9f9; 
 }
 
@@ -690,19 +795,121 @@ body, h1, h2, p {
 }
 
 .sort-container {
-  font-family: 'Manjari';
-  margin-left: 85%; 
-  display: inline-block;
+  font-family: 'Manjari', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+  margin-right: 4px;
+  margin-top: -20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
 }
 
-.sort-container label,
-.sort-container select {
-  margin-right: 5px;
-}
-
-.sort-container label{
+.sort-container label {
   font-weight: bold;
   color: #2B0100;
+  margin-right: 10px;
+  padding-top: 3px;
+  font-size: 14px;
+}
+
+.sort-container select {
+  font-family: 'Manjari', sans-serif;
+  font-size: 14px;
+  padding-top: 8px;
+  padding-bottom: 6px;
+  padding-right: 5px;
+  padding-left: 5px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.sort-container select:hover {
+  border-color: #2B0100;
+}
+
+.sort-container select:focus {
+  outline: none;
+  border-color: #2B0100;
+  border: 1px solid #2B0100;
+}
+
+.sort-container option {
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+}
+
+.sort-container option:hover {
+  color: #2B0100;
+  background-color: #f2f2f2; /* Adding a light gray hover effect */
+}
+
+/*Analytics filters*/
+
+.sort-containerA {
+  font-family: 'Manjari', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+  margin-left: 20PX;
+  margin-top: -20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+}
+
+.sort-containerA label {
+  font-weight: bold;
+  color: #2B0100;
+  margin-right: 10px;
+  padding-top: 3px;
+  font-size: 14px;
+}
+
+.sort-containerA select {
+  font-family: 'Manjari', sans-serif;
+  font-size: 14px;
+  padding-top: 8px;
+  padding-bottom: 6px;
+  padding-right: 5px;
+  padding-left: 5px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.sort-containerA select:hover {
+  border-color: #2B0100;
+}
+
+.sort-containerA select:focus {
+  outline: none;
+  border-color: #2B0100;
+  border: 1px solid #2B0100;
+}
+
+.sort-containerA option {
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+}
+
+.sort-containerA option:hover {
+  color: #2B0100;
+  background-color: #f2f2f2; /* Adding a light gray hover effect */
+}
+
+.userDistribution {
+  margin-top: 10%;
 }
 
 /*RECYCLEABLE MATERIALS DATA CSS*/
@@ -710,7 +917,17 @@ body, h1, h2, p {
 .rmdHeaders {
   display: flex; 
   align-items: center; 
+  margin-left: -10px; 
+  gap: 656px;
 }
+
+.rmdHeadersAct2 {
+  display: flex; 
+  align-items: center; 
+  padding-top: 12px;
+  margin-left: 92.2%; 
+}
+
 
 .rmdHeaders1 {
   padding-top: 40px;
@@ -759,7 +976,6 @@ body, h1, h2, p {
 
 .activityButton {
   margin-top: 1%;
-  margin-left: 92.5%; 
   margin-bottom: 2%;
 }
 
@@ -768,7 +984,7 @@ body, h1, h2, p {
 }
 
 .analyticsBox{
-  height: 90vh;
+  height: 100vh;
   width: 90%;
   padding-top: 0%;
   margin-right: -2.5%;

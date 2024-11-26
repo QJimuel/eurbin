@@ -189,7 +189,7 @@ const [hoverAdd, setHoverAdd] = useState(false);
                 onConfirm={handleConfirmSubmit}
                 onCancel={handleCancelSubmit}
             />
-            <div className="table-container">
+            <div style={{paddingBottom: '100vh'}} className="table-container">
                 <table className="w3-table-all">
                     <thead>
                         <tr className="w3-light-grey">

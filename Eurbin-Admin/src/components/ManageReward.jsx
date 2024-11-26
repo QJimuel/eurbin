@@ -266,7 +266,15 @@ function ManageReward() {
             onCancel={handleCancel}
         />
 
-        <div className="table-container">
+        <div className="sort-container">
+            <label htmlFor="sort">Sort by:</label>
+            <select id="sort" onChange={(e) => setSortOption(e.target.value)} value={sortOption}>
+                <option value="rewardName">Reward Name</option>
+                <option value="quantity">Quantity</option>
+            </select>
+        </div>
+
+        <div style={{paddingBottom: '40px'}}className="table-container">
             <table className="w3-table-all">
                 <thead>
                     <tr className="w3-light-grey">
@@ -283,7 +291,7 @@ function ManageReward() {
                         <td>
                             <img 
                                 src={reward.Image} 
-                                alt={reward.RewardName} 
+                                alt={selectedImage} 
                                 style={{ width: '70px', height: '70px', borderRadius: '10px' }} 
                             />
                         </td>

@@ -9,6 +9,8 @@ import about from '../Images/information1.png'
 import logOut from '../Images/exit1.png'
 import logo from '../Images/EURBinLogo.png'
 
+import ModalConfirmation from './ModalConfirmation';
+
 function Layout2() {
 
   const [greetingName, setGreetingName] = useState('');
@@ -43,21 +45,18 @@ function Layout2() {
     setIsChangePassModalOpen(false);
   };
 
-  const logout = ()=>
-    {
-      window.localStorage.clear();
-      console.log("Token cleared");
-      window.location.href = "./"
-      console.log(window.localStorage.getItem('token'));
-    }
+  const [isLogoutConfirmationOpen, setIsLogoutConfirmationOpen] = useState(false);
+  
+  const handleLogout = () => setIsLogoutConfirmationOpen(true);  
+  const confirmLogout = () => {
+    window.localStorage.clear();
+    console.log("Token cleared");
+    window.location.href = "./"; 
+  };
+  const cancelLogout = () => setIsLogoutConfirmationOpen(false);  
 
   return (
     <>
-      <header className="header">
-        <h1 className="header-title"></h1>
-        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
-    
-      </header>
 
       <div className="container">
       <aside style={styles.sidebar}>
@@ -68,7 +67,7 @@ function Layout2() {
           <li style={styles.sidebarItem}>
             <Link 
               to="/BinStatus" 
-              className={location.pathname === "/BinStatus" ? "active-page" : "inactive-page"} 
+              className={location.pathname === "/BinStatus" || location.pathname === "/Activity2" ? "active-page" : "inactive-page"} 
               style={{ display: "inline-flex", gap: "20px" }}>
               <img className="dashboardIcon" src={dashboard} alt="Dashboard Icon" />
               <span className="sidebarText">Dashboard</span>
@@ -103,7 +102,7 @@ function Layout2() {
           </li>
           <li style={styles.sidebarItem}>
             <a 
-              onClick={logout} 
+              onClick={handleLogout} 
               className="inactive-page" 
               style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
               <img className="logoutIcon" src={logOut} alt="Logout Icon" />
@@ -121,6 +120,14 @@ function Layout2() {
           </main>
         </main>
       </div>
+
+      {/* LOGOUT CONFIRMATION MODAL */}
+      <ModalConfirmation
+        isOpen={isLogoutConfirmationOpen}
+        message="Are you sure you want to logout?"
+        onConfirm={confirmLogout}  // Confirm logout
+        onCancel={cancelLogout}    // Cancel logout
+      />
 
       {/* EDIT PROFILE MODAL */}
       <EditProfileModal

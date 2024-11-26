@@ -83,7 +83,7 @@ function RecycleableData() {
                 </ul>
             </nav>
 
-            <div className="rmdHeaders">
+            <div className="rmdHeadersAct2">
           
                 <div className="activityButton">
                     <Link to="/Activity" className="activityLink">

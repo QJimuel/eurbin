@@ -422,12 +422,7 @@ const fetchCollectedData = async () => {
     
   return (
     <>
-        <header className="header">
-        <p className="header-title"></p>
-        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
-    
-       
-      </header>
+
 
     <div className="container">
     <aside style={styles.sidebar}>
@@ -520,6 +515,10 @@ const fetchCollectedData = async () => {
       </aside>
 
         <div className="dashboardBox">
+        <header className="header">
+        <p className="header-title"></p>
+        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, paddingTop: '10px' }}>Hello, {greetingName}!</p>
+        </header>
 
           <div className="rmdHeaders1">
 
@@ -667,9 +666,9 @@ const fetchCollectedData = async () => {
 
   */}
 
-<div style={{ width: '80%', height: 300, justifyContent: 'center', textAlign: 'center' }}>
+  <div style={{ width: '80%', height: 300, justifyContent: 'center', textAlign: 'center' }}>
     <h3>Collected Bottle Counts</h3>
-    <div style={{ marginBottom: '20px' }}>
+    <div className="sort-container" style={{ marginBottom: '10px', marginRight: '260px' }}>
                 <label htmlFor="dataType">Select Data Type: </label>
                 <select
                     id="dataType"
@@ -681,7 +680,7 @@ const fetchCollectedData = async () => {
                 </select>
             </div>
 
-    <ResponsiveContainer width="100%" height={250}>
+    <ResponsiveContainer width="100%" height={300}>
         <BarChart data={collectedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             {/* Remove CartesianGrid to hide the grid */}
             <XAxis dataKey="date" />
@@ -710,7 +709,7 @@ const fetchCollectedData = async () => {
 
 
 
-          <div style={{ width: '100%', height: 300, justifyContent:'center', textAlign:'center'}}>
+          <div style={{ width: '100%', height: 280, justifyContent:'center', textAlign:'center'}}>
             <h3>User Distribution by Department</h3>
             <ResponsiveContainer>
               

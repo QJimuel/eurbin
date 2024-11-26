@@ -88,7 +88,7 @@ function Login() {
                                 onClick={() => setShowPassword(!showPassword)}
                                 style={styles.showPasswordButton}
                             >
-                                <i className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} />
+                                <i className={`fa ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`} />
                             </button>
                         </div>
                     </div>

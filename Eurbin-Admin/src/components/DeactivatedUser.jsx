@@ -10,6 +10,7 @@ function DeactivatedUser() {
     const [selectedUser, setSelectedUser] = useState(null); 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [sortOption, setSortOption] = useState('userId'); 
 
     useEffect(() => {
         fetchUser();
@@ -64,6 +65,32 @@ function DeactivatedUser() {
       user.email.toLowerCase().includes(searchQuery.toLowerCase()) 
   );
 
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+};
+
+const sortedUsers = user
+.filter((user) =>
+    user.userName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    user.email.toLowerCase().includes(searchQuery.toLowerCase())
+)
+.sort((a, b) => {
+    if (sortOption === 'userId') {
+        const userIdA = String(a.userId);
+        const userIdB = String(b.userId);
+        return userIdA.localeCompare(userIdB);
+    }
+    if (sortOption === 'yearLevel') {
+        const aYear = parseInt(a.yearLevel) || 0; 
+        const bYear = parseInt(b.yearLevel) || 0; 
+        return aYear - bYear; 
+    }
+    if (sortOption === 'department') {
+        return String(a.department).localeCompare(String(b.department));
+    }
+    return 0;
+});
+
 
     
     return<>
@@ -97,7 +124,16 @@ function DeactivatedUser() {
                     value={searchQuery}
                     onChange={handleSearch}
                 />
-            </div>
+
+                <div className="sort-container">
+                    <label>Sort by:</label>
+                    <select value={sortOption} onChange={handleSortChange}>
+                        <option value="userId">User ID</option>
+                        <option value="yearLevel">Year Level</option>
+                        <option value="department">Department</option>
+                    </select>
+                </div>
+        </div>
 
 
         <div className="table-container">

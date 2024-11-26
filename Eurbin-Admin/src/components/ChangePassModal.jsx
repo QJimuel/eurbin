@@ -72,7 +72,7 @@ const ChangePassModal = ({ isOpen, onClose }) => {
               onClick={() => setShowOldPassword(!showOldPassword)}
               className="showPasswordBtn"
             >
-              <i className={`fa ${showOldPassword ? 'fa-eye-slash' : 'fa-eye'}`} />
+              <i className={`fa ${showOldPassword ? 'fa-eye' : 'fa-eye-slash'}`} />
             </button>
           </div>
 
@@ -92,7 +92,7 @@ const ChangePassModal = ({ isOpen, onClose }) => {
               onClick={() => setShowNewPassword(!showNewPassword)}
               className="showPasswordBtnN"
             >
-              <i className={`fa ${showNewPassword ? 'fa-eye-slash' : 'fa-eye'}`} />
+              <i className={`fa ${showNewPassword ? 'fa-eye' : 'fa-eye-slash'}`} />
             </button>
           </div>
 

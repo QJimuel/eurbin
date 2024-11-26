@@ -63,9 +63,6 @@ const cancelLogout = () => setIsLogoutConfirmationOpen(false);
     return (
         <>
 
-    <header className="header">
-        <h1 className="header-title"></h1>
-    </header>
 
     <div className="container">
     <aside style={styles.sidebar}>
@@ -166,6 +163,10 @@ const cancelLogout = () => setIsLogoutConfirmationOpen(false);
       />
 
         <div style={styles.container}>
+        <header className="header">
+        <p className="header-title"></p>
+        <p style={{  height: '31px', width: '100px', paddingTop: '10px' }}></p>
+        </header>
         <div style={styles.about}>
             <div style={styles.aboutText}>
                 <h1 style={styles.header1}>About EURBin</h1>
@@ -241,7 +242,7 @@ const cancelLogout = () => setIsLogoutConfirmationOpen(false);
 
             <h2 style={styles.subHeader}>Future Plans</h2>
             <p style={styles.paragraph}>
-                We plan to expand EURBin to more locations and introduce new features in our app to enhance user experience.
+                We aim to imrpove EURBin by introducing new features in our app to enhance the user experience and optimize its functionality.
             </p>
 
             <h2 style={styles.subHeader}>Meet the Team</h2>
@@ -256,7 +257,6 @@ const cancelLogout = () => setIsLogoutConfirmationOpen(false);
         onClose={handleCloseEPModal}
       
       />
-
       {/* CHANGE PASS MODAL */}
       <ChangePassModal
         isOpen={isChangePassModalOpen}
@@ -268,7 +268,7 @@ const cancelLogout = () => setIsLogoutConfirmationOpen(false);
 
 const styles = {
     container: {
-      maxHeight: '90vh', // Limit the height for scrollability
+      maxHeight: '100vh', // Limit the height for scrollability
       overflowY: 'auto', // Enable vertical scrolling
       width: '86%',
       overflowX: 'hidden',
@@ -278,7 +278,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',  
         alignItems: 'center',             
-        marginTop: '5vh',
+        marginTop: '-1vh',
     },
     aboutText: {
         flexBasis: '50%',

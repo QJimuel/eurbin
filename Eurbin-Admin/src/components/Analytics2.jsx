@@ -548,10 +548,7 @@ const processData = (data, year) => {
 
     return (
       <>
-      <header className="header">
-        <p className="header-title"></p>
-        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600 }}>Hello, {greetingName}!</p>
-      </header>
+
 
       <div className="container">
       <aside style={styles.sidebar}>
@@ -643,6 +640,10 @@ const processData = (data, year) => {
         </ul>
       </aside> 
       <div className='analyticsBox'>
+      <header className="header">
+        <p className="header-title"></p>
+        <p style={{  height: '30.5px', paddingTop: '10px' }}></p>
+        </header>
           <div className="rmdHeaders1"> 
             <h1 className="anaHeader">Analytics</h1>
           </div>
@@ -665,7 +666,7 @@ const processData = (data, year) => {
            
             <ResponsiveContainer width="95%" height={300}>
   <h3>Monthly Contributions Overview</h3>
-  <div>
+  <div style={{paddingLeft: '30px'}}className='sort-containerA'>
   <label htmlFor="yearDropdown">Select Year: </label>
   <select
     id="yearDropdown"
@@ -757,7 +758,7 @@ const processData = (data, year) => {
   <div>
     <h3>Contributions in {selectedMonth}</h3>
 
-    <div>
+    <div className='sort-containerA'>
       <label htmlFor="roleFilter">Filter by Role: </label>
       <select
         id="roleFilter"
@@ -776,7 +777,7 @@ const processData = (data, year) => {
     </div>
 
     {selectedRole === "Student" && (
-      <div>
+      <div className='sort-containerA'>
         <label htmlFor="yearLevelFilter">Filter by Year Level: </label>
         <select
           id="yearLevelFilter"
@@ -795,7 +796,7 @@ const processData = (data, year) => {
 
     {/* Hide the department filter if the selected role is Staff or ETEEAP */}
     {(selectedRole !== "Staff" && selectedRole !== "ETEEAP") && (
-      <div>
+      <div className='sort-containerA'>
         <label htmlFor="departmentFilter">Filter by Department: </label>
         <select
           id="departmentFilter"
@@ -864,7 +865,7 @@ const processData = (data, year) => {
         </tbody>
       </table>
     </div>
-    <button onClick={() => setSelectedMonth(null)} >Back to Graph</button>
+    <button style={{marginLeft: '30px'}} onClick={() => setSelectedMonth(null)} >Back to Graph</button>
   </div>
 )}
 
@@ -873,19 +874,18 @@ const processData = (data, year) => {
       <br />
       <br />
       <br />
-
-  
-      {chartData ? (
+      <h3 style={{ paddingTop: '50px' }}>User Roles Distribution</h3>
+{chartData ? (
   <>
     <div
       style={{
         display: 'flex',
         justifyContent: selectedRole ? 'space-between' : 'center',
-        alignItems: 'center',
-        flexWrap:'wrap',
-        height: '300px',
+        alignItems: 'flex-start', // Aligns items to the top when the table appears
+        flexWrap: 'wrap', // For responsiveness
+        height: 'auto',
         margin: '50px',
-     
+        gap: '30px', // Ensures a consistent gap between chart and table
         transition: 'justify-content 0.5s ease-out',
       }}
     >
@@ -896,13 +896,10 @@ const processData = (data, year) => {
           textAlign: 'center',
           transition: 'transform 0.5s ease-out',
           height: '300px',
-          
+          paddingLeft: selectedRole ? '150px' : '0', // Adds padding when the table appears
         }}
       >
-           <h3>User Role Distribution</h3>
-     
         <Doughnut
-        
           data={chartData}
           options={{
             responsive: true,
@@ -935,25 +932,27 @@ const processData = (data, year) => {
       {selectedRole && (
         <div
           style={{
-            flex: -1,
-            marginLeft: '20px',
+            flex: 1,
+            marginLeft: '-150px',
+            maxWidth: '900px', // Prevents the table from stretching too wide
           }}
         >
-          <h4>Users in {selectedRole} Role</h4>
+          <h4 style={{marginTop: '-20px'}}>List of {selectedRole} Users</h4>
 
           {/* Search Field */}
-          <div className="search-container">
+          <div className="search-container" style={{ marginBottom: '15px', marginRight: '150px' }}>
             <input
               type="text"
-              placeholder="Search by username..."
+              placeholder="Search by username"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
+          {/* Table */}
           <div className="table-container-analytics">
             <div className="table-container">
-              <table className="w3-table-all">
+              <table className="w3-table-all" style={{ width: '100%' }}>
                 <thead>
                   <tr className="w3-light-grey">
                     <th>Username</th>
@@ -982,7 +981,7 @@ const processData = (data, year) => {
 
           {/* Back Button */}
           <button
-            style={{ marginTop: '20px' }}
+            style={{marginLeft: '30px'}}
             onClick={() => setSelectedRole(null)}
           >
             Back to Chart
@@ -994,6 +993,7 @@ const processData = (data, year) => {
 ) : (
   <p>Loading chart...</p>
 )}
+
 
 
 
@@ -1046,7 +1046,7 @@ const processData = (data, year) => {
                   }}
                 />
               </BarChart>
-              <button onClick={() => setSelectedDepartment(null) } >Back to Department</button>
+              <button style={{marginLeft: '30px'}} onClick={() => setSelectedDepartment(null) } >Back to Department</button>
             </ResponsiveContainer>
           
 
@@ -1070,7 +1070,7 @@ const processData = (data, year) => {
     <div className="search-container">
       <input
         type="text"
-        placeholder="Search by username..."
+        placeholder="Search by username"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
     
@@ -1105,7 +1105,7 @@ const processData = (data, year) => {
         </table>
       </div>
     </div>
-    <button onClick={() => setSelectedProgram(null)}>Back to Programs</button>
+    <button style={{marginLeft: '30px'}} onClick={() => setSelectedProgram(null)}>Back to Programs</button>
   </div>
 )}
   <br />
@@ -1308,6 +1308,7 @@ const processData = (data, year) => {
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
       fontSize: '20px',
       width: '100%',
+      borderRadius: '10px'
     },
 
     boxText: {
@@ -1320,6 +1321,7 @@ const processData = (data, year) => {
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
       fontSize: '20px',
       width: '100%',
+      borderRadius: '10px'
     },
   };
 

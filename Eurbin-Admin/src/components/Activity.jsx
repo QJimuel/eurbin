@@ -82,21 +82,18 @@ function Activity() {
                 </ul>
             </nav>
 
-            <div className="rmdHeaders">
+            <div className="rmdHeadersAct2">
            
             <div className="activityButton">      
-               
                 <Link to="/Activity" >
                     <button className={location.pathname === "/Activity" ? "active-btn" : "inactive-btn"} >
                     Activity
                     </button>
                 </Link>
-            
-               
             </div>
         </div>
 
-            <div className="table-container">
+            <div style={{height: '100%', paddingBottom: '150px'}} className="table-container">
                 <table className="w3-table-all">
                     <thead>
                         <tr className="w3-light-grey">

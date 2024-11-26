@@ -359,7 +359,9 @@ function EditReward() {
             onCancel={handleCancelDelete}
         />
 
-        <div className="table-container">
+        
+
+        <div style={{paddingBottom: '80px'}} className="table-container">
             <table className="w3-table-all">
                 <thead>
                     <tr className="w3-light-grey">
@@ -377,7 +379,7 @@ function EditReward() {
                                 <td>
                                     <img 
                                         src={reward.Image} 
-                                        alt={reward.RewardName} 
+                                        alt={selectedImage} 
                                         style={{ width: '70px', height: '70px', borderRadius: '10px' }} 
                                     />
                                 </td>   

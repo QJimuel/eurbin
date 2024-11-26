@@ -14,6 +14,8 @@ import changePass from '../Images/padlock1.png'
 import about from '../Images/information1.png'
 import logOut from '../Images/exit1.png'
 
+import ModalConfirmation from './ModalConfirmation';
+
 import { useEffect, useState } from 'react';
 
 import EditProfileModal from "./EditProfileModal";
@@ -24,13 +26,15 @@ function About2() {
   const location = useLocation();
     
   
-      const logout = ()=>
-        {
-          window.localStorage.clear();
-          console.log("Token cleared");
-          window.location.href = "./"
-          console.log(window.localStorage.getItem('token'));
-        }
+  const [isLogoutConfirmationOpen, setIsLogoutConfirmationOpen] = useState(false);
+  
+  const handleLogout = () => setIsLogoutConfirmationOpen(true);  
+  const confirmLogout = () => {
+    window.localStorage.clear();
+    console.log("Token cleared");
+    window.location.href = "./"; 
+  };
+  const cancelLogout = () => setIsLogoutConfirmationOpen(false);  
   
   
         const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
@@ -57,9 +61,7 @@ function About2() {
     return (
         <>
 
-    <header className="header">
-        <h1 className="header-title"></h1>
-    </header>
+
 
     <div className="container">
     <aside style={styles.sidebar}>
@@ -105,7 +107,7 @@ function About2() {
           </li>
           <li style={styles.sidebarItem}>
             <a 
-              onClick={logout} 
+              onClick={handleLogout} 
               className="inactive-page" 
               style={{ display: "inline-flex", gap: "20px", alignItems: "center" }}>
               <img className="logoutIcon" src={logOut} alt="Logout Icon" />
@@ -115,8 +117,20 @@ function About2() {
           </ul>
         </aside>
 
+                    {/* LOGOUT CONFIRMATION MODAL */}
+                    <ModalConfirmation
+                      isOpen={isLogoutConfirmationOpen}
+                      message="Are you sure you want to logout?"
+                      onConfirm={confirmLogout}  // Confirm logout
+                      onCancel={cancelLogout}    // Cancel logout
+                    />
+
 
         <div style={styles.container}>
+        <header className="header">
+          <p className="header-title"></p>
+          <p style={{  height: '31px', width: '100px', paddingTop: '10px', }}></p>
+        </header>
         <div style={styles.about}>
             <div style={styles.aboutText}>
                 <h1 style={styles.header1}>About EURBin</h1>
@@ -192,7 +206,7 @@ function About2() {
 
             <h2 style={styles.subHeader}>Future Plans</h2>
             <p style={styles.paragraph}>
-                We plan to expand EURBin to more locations and introduce new features in our app to enhance user experience.
+              We aim to imrpove EURBin by introducing new features in our app to enhance the user experience and optimize its functionality.
             </p>
 
             <h2 style={styles.subHeader}>Meet the Team</h2>
@@ -221,7 +235,7 @@ function About2() {
 
 const styles = {
     container: {
-      maxHeight: '90vh', // Limit the height for scrollability
+      maxHeight: '100vh', // Limit the height for scrollability
       overflowY: 'auto', // Enable vertical scrolling
       width: '86%',
       overflowX: 'hidden',
@@ -232,7 +246,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',  
         alignItems: 'center',             
-        marginTop: '5vh',
+        marginTop: '-1%',
     },
     aboutText: {
         flexBasis: '50%',
