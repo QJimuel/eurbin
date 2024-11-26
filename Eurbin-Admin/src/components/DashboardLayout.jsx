@@ -59,7 +59,7 @@ function DashboardLayout() {
   useEffect(() => {
     fetchTotal();
     fetchUser();
-    fetchCollectedData();
+    
     fetchBottleData();
     const email = localStorage.getItem('username');
     if (email) {
