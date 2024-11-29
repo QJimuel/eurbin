@@ -259,3 +259,39 @@ const sendForgotPasswordEmail = async (email, userName, newPassword) => {
         console.error('Error sending email:', error);
     }
 };
+
+const notifyAdminsBinFull = async () => {
+    try {
+        const admins = await Admin.find(); // Fetch all admins
+        const adminEmails = admins.map(admin => admin.email);
+
+        if (adminEmails.length > 0) {
+            const mailOptions = {
+                from: '"Eurbin Team" <eurbinmmq@gmail.com>',
+                to: adminEmails.join(','),
+                subject: 'Bin Almost Full - Reminder',
+                html: `
+                    <h1>Reminder: Bin Almost Full</h1>
+                    <p>The bin is now 80% full. Please take the necessary action to empty it before it overflows.</p>
+                    <p>Thank you for your prompt attention.</p>
+                    <p>Best Regards,<br/>Eurbin Team</p>
+                `,
+            };
+
+            try {
+                const info = await transporter.sendMail(mailOptions);
+                console.log('Admin notification email sent:', info.response);
+            } catch (error) {
+                console.error('Error sending email to admins:', error);
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching admins or sending emails:', error);
+    }
+};
+
+// Export the function if needed externally
+module.exports = {
+    // Other exports
+    notifyAdminsBinFull,
+};

@@ -475,11 +475,14 @@ const processData = (data, year) => {
       const departmentCounts = {
         CCMS: 0,
         CIHTM: 0,
-        CNAS: 0,
         CME: 0,
         CCJC: 0,
         CAS: 0,
         CED: 0,
+        CNAHS: 0,
+        CAFA: 0,
+        CENG: 0,
+        CBA:0
       };
 
       user.forEach(u => {
@@ -725,6 +728,7 @@ const processData = (data, year) => {
       dot={{ r: 4 }}
       activeDot={{ r: 8 }}
       isAnimationActive={true}
+      name='Total Plastic Bottle'
     />
     <Area
       type="monotone"
@@ -735,6 +739,7 @@ const processData = (data, year) => {
       dot={{ r: 4 }}
       activeDot={{ r: 8 }}
       isAnimationActive={true}
+      name='Total Co2'
     />
     <Area
       type="monotone"
@@ -745,6 +750,7 @@ const processData = (data, year) => {
       dot={{ r: 4 }}
       activeDot={{ r: 8 }}
       isAnimationActive={true}
+      name='Total User'
     />
   </AreaChart>
 </ResponsiveContainer>
@@ -1005,25 +1011,58 @@ const processData = (data, year) => {
 
       <div style={{ display: 'flex', justifyContent: 'space-around', height: '300px', margin: '50px'}}>
       <div style={{ flex: 1 }}>
-        <ResponsiveContainer  height="100%">
-          <PieChart>
-            <Pie
-              data={departmentData}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-              outerRadius={120}
-              dataKey="value"
-              onClick={(entry) => setSelectedDepartment(entry.name)} // Drill down feature
-            >
-              {departmentData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#ff9f40', '#4bc0c0', '#36a2eb'][index % 7]} />
-              ))}
-            </Pie>
-            <RechartsTooltip />
-          </PieChart>
-        </ResponsiveContainer>
+      <ResponsiveContainer>
+    <PieChart>
+        <Pie
+            data={departmentData}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={({ name, percent }) =>
+                percent > 0 ? `${name} ${(percent * 100).toFixed(0)}%` : ''
+            }
+            outerRadius={110}
+            dataKey="value"
+            stroke="#ffffff" // White stroke for segment separation
+            strokeWidth={2}
+            onClick={(entry) => setSelectedDepartment(entry.name)}
+        >
+            {departmentData.map((entry, index) => (
+                <Cell
+                    key={`cell-${index}`}
+                    fill={[
+                        '#ff6384', // Red
+                        '#36a2eb', // Blue
+                        '#cc65fe', // Purple
+                        '#ffce56', // Yellow
+                        '#ff9f40', // Orange
+                        '#4bc0c0', // Teal
+                        '#9966ff', // Violet
+                        '#ff5a5e', // Coral Red
+                        '#5ad3d1', // Cyan
+                        '#ffd700', // Gold
+                    ][index % 10]} // Cycles through colors
+                />
+            ))}
+        </Pie>
+        <RechartsTooltip />
+        <RechartsLegend
+            align="center"
+            verticalAlign="middle"
+            layout="vertical"
+            iconType="square" // Set legend icon to square
+            wrapperStyle={{
+                marginLeft: '200px', // Reduces the gap between legend and chart
+            }}
+            formatter={(value, entry, index) => (
+                <span style={{ color: '#4a4a4a' }}>
+                    {departmentData[index]?.name || value}
+                </span>
+            )}
+        />
+    </PieChart>
+</ResponsiveContainer>
+
       </div>
 
       
@@ -1044,6 +1083,7 @@ const processData = (data, year) => {
                   onClick={(data) => {
                     setSelectedProgram(data.program); // Set the selected program
                   }}
+                  name="User Count"
                 />
               </BarChart>
               <button style={{marginLeft: '30px'}} onClick={() => setSelectedDepartment(null) } >Back to Department</button>
@@ -1145,6 +1185,7 @@ const processData = (data, year) => {
   dot={{ r: 8 }} // Normal dot size
   activeDot={{ r: 12 }} // Enlarged on hover
    // Attach onClick here
+   name='Transaction Count'
 />
 
   </LineChart>

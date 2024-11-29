@@ -335,11 +335,14 @@ const fetchCollectedData = async () => {
         const departmentCounts = {
           CCMS: 0,
           CIHTM: 0,
-          CNAS: 0,
           CME: 0,
           CCJC: 0,
           CAS: 0,
           CED: 0,
+          CNAHS: 0,
+          CAFA: 0,
+          CENG: 0,
+          CBA:0
         };
     
         user.forEach(u => {
@@ -357,11 +360,20 @@ const fetchCollectedData = async () => {
     
       const departmentData = getDepartmentData();
 
-      const percentComputation = () => {
+      const percentComputation = async () => {
         const storedOffset = Number(localStorage.getItem('collectedOffset')) || 0;
         const effectiveTotal = Math.max(0, (smallBottleCount + largeBottleCount) - storedOffset);
         const percent = Math.min(100, Math.ceil((effectiveTotal / MAX_BOTTLES) * 100));
         console.log(percent)
+
+        if (percent === 80) {
+          try {
+              await axios.post('https://eurbin.vercel.app/admin/notify-bin-full');
+              console.log('Admins notified about bin being almost full.');
+          } catch (error) {
+              console.error('Failed to notify admins:', error);
+          }
+      }
         return `${percent}%`;
     };
 
@@ -669,7 +681,7 @@ const fetchCollectedData = async () => {
   <div style={{ width: '80%', height: 300, justifyContent: 'center', textAlign: 'center' }}>
     <h3>Collected Bottle Counts</h3>
     <div className="sort-container" style={{ marginBottom: '10px', marginRight: '260px' }}>
-                <label htmlFor="dataType">Select Data Type: </label>
+                <label htmlFor="dataType">Plastic Bottles: </label>
                 <select
                     id="dataType"
                     value={selectedOption}
@@ -700,6 +712,7 @@ const fetchCollectedData = async () => {
                 dataKey="bottleCountDifference" 
                 fill="#8884d8" 
                 barSize={30} // Adjust the width of the bars
+                name= "Bottle Count"
             />
         </BarChart>
     </ResponsiveContainer>
@@ -709,30 +722,59 @@ const fetchCollectedData = async () => {
 
 
 
-          <div style={{ width: '100%', height: 280, justifyContent:'center', textAlign:'center'}}>
+          <div style={{ width: '60%', height: 300, justifyContent:'center', textAlign:'center'}}>
             <h3>User Distribution by Department</h3>
             <ResponsiveContainer>
-              
-              <PieChart>
-                <Pie
-                  data={departmentData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={110
-                  }
-                  dataKey="value"
-                >
-                  {
-                    departmentData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#ff9f40', '#4bc0c0', '#36a2eb'][index % 7]} />
-                    ))
-                  }
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+    <PieChart>
+        <Pie
+            data={departmentData}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={({ name, percent }) =>
+                percent > 0 ? `${name} ${(percent * 100).toFixed(0)}%` : ''
+            }
+            outerRadius={110}
+            dataKey="value"
+            stroke="#ffffff" // White stroke for segment separation
+            strokeWidth={2}
+        >
+            {departmentData.map((entry, index) => (
+                <Cell
+                    key={`cell-${index}`}
+                    fill={[
+                        '#ff6384', // Red
+                        '#36a2eb', // Blue
+                        '#cc65fe', // Purple
+                        '#ffce56', // Yellow
+                        '#ff9f40', // Orange
+                        '#4bc0c0', // Teal
+                        '#9966ff', // Violet
+                        '#ff5a5e', // Coral Red
+                        '#5ad3d1', // Cyan
+                        '#ffd700', // Gold
+                    ][index % 10]} // Cycles through colors
+                />
+            ))}
+        </Pie>
+        <Tooltip />
+        <Legend
+            align="center"
+            verticalAlign="middle"
+            layout="vertical"
+            iconType="square" // Set legend icon to square
+            wrapperStyle={{
+                marginLeft: '-250px', // Reduces the gap between legend and chart
+            }}
+            formatter={(value, entry, index) => (
+                <span style={{ color: '#4a4a4a' }}>
+                    {departmentData[index]?.name || value}
+                </span>
+            )}
+        />
+    </PieChart>
+</ResponsiveContainer>
+
           </div>
 
          
