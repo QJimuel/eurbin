@@ -260,7 +260,7 @@ const sendForgotPasswordEmail = async (email, userName, newPassword) => {
     }
 };
 
-const notifyAdminsBinFull = async () => {
+exports.notifyAdminsBinFull = async (req, res) => {
     try {
         const admins = await Admin.find(); // Fetch all admins
         const adminEmails = admins.map(admin => admin.email);
@@ -281,6 +281,7 @@ const notifyAdminsBinFull = async () => {
             try {
                 const info = await transporter.sendMail(mailOptions);
                 console.log('Admin notification email sent:', info.response);
+                res.status(200).json({ message: 'New password sent to your email.' });
             } catch (error) {
                 console.error('Error sending email to admins:', error);
             }
@@ -290,8 +291,3 @@ const notifyAdminsBinFull = async () => {
     }
 };
 
-// Export the function if needed externally
-module.exports = {
-    // Other exports
-    notifyAdminsBinFull,
-};
