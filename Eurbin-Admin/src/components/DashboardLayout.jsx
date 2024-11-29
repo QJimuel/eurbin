@@ -61,6 +61,7 @@ function DashboardLayout() {
     fetchUser();
     
     fetchBottleData();
+    notifyIfBinFull();
     const email = localStorage.getItem('username');
     if (email) {
       setGreetingName(email);
@@ -360,13 +361,21 @@ const fetchCollectedData = async () => {
     
       const departmentData = getDepartmentData();
 
-      const percentComputation = async () => {
+      const percentComputation = () => {
         const storedOffset = Number(localStorage.getItem('collectedOffset')) || 0;
         const effectiveTotal = Math.max(0, (smallBottleCount + largeBottleCount) - storedOffset);
         const percent = Math.min(100, Math.ceil((effectiveTotal / MAX_BOTTLES) * 100));
-        console.log(percent)
+        
+        console.log(percent);
+    
+    
+        return `${percent}%`;
+    };
 
-        if (percent === 80) {
+    const notifyIfBinFull = async () => {
+      const percent = percentComputation(); // Call the synchronous function
+  
+      if (percent == "80%") {
           try {
               await axios.post('https://eurbin.vercel.app/admin/notify-bin-full');
               console.log('Admins notified about bin being almost full.');
@@ -374,8 +383,7 @@ const fetchCollectedData = async () => {
               console.error('Failed to notify admins:', error);
           }
       }
-        return `${percent}%`;
-    };
+  };
 
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
     const [isLogoutConfirmationOpen, setIsLogoutConfirmationOpen] = useState(false);

@@ -20,7 +20,7 @@ function BinStatus() {
 
     const [totals, settotals] = useState({});
     const [collectedOffset, setCollectedOffset] = useState(0);
-    const MAX_BOTTLES = 500;
+    const MAX_BOTTLES = 100;
     const [collectedData, setCollectedData] = useState([]);
     const [hoverCollect, setHoverCollect] = useState(false);
 
