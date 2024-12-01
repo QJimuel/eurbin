@@ -75,7 +75,9 @@ function ModalUser({ isOpen, onClose, user , button}) {
                 <div style={headerStyle}>
                     {/* Profile Section with Maroon Background */}
                     <div style={profileContainerStyle}>
-                        <div style={profilePictureStyle}></div>
+                        <div style={profilePictureStyle}>
+                            <img src={user.Image} alt="" style={profilePictureStyle} />
+                        </div>
                         <div style={userInfoStyle}>
                             <h2 style={userNameStyle}>{user.userName}</h2>
                             <p style={userEmailStyle}>{user.email}</p>
