@@ -4,6 +4,17 @@ const path = require('path');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const multerS3 = require('multer-s3');
 const User = require('../models/user');
+const nodemailer = require('nodemailer'); 
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com', // or your provider's host
+    port: 465,
+    secure: true, // You can use other email services
+    auth: {
+        user: "eurbinmmq@gmail.com",
+        pass: "mwqy dmwx myrn ngny",
+    },
+});
 
 // Configure AWS S3 Client
 // Configure AWS S3 Client
