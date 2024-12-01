@@ -1198,7 +1198,7 @@ const processData = (data, year) => {
       <table className="w3-table-all">
         <thead>
           <tr className="w3-light-grey">
-            <th>ID</th>
+    
             <th>User ID</th>
             <th>Transaction Name</th>
             <th>Price</th>
@@ -1211,7 +1211,7 @@ const processData = (data, year) => {
           {rewardTransactions.length > 0 ? (
             rewardTransactions.map((transaction) => (
               <tr key={transaction._id}>
-                <td>{transaction._id}</td>
+              
                 <td>{transaction.userId}</td>
                 <td>{transaction.transactionName}</td>
                 <td>{transaction.transactionPrice}</td>

@@ -52,6 +52,7 @@ function DashboardLayout() {
   const location = useLocation();
   const [smallBottleCount, setSmallBottleCount] = useState(0);
   const [largeBottleCount, setLargeBottleCount] = useState(0);
+  const [notBotlleCount, setNotBottle] = useState(0);
   const [hoverCollect, setHoverCollect] = useState(false);
 
 
@@ -91,9 +92,11 @@ function DashboardLayout() {
         if (response.status === 200 && Array.isArray(response.data.bottles)) {  // Access bottles array
             const smallBottles = response.data.bottles.filter(bottle => bottle.Size === 'Small').length;
             const largeBottles = response.data.bottles.filter(bottle => bottle.Size === 'Large').length;
+            const notBottles = response.data.bottles.filter(bottle => bottle.Size === 'Not Plastic Bottle').length;
 
             setSmallBottleCount(smallBottles);
             setLargeBottleCount(largeBottles);
+            setNotBottle(notBottles);
         } else {
             console.error('Unexpected data format:', response.data);
             alert('An error occurred: Unexpected data format');

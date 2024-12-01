@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import smallPlastic from '../Images/smallPlastic.jpg';
 import largePlastic from '../Images/largePlastic.jpg';
-
+import notBottle from '../Images/notbottle.png';
 function RecycleableData() {
 
     const API_URL = 'https://eurbin.vercel.app/transactions';
@@ -13,6 +13,8 @@ function RecycleableData() {
     const [smallBottleCount, setSmallBottleCount] = useState(0);
     const [largeBottleCount, setLargeBottleCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
+    const [notBottleCount, setNotBottle] = useState(0);
+
 
     useEffect(() => {
         
@@ -33,9 +35,11 @@ function RecycleableData() {
             if (response.status === 200 && Array.isArray(response.data.bottles)) {  // Access bottles array
                 const smallBottles = response.data.bottles.filter(bottle => bottle.Size === 'Small').length;
                 const largeBottles = response.data.bottles.filter(bottle => bottle.Size === 'Large').length;
+                const notBottles = response.data.bottles.filter(bottle => bottle.Size === 'Not Plastic Bottle').length;
     
                 setSmallBottleCount(smallBottles);
                 setLargeBottleCount(largeBottles);
+                setNotBottle(notBottles);
             } else {
                 console.error('Unexpected data format:', response.data);
                 alert('An error occurred: Unexpected data format');
@@ -99,8 +103,8 @@ function RecycleableData() {
                             <th>Waste</th>
                             <th>Size</th>
                             <th>Quantity</th>
-                            <th>Weight</th>
-                            <th>Date</th>
+                          
+             
                         </tr>
                     </thead>
                     <tbody>
@@ -114,8 +118,7 @@ function RecycleableData() {
                             </td>
                             <td>Small Bottle</td>
                             <td>{smallBottleCount}</td> {/* Display small bottle quantity */}
-                            <td>--</td>
-                            <td>--</td>
+                     
                         </tr>
                         <tr>
                             <td>
@@ -127,8 +130,20 @@ function RecycleableData() {
                             </td>
                             <td>Large Bottle</td>
                             <td>{largeBottleCount}</td> {/* Display large bottle quantity */}
-                            <td>--</td>
-                            <td>--</td>
+                    
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <img
+                                    src={notBottle}
+                                    alt="None Plastic Bottles"
+                                    style={{ width: '50px', height: '100px', borderRadius: '10px' }}
+                                />
+                            </td>
+                            <td>None Plastic Bottles</td>
+                            <td>{notBottleCount}</td> {/* Display large bottle quantity */}
+                         
                         </tr>
                     </tbody>
                 </table>
