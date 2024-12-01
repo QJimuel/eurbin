@@ -97,6 +97,11 @@ exports.createUser = async (req, res) => {
             return res.status(400).json({ message: 'Email is already registered' });
         }
 
+        const existingUsername = await User.findOne({ userName });
+        if (existingUsername) {
+            return res.status(400).json({ message: 'Username is already registered' });
+        }
+
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
         const otp = crypto.randomInt(1000, 9999);
