@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const multerS3 = require('multer-s3');
+const User = require('../models/user');
 
 // Configure AWS S3 Client
 // Configure AWS S3 Client
@@ -65,39 +66,115 @@ exports.getRewardById = async (req, res) => {
     }
 };
 
-// Create a reward
+// Function to send notification emails
+async function notifyAddedReward(reward) {
+    try {
+        const users = await User.find(); // Fetch all users
+        const usersEmail = users.map(user => user.email);
+
+        if (usersEmail.length > 0) {
+            const mailOptions = {
+                from: '"Eurbin Team" <eurbinmmq@gmail.com>',
+                to: usersEmail.join(','), // Email all users
+                subject: `New Reward Added: ${reward.RewardName}`,
+                html: `
+                    <h1>New Reward Available!</h1>
+                    <p>We are excited to announce a new reward has been added to our collection.</p>
+                    <ul>
+                        <li><strong>Reward Name:</strong> ${reward.RewardName}</li>
+                        <li><strong>Price:</strong> ${reward.Price}</li>
+                        <li><strong>Quantity:</strong> ${reward.Quantity}</li>
+                    </ul>
+                    <p>Don't miss out! Check the app now to redeem this amazing reward.</p>
+                    <p>Best Regards,<br/>Eurbin Team</p>
+                `,
+            };
+
+            try {
+                const info = await transporter.sendMail(mailOptions);
+                console.log('Notification email sent to users:', info.response);
+            } catch (error) {
+                console.error('Error sending email to users:', error);
+            }
+        } else {
+            console.log('No users available to notify.');
+        }
+    } catch (error) {
+        console.error('Error fetching users or sending emails:', error);
+    }
+}
+
+// Main function to create a reward
 exports.createReward = async (req, res) => {
     try {
-       
-
         const { RewardName, Category, Quantity, Price } = req.body;
-
 
         if (!RewardName || !Category || !Quantity || !Price) {
             return res.status(400).json({ error: 'All fields are required (RewardName, Category, Quantity, Price)' });
         }
+        
         const imageUrl = req.file ? req.file.location : null;
 
-        
         const newReward = new Reward({
             RewardName,
             Category,
             Quantity,
             Price,
-            Image: imageUrl
+            Image: imageUrl,
         });
 
         await newReward.save();
 
+        // Notify users about the new reward
+        await notifyAddedReward(newReward);
+
         res.status(201).json({
             message: 'Reward created successfully!',
-            reward: newReward
+            reward: newReward,
         });
     } catch (err) {
         console.error("Error creating reward:", err);
         res.status(500).json({ error: 'An error occurred while creating the reward.' });
     }
 };
+
+
+async function notifyAddedReward(reward) {
+    try {
+        const users = await User.find(); // Fetch all users
+        const usersEmail = users.map(user => user.email);
+
+        if (usersEmail.length > 0) {
+            const mailOptions = {
+                from: '"Eurbin Team" <eurbinmmq@gmail.com>',
+                to: usersEmail.join(','), // Email all users
+                subject: `New Reward Added: ${reward.RewardName}`,
+                html: `
+                    <h1>New Reward Available!</h1>
+                    <p>We are excited to announce a new reward has been added to our collection.</p>
+                    <ul>
+                        <li><strong>Reward Name:</strong> ${reward.RewardName}</li>
+                        <li><strong>Price:</strong> ${reward.Price}</li>
+                        <li><strong>Quantity:</strong> ${reward.Quantity}</li>
+                    </ul>
+                    <p>Don't miss out! Check the app now to redeem this amazing reward.</p>
+                    <p>Best Regards,<br/>Eurbin Team</p>
+                `,
+            };
+
+            try {
+                const info = await transporter.sendMail(mailOptions);
+                console.log('Notification email sent to users:', info.response);
+            } catch (error) {
+                console.error('Error sending email to users:', error);
+            }
+        } else {
+            console.log('No users available to notify.');
+        }
+    } catch (error) {
+        console.error('Error fetching users or sending emails:', error);
+    }
+}
 
 exports.updateReward = async (req, res) => {
     try {
@@ -122,6 +199,9 @@ exports.updateReward = async (req, res) => {
         res.status(500).json({ error: 'An error occurred while updating the reward.' });
     }
 };
+
+
+
 
 exports.updateReward2 = async (req, res) => {
     try {

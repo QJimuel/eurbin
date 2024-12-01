@@ -281,7 +281,7 @@ exports.notifyAdminsBinFull = async (req, res) => {
             try {
                 const info = await transporter.sendMail(mailOptions);
                 console.log('Admin notification email sent:', info.response);
-                res.status(200).json({ message: 'New password sent to your email.' });
+                res.status(200).json({ message: 'Successfully sent main to admins.' });
             } catch (error) {
                 console.error('Error sending email to admins:', error);
             }
