@@ -137,11 +137,14 @@ import content from '../Images/content1.png'
     const departments = [
       "CIHTM",
       "CCMS",
-      "CNAS",
+      "CNAHS",
       "CME",
       "CCJC",
       "CED",
       "CAS",
+      "CENG",
+      "CAFA",
+      "CBA",
       "Staff",
       "ETEEAP",
       "Faculty"
