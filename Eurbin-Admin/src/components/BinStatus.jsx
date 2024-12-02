@@ -16,7 +16,7 @@ function BinStatus() {
     const [largeBottleCount, setLargeBottleCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const [notBottleCount, setNotBottle] = useState(0);
-    
+    const [greetingName, setGreetingName] = useState('');
 
 
     const [totals, settotals] = useState({});
@@ -43,6 +43,10 @@ function BinStatus() {
         fetchCollectedData();
         fetchBottleData();
         fetchTotal();
+        const email = localStorage.getItem('username');
+        if (email) {
+          setGreetingName(email);
+        }
     }, []);
 
     const fetchTotal = async () => {
@@ -205,7 +209,7 @@ function BinStatus() {
     };
     
     return<>
-    <p style={{ color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, marginTop: '-30px', marginLeft: '88%', whiteSpace: 'nowrap' }}> </p>
+    <p style={{ color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, marginTop: '-30px', marginLeft: '88%', whiteSpace: 'nowrap' }}>Hello, {greetingName}!</p>
 
 
     <h1 className='headings'>Bin Management</h1>

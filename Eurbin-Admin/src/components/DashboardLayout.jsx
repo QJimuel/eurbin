@@ -366,7 +366,7 @@ const fetchCollectedData = async () => {
 
       const percentComputation = () => {
         const storedOffset = Number(localStorage.getItem('collectedOffset')) || 0;
-        const effectiveTotal = Math.max(0, (smallBottleCount + largeBottleCount) - storedOffset);
+        const effectiveTotal = Math.max(0, (smallBottleCount + largeBottleCount + notBotlleCount) - storedOffset);
         const percent = Math.min(100, Math.ceil((effectiveTotal / MAX_BOTTLES) * 100));
         
         console.log(percent);
@@ -409,7 +409,7 @@ const fetchCollectedData = async () => {
         const token = localStorage.getItem('token');
         try {
             // Prepare the payload with collectedOffset as bottleCount
-            const newBottles = (smallBottleCount + largeBottleCount) - collectedOffset;
+            const newBottles = (smallBottleCount + largeBottleCount + notBotlleCount) - collectedOffset;
        
             const payload = {
                 bottleCount: newBottles,
@@ -431,10 +431,10 @@ const fetchCollectedData = async () => {
     
             const data = await response.json();
             console.log('Bottle data saved:', data); // Log the response for confirmation
-            setIsChangePassModalOpen(false);
+            setIsConfirmationModalOpen(false);
     
-            setCollectedOffset((smallBottleCount + largeBottleCount));
-            localStorage.setItem('collectedOffset', (smallBottleCount + largeBottleCount));
+            setCollectedOffset((smallBottleCount + largeBottleCount + notBotlleCount ));
+            localStorage.setItem('collectedOffset', (smallBottleCount + largeBottleCount + notBotlleCount));
     
             // Optionally, you can update the collectedOffset or any other state based on the response here.
         } catch (error) {
@@ -690,9 +690,9 @@ const fetchCollectedData = async () => {
   */}
 
   <div style={{ width: '80%', height: 300, justifyContent: 'center', textAlign: 'center' }}>
-    <h3>Collected Bottle Counts</h3>
+    <h3>Collected Waste Counts</h3>
     <div className="sort-container" style={{ marginBottom: '10px', marginRight: '260px' }}>
-                <label htmlFor="dataType">Plastic Bottles: </label>
+                <label htmlFor="dataType">Waste: </label>
                 <select
                     id="dataType"
                     value={selectedOption}
@@ -712,7 +712,7 @@ const fetchCollectedData = async () => {
                 if (payload && payload.length) {
                     return (
                         <div className="custom-tooltip">
-                            <p>{`${payload[0].name}: ${payload[0].value} bottles`}</p>
+                            <p>{`${payload[0].name}: ${payload[0].value}`}</p>
                         </div>
                     );
                 }
@@ -723,7 +723,7 @@ const fetchCollectedData = async () => {
                 dataKey="bottleCountDifference" 
                 fill="#8884d8" 
                 barSize={30} // Adjust the width of the bars
-                name= "Bottle Count"
+                name= "Waste Count"
             />
         </BarChart>
     </ResponsiveContainer>

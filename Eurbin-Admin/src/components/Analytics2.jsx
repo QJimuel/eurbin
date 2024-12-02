@@ -1052,7 +1052,7 @@ const processData = (data, year) => {
             layout="vertical"
             iconType="square" // Set legend icon to square
             wrapperStyle={{
-                marginLeft: '200px', // Reduces the gap between legend and chart
+                marginLeft: '-250px', // Reduces the gap between legend and chart
             }}
             formatter={(value, entry, index) => (
                 <span style={{ color: '#4a4a4a' }}>

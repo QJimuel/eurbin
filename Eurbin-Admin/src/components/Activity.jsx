@@ -97,6 +97,7 @@ function Activity() {
                 <table className="w3-table-all">
                     <thead>
                         <tr className="w3-light-grey">
+                            <th>User</th>
                             <th>Bottle</th>
                             <th>Size</th>
                             <th>Redeem Code</th>
@@ -108,6 +109,8 @@ function Activity() {
                         {bottle.length > 0 ? (
                             bottle.map((item) => (
                                 <tr key={item._id}>
+                                    <td>{item.userId ? item.userId : "none"}</td>
+
                                     <td>
                                         <img 
                                             src={item.Size === "Small" ? smallPlastic : largePlastic} 
