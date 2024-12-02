@@ -3,15 +3,21 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import smallPlastic from '../Images/smallPlastic.jpg'
 import largePlastic from '../Images/largePlastic.jpg'
+import notBottle from '../Images/notbottle.png';
 
 
 function Activity2() {
 
     const API_URL = 'https://eurbin.vercel.app/bottles';
     const [bottle, setBottles] = useState([]);
+    const [greetingName, setGreetingName] = useState('');
 
     useEffect(() => {
         fetchBottle(); 
+        const email = localStorage.getItem('username');
+        if (email) {
+          setGreetingName(email);
+        }
     }, []);
 
     const fetchBottle = async () => {
@@ -47,7 +53,7 @@ function Activity2() {
 
     return (
         <>
-        <p style={{ color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, marginTop: '-30px', textAlign: 'right', paddingRight: '10px'}}></p>
+        <p style={{ color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, marginTop: '-30px', textAlign: 'right', paddingRight: '10px'}}>Hello {greetingName}</p>
             <h1 className='headings'>Bin Management</h1>
 
             
@@ -80,10 +86,22 @@ function Activity2() {
                                 <tr key={item._id}>
                                     <td>{item.userId ? item.userId : "none"}</td>
                                     <td>
-                                        <img 
-                                            src={item.Size === "Small" ? smallPlastic : largePlastic} 
-                                            alt={item.Size === "Small" ? "Small Bottle" : "Large Bottle"} 
-                                            style={{ width: '40px', height: '100px', borderRadius: '10px' }} 
+                                        <img
+                                            src={
+                                                item.Size === "Small" 
+                                                    ? smallPlastic 
+                                                    : item.Size === "Large" 
+                                                    ? largePlastic 
+                                                    : notBottle
+                                            }
+                                            alt={
+                                                item.Size === "Small" 
+                                                    ? "Small Bottle" 
+                                                    : item.Size === "Large" 
+                                                    ? "Large Bottle" 
+                                                    : "Not a Plastic Bottle"
+                                            }
+                                            style={{ width: '40px', height: '100px', borderRadius: '10px' }}
                                         />
                                     </td>
                                     <td>{item.Size}</td>

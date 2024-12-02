@@ -168,7 +168,7 @@ function BinStatus() {
 
     const percentComputation = () => {
         const storedOffset = Number(localStorage.getItem('collectedOffset')) || 0;
-        const effectiveTotal = Math.max(0, (smallBottleCount + largeBottleCount) - storedOffset);
+        const effectiveTotal = Math.max(0, (smallBottleCount + largeBottleCount + notBottleCount) - storedOffset);
         const percent = Math.min(100, Math.ceil((effectiveTotal / MAX_BOTTLES) * 100));
         return `${percent}%`;
     };
@@ -176,7 +176,7 @@ function BinStatus() {
     const handleCollectedClick = async () => {
         const token = localStorage.getItem('token');
         try {
-            const newBottles = totals.highestTotalBottle - collectedOffset;
+            const newBottles = (smallBottleCount + largeBottleCount + notBottleCount) - collectedOffset;
        
             const payload = {
                 bottleCount: newBottles,

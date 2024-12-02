@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import smallPlastic from '../Images/smallPlastic.jpg'
 import largePlastic from '../Images/largePlastic.jpg'
+import notBottle from '../Images/notbottle.png';
 
 
 function Activity() {
@@ -110,14 +111,26 @@ function Activity() {
                             bottle.map((item) => (
                                 <tr key={item._id}>
                                     <td>{item.userId ? item.userId : "none"}</td>
-
                                     <td>
-                                        <img 
-                                            src={item.Size === "Small" ? smallPlastic : largePlastic} 
-                                            alt={item.Size === "Small" ? "Small Bottle" : "Large Bottle"} 
-                                            style={{ width: '40px', height: '100px', borderRadius: '10px' }} 
+                                        <img
+                                            src={
+                                                item.Size === "Small" 
+                                                    ? smallPlastic 
+                                                    : item.Size === "Large" 
+                                                    ? largePlastic 
+                                                    : notBottle
+                                            }
+                                            alt={
+                                                item.Size === "Small" 
+                                                    ? "Small Bottle" 
+                                                    : item.Size === "Large" 
+                                                    ? "Large Bottle" 
+                                                    : "Not a Plastic Bottle"
+                                            }
+                                            style={{ width: '40px', height: '100px', borderRadius: '10px' }}
                                         />
                                     </td>
+
                                     <td>{item.Size}</td>
                                     <td>{item.Code}</td>
                                     <td>{formatDate(item.date)}</td> {/* Format date */}

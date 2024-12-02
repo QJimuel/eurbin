@@ -540,7 +540,7 @@ const fetchCollectedData = async () => {
         <div className="dashboardBox">
         <header className="header">
         <p className="header-title"></p>
-        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, paddingTop: '10px' }}></p>
+        <p style={{  color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, paddingTop: '10px' }}>Hello, Admin!</p>
         </header>
 
           <div className="rmdHeaders1">
