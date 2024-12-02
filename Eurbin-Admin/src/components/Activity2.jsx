@@ -47,7 +47,7 @@ function Activity2() {
 
     return (
         <>
-        <p style={{ color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, marginTop: '-30px', textAlign: 'right', paddingRight: '10px'}}>Hello, Admin!</p>
+        <p style={{ color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, marginTop: '-30px', textAlign: 'right', paddingRight: '10px'}}></p>
             <h1 className='headings'>Bin Management</h1>
 
             

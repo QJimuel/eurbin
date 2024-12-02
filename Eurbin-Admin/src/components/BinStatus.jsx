@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import smallPlastic from '../Images/smallPlastic.jpg';
 import largePlastic from '../Images/largePlastic.jpg';
-
+import notBottle from '../Images/notbottle.png';
 import ModalConfirmation from './ModalConfirmation';
 
 function BinStatus() {
@@ -15,6 +15,7 @@ function BinStatus() {
     const [smallBottleCount, setSmallBottleCount] = useState(0);
     const [largeBottleCount, setLargeBottleCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
+    const [notBottleCount, setNotBottle] = useState(0);
     
 
 
@@ -93,9 +94,11 @@ function BinStatus() {
                 // Count the small and large bottles
                 const smallBottles = response.data.bottles.filter(bottle => bottle.Size === 'Small').length;
                 const largeBottles = response.data.bottles.filter(bottle => bottle.Size === 'Large').length;
-        
-                setSmallBottleCount(smallBottles);  // Update state for small bottles count
-                setLargeBottleCount(largeBottles);  // Update state for large bottles count
+                const notBottles = response.data.bottles.filter(bottle => bottle.Size === 'Not Plastic Bottle').length;
+    
+                setSmallBottleCount(smallBottles);
+                setLargeBottleCount(largeBottles);
+                setNotBottle(notBottles);
             } else {
                 // Handle unexpected data format
                 console.error('Unexpected data format:', response.data);
@@ -202,7 +205,7 @@ function BinStatus() {
     };
     
     return<>
-    <p style={{ color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, marginTop: '-30px', marginLeft: '88%', whiteSpace: 'nowrap' }}> Hello, Admin! </p>
+    <p style={{ color: 'white', fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, marginTop: '-30px', marginLeft: '88%', whiteSpace: 'nowrap' }}> </p>
 
 
     <h1 className='headings'>Bin Management</h1>
@@ -244,12 +247,11 @@ function BinStatus() {
                             <th>Waste</th>
                             <th>Size</th>
                             <th>Quantity</th>
-                            <th>Weight</th>
-                            <th>Date</th>
+                         
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                    <tr>
                             <td>
                                 <img
                                     src={smallPlastic}
@@ -259,8 +261,7 @@ function BinStatus() {
                             </td>
                             <td>Small Bottle</td>
                             <td>{smallBottleCount}</td> {/* Display small bottle quantity */}
-                            <td>--</td>
-                            <td>--</td>
+                     
                         </tr>
                         <tr>
                             <td>
@@ -272,8 +273,20 @@ function BinStatus() {
                             </td>
                             <td>Large Bottle</td>
                             <td>{largeBottleCount}</td> {/* Display large bottle quantity */}
-                            <td>--</td>
-                            <td>--</td>
+                    
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <img
+                                    src={notBottle}
+                                    alt="None Plastic Bottles"
+                                    style={{ width: '50px', height: '100px', borderRadius: '10px' }}
+                                />
+                            </td>
+                            <td>None Plastic Bottles</td>
+                            <td>{notBottleCount}</td> {/* Display large bottle quantity */}
+                         
                         </tr>
                     </tbody>
                 </table>
