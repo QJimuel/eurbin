@@ -9,7 +9,7 @@ const updateTotal = async () => {
                 $group: {
                     _id: null,
                     totalUser: { $sum: 1 },
-                    totalSmartPoints: { $sum: "$smartPoints" },
+                    totalSmartPoints: { $sum: "$accumulatedSP" },
                     totalBottle: { $sum: "$plasticBottle" },
                     totalCo2: { $sum: "$co2" }
                 }
