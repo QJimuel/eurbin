@@ -192,10 +192,11 @@ exports.updateReward = async (req, res) => {
         const { RewardName, Category, Quantity, Price } = req.body;
 
 
+        const imageUrl = req.file ? req.file.location : null;
 
         const reward = await Reward.findByIdAndUpdate(
             req.params.id,
-            { RewardName, Category, Quantity, Price },
+            { RewardName, Category, Quantity, Price, Image: imageUrl },
             { new: true }
         );
         
