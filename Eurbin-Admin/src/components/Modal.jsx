@@ -44,54 +44,50 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, onImageChange, m
                     <h2 style={headerTitleStyle}>{modalTitle}</h2>
                 </div>
 
-                {modalTitle !== "Edit Reward" && (
-                    <>
-                        <div style={formGroupStyle}>
-                            <strong>Image:</strong>
-                            <div style={photoboxStyle} onClick={handlePhotoboxClick}>
-                                {selectedImage ? (
-                                    <img src={selectedImage} alt="Selected" style={selectedImageStyle} />
-                                ) : (
-                                    <p style={photoTextStyle}>Add Image</p>
-                                )}
-                            </div>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                ref={fileInputRef}
-                                style={{ display: 'none' }}
-                                onChange={handleImageChange}
-                            />
-                        </div>
+                <div style={formGroupStyle}>
+                    <strong>Image:</strong>
+                    <div style={photoboxStyle} onClick={handlePhotoboxClick}>
+                        {selectedImage ? (
+                            <img src={selectedImage} alt="Selected" style={selectedImageStyle} />
+                        ) : (
+                            <p style={photoTextStyle}>Add Image</p>
+                        )}
+                    </div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleImageChange}
+                    />
+                </div>
 
-                        <div style={formGroupStyle}>
-                            <strong>Reward Name:</strong>
-                            <input
-                                type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={onChange}
-                                placeholder="Enter Reward Name"
-                                style={inputStyle}
-                            />
-                        </div>
+                <div style={formGroupStyle}>
+                    <strong>Reward Name:</strong>
+                    <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={onChange}
+                        placeholder="Enter Reward Name"
+                        style={inputStyle}
+                    />
+                </div>
 
-                        <div style={formGroupStyle}>
-                            <strong>Category:</strong>
-                            <select
-                                name="category"
-                                value={formData.category}
-                                onChange={onChange}
-                                style={inputStyle}
-                            >
-                                <option value="" disabled>Select a category</option>
-                                <option value="School Supplies">School Supplies</option>
-                                <option value="Accessories">Accessories</option>
-                                <option value="Consumable">Consumable</option>
-                            </select>
-                        </div>
-                    </>
-                )}
+                <div style={formGroupStyle}>
+                    <strong>Category:</strong>
+                    <select
+                        name="category"
+                        value={formData.category}
+                        onChange={onChange}
+                        style={inputStyle}
+                    >
+                        <option value="" disabled>Select a category</option>
+                        <option value="School Supplies">School Supplies</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Consumable">Consumable</option>
+                    </select>
+                </div>
 
                 <div style={formGroupStyle}>
                     <strong>Quantity:</strong>
