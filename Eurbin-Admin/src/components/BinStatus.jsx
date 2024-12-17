@@ -245,7 +245,7 @@ function BinStatus() {
         />
 
         <div className="table-container">
-                <table className="w3-table-all">
+                <table className="w3-table-all"  >
                     <thead>
                         <tr className="w3-light-grey">
                             <th>Waste</th>

@@ -12,7 +12,7 @@ router.get('/:id',authMiddleware, rewardController.getRewardById);
 
 router.patch('/:id',authMiddleware, rewardController.updateReward2)
 
-router.put('/:id',adminAuthMiddleware ,rewardController.upload, rewardController.updateReward); 
+router.put('/:id',adminAuthMiddleware , rewardController.updateReward); 
 
 router.post('/', adminAuthMiddleware,rewardController.upload, rewardController.createReward); 
 

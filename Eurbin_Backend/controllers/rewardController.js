@@ -189,14 +189,13 @@ async function notifyAddedReward(reward) {
 
 exports.updateReward = async (req, res) => {
     try {
-        const { RewardName, Category, Quantity, Price } = req.body;
+        const { Quantity, Price } = req.body;
 
 
-        const imageUrl = req.file ? req.file.location : null;
-
+     
         const reward = await Reward.findByIdAndUpdate(
             req.params.id,
-            { RewardName, Category, Quantity, Price, Image: imageUrl },
+            {Quantity, Price },
             { new: true }
         );
         
