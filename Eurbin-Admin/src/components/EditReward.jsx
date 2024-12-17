@@ -99,15 +99,11 @@ function EditReward() {
             console.log('Updating reward with ID:', rewardId);
     
             const formData = new FormData();
-            formData.append('RewardName', name);
-            formData.append('Category', category);
+         
             formData.append('Quantity', parseInt(quantity, 10));
             formData.append('Price', parseFloat(price));
     
-            if (selectedImage) {
-                formData.append('Image', selectedImage); // Add the selected image if available
-                console.log('Image added to formData for update:', selectedImage.name);
-            }
+         
     
             const response = await axios.put(`${API_URL}/${rewardId}`, formData, {
                 headers: {
