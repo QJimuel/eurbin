@@ -588,7 +588,7 @@ const fetchCollectedData = async () => {
     <div className="dbox">
         <img src={user1} alt="" />
         <div>
-            <b>{totals.highestTotalUser}</b>
+            <b>{totals.highestTotalUser || 0} </b>
             <p>Total Users</p>
         </div>
     </div>
@@ -622,7 +622,7 @@ const fetchCollectedData = async () => {
     <div className="dbox">
         <img src={point} alt="" />
         <div>
-            <b>{Number(totals.highestTotalSmartPoints).toFixed(2)}</b>
+        <b>{Number(totals?.highestTotalSmartPoints || 0).toFixed(2)}</b>
             <p>Total Points</p>
         </div>
     </div>

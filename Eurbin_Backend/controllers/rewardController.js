@@ -196,7 +196,7 @@ exports.updateReward = async (req, res) => {
 
         const reward = await Reward.findByIdAndUpdate(
             req.params.id,
-            { RewardName, Category, Quantity, Price, Image: imageUrl },
+            { RewardName, Category, Quantity, Price},
             { new: true }
         );
         
