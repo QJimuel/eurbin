@@ -1,4 +1,6 @@
 const Transaction = require('../models/transaction');
+const nodemailer = require('nodemailer');
+const User = require('../models/user');
 
 // Update transaction status (Accept/Decline)
 exports.updateTransactionStatus = async (req, res) => {
@@ -38,7 +40,6 @@ exports.getAllTransactions = async (req, res) => {
     }
 };
 
-
 exports.createTransaction = async (req, res) => {
     const { userId, transactionName, transactionPrice, isAccepted } = req.body;
 
@@ -47,7 +48,6 @@ exports.createTransaction = async (req, res) => {
 
     try {
         const latestTransaction = await Transaction.findOne().sort({ referenceNo: -1 });
-
 
         let nextRefNo = 1000;
         if (latestTransaction && latestTransaction.referenceNo) {
@@ -66,8 +66,39 @@ exports.createTransaction = async (req, res) => {
             date: adjustedDate
         });
 
-       
         const transaction = await newTransaction.save();
+
+        // Find the user by userId from the request body
+        const user = await User.findOne({ userId: userId });
+
+        // Check if the user exists and has an email
+        if (user && user.email) {
+            // Send the email or do further processing here
+            const transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: {
+                    user: 'eurbinmmq@gmail.com', // Your email
+                    pass: 'mwqy dmwx myrn ngny'  // Your email app-specific password
+                },
+            });
+
+            const mailOptions = {
+                from: 'eurbinmmq@gmail.com', // Sender address
+                to: user.email,              // Recipient's email address
+                subject: 'Reward Claim Notification',
+                text: 'You are not allowed to claim the reward to HSO at this time.'
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log('Error sending email:', error);
+                } else {
+                    console.log('Email sent:', info.response);
+                }
+            });
+        }
 
         res.status(201).json(transaction);
     } catch (err) {

@@ -33,115 +33,169 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, onChange, onImageChange, m
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        
         onSubmit(); // Call the parent's onSubmit function
     };
 
+    const validateForm = () => {
+        const errors = [];
+        if (modalTitle !== "Edit Reward") {
+            if (!selectedImage) errors.push("Image is required.");
+            if (!formData.name) errors.push("Reward name is required.");
+            if (!formData.category) errors.push("Category is required.");
+        }
+        if (!formData.quantity || formData.quantity <= 0) {
+            errors.push("Quantity must be greater than zero.");
+        }
+        if (!formData.price || formData.price <= 0) {
+            errors.push("Price must be greater than zero.");
+        }
+    
+        if (errors.length) {
+            alert(errors.join("\n")); // Replace with a better UI for errors if needed.
+            return false;
+        }
+        return true;
+    };
+    
+
+    
+
     return (
         <div style={modalOverlayStyle}>
-            <div style={modalContentStyle}>
-                <div style={headerStyle}>
-                    <h2 style={headerTitleStyle}>{modalTitle}</h2>
-                </div>
-
-                {modalTitle !== "Edit Reward" && (
-                    <>
-                        <div style={formGroupStyle}>
-                            <strong>Image:</strong>
-                            <div style={photoboxStyle} onClick={handlePhotoboxClick}>
-                                {selectedImage ? (
-                                    <img src={selectedImage} alt="Selected" style={selectedImageStyle} />
-                                ) : (
-                                    <p style={photoTextStyle}>Add Image</p>
-                                )}
-                            </div>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                ref={fileInputRef}
-                                style={{ display: 'none' }}
-                                onChange={handleImageChange}
-                            />
-                        </div>
-
-                        <div style={formGroupStyle}>
-                            <strong>Reward Name:</strong>
-                            <input
-                                type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={onChange}
-                                placeholder="Enter Reward Name"
-                                style={inputStyle}
-                            />
-                        </div>
-
-                        <div style={formGroupStyle}>
-                            <strong>Category:</strong>
-                            <select
-                                name="category"
-                                value={formData.category}
-                                onChange={onChange}
-                                style={inputStyle}
-                            >
-                                <option value="" disabled>Select a category</option>
-                                <option value="School Supplies">School Supplies</option>
-                                <option value="Accessories">Accessories</option>
-                                <option value="Consumable">Consumable</option>
-                            </select>
-                        </div>
-                    </>
-                )}
-
-                <div style={formGroupStyle}>
-                    <strong>Quantity:</strong>
-                    <input
-                        type="number"
-                        name="quantity"
-                        value={formData.quantity}
-                        onChange={onChange}
-                        placeholder="Enter Quantity"
-                        style={inputStyle}
-                    />
-                </div>
-
-                <div style={formGroupStyle}>
-                    <strong>Price:</strong>
-                    <input
-                        type="number"
-                        step="0.01"
-                        name="price"
-                        value={formData.price}
-                        onChange={onChange}
-                        placeholder="Enter Price"
-                        style={inputStyle}
-                    />
-                </div>
-
-                <div style={lineStyle}></div>
-
-                <div style={modalButtonsStyle}>
-                    <button
-                        onClick={onClose}
-                        style={hoverClose ? { ...closeButtonStyle, ...closeButtonHoverStyle } : closeButtonStyle}
-                        onMouseEnter={() => setHoverClose(true)}
-                        onMouseLeave={() => setHoverClose(false)}
-                    >
-                        Close
-                    </button>
-                    <button
-                        onClick={handleSubmit}
-                        style={hoverSubmit ? { ...submitButtonStyle, ...submitButtonHoverStyle } : submitButtonStyle}
-                        onMouseEnter={() => setHoverSubmit(true)}
-                        onMouseLeave={() => setHoverSubmit(false)}
-                    >
-                        Submit
-                    </button>
-                </div>
-            </div>
+    <div style={modalContentStyle}>
+        <div style={headerStyle}>
+            <h2 style={headerTitleStyle}>{modalTitle}</h2>
         </div>
+
+        {modalTitle !== "Edit Reward" && (
+            <>
+                <div style={formGroupStyle}>
+                    <strong>Image:</strong>
+                    <div style={photoboxStyle} onClick={handlePhotoboxClick}>
+                        {selectedImage ? (
+                            <img src={selectedImage} alt="Selected" style={selectedImageStyle} />
+                        ) : (
+                            <p style={photoTextStyle}>Add Image</p>
+                        )}
+                    </div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleImageChange}
+                    />
+                    {!selectedImage && modalTitle !== "Edit Reward" && (
+                        <p style={errorTextStyle}>Image is required.</p>
+                    )}
+                </div>
+
+                <div style={formGroupStyle}>
+                    <strong>Reward Name:</strong>
+                    <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={onChange}
+                        placeholder="Enter Reward Name"
+                        style={inputStyle}
+                    />
+                    {!formData.name && modalTitle !== "Edit Reward" && (
+                        <p style={errorTextStyle}>Reward name is required.</p>
+                    )}
+                </div>
+
+                <div style={formGroupStyle}>
+                    <strong>Category:</strong>
+                    <select
+                        name="category"
+                        value={formData.category}
+                        onChange={onChange}
+                        style={inputStyle}
+                    >
+                        <option value="" disabled>Select a category</option>
+                        <option value="School Supplies">School Supplies</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Consumable">Consumable</option>
+                    </select>
+                    {!formData.category && modalTitle !== "Edit Reward" && (
+                        <p style={errorTextStyle}>Category is required.</p>
+                    )}
+                </div>
+            </>
+        )}
+
+        <div style={formGroupStyle}>
+            <strong>Quantity:</strong>
+            <input
+                type="number"
+                name="quantity"
+                value={formData.quantity}
+                onChange={onChange}
+                placeholder="Enter Quantity"
+                style={inputStyle}
+            />
+            {(!formData.quantity || formData.quantity <= 0) && (
+                <p style={errorTextStyle}>Quantity must be greater than zero.</p>
+            )}
+        </div>
+
+        <div style={formGroupStyle}>
+            <strong>Price:</strong>
+            <input
+                type="number"
+                step="0.01"
+                name="price"
+                value={formData.price}
+                onChange={onChange}
+                placeholder="Enter Price"
+                style={inputStyle}
+            />
+            {(!formData.price || formData.price <= 0) && (
+                <p style={errorTextStyle}>Price must be greater than zero.</p>
+            )}
+        </div>
+
+        <div style={lineStyle}></div>
+
+        <div style={modalButtonsStyle}>
+            <button
+                onClick={onClose}
+                style={hoverClose ? { ...closeButtonStyle, ...closeButtonHoverStyle } : closeButtonStyle}
+                onMouseEnter={() => setHoverClose(true)}
+                onMouseLeave={() => setHoverClose(false)}
+            >
+                Close
+            </button>
+            <button
+                onClick={() => {
+                    if (validateForm()) {
+                        console.log("Form is valid, submitting...");
+                        handleSubmit()
+                    } else {
+                        console.log("Form is invalid, not submitting.");
+                    }
+                }}
+                style={hoverSubmit ? { ...submitButtonStyle, ...submitButtonHoverStyle } : submitButtonStyle}
+                onMouseEnter={() => setHoverSubmit(true)}
+                onMouseLeave={() => setHoverSubmit(false)}
+            >
+                Submit
+            </button>
+        </div>
+    </div>
+</div>
+
     );
 };
+
+const errorTextStyle = {
+    color: 'red',
+    fontSize: '12px',
+    marginTop: '5px',
+};
+
 
 const modalOverlayStyle = {
     position: 'fixed',
