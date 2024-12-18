@@ -74,7 +74,7 @@ exports.createTransaction = async (req, res) => {
         // Check if the user exists and has an email
         if (user && user.email) {
             // Send the email asynchronously
-            await sendEmail(user.email);
+            await sendEmail(user.email,transactionName, newReferenceNo);
         }
 
         res.status(201).json(transaction);
@@ -84,7 +84,7 @@ exports.createTransaction = async (req, res) => {
 };
 
 // Async function to send the email
-const sendEmail = async (recipientEmail) => {
+const sendEmail = async (recipientEmail, transactionName, referenceNo) => {
     console.log(`Sending email to: ${recipientEmail}`); // Log the recipient's email
 
     const transporter = nodemailer.createTransport({
@@ -101,9 +101,8 @@ const sendEmail = async (recipientEmail) => {
         from: 'eurbinmmq@gmail.com', // Sender address
         to: recipientEmail,          // Recipient's email address
         subject: 'Reward Claim Notification',
-        text: 'You are not allowed to claim the reward to HSO at this time.'
+        text: `You are not allowed to claim the reward to HSO at this time.\n\nTransaction Details:\nTransaction Name: ${transactionName}\nReference Number: ${referenceNo}`
     };
-
     try {
         const info = await transporter.sendMail(mailOptions);
         console.log('Email sent:', info.response);
