@@ -73,36 +73,42 @@ exports.createTransaction = async (req, res) => {
 
         // Check if the user exists and has an email
         if (user && user.email) {
-            // Send the email or do further processing here
-            const transporter = nodemailer.createTransport({
-                host: 'smtp.gmail.com',
-                port: 465,
-                secure: true,
-                auth: {
-                    user: 'eurbinmmq@gmail.com', // Your email
-                    pass: 'mwqy dmwx myrn ngny'  // Your email app-specific password
-                },
-            });
-
-            const mailOptions = {
-                from: 'eurbinmmq@gmail.com', // Sender address
-                to: user.email,              // Recipient's email address
-                subject: 'Reward Claim Notification',
-                text: 'You are not allowed to claim the reward to HSO at this time.'
-            };
-
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log('Error sending email:', error);
-                } else {
-                    console.log('Email sent:', info.response);
-                }
-            });
+            // Send the email asynchronously
+            await sendEmail(user.email);
         }
 
         res.status(201).json(transaction);
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+};
+
+// Async function to send the email
+const sendEmail = async (recipientEmail) => {
+    console.log(`Sending email to: ${recipientEmail}`); // Log the recipient's email
+
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: 'eurbinmmq@gmail.com', // Your email
+            pass: 'mwqy dmwx myrn ngny'  // Your email app-specific password
+        },
+    });
+
+    const mailOptions = {
+        from: 'eurbinmmq@gmail.com', // Sender address
+        to: recipientEmail,          // Recipient's email address
+        subject: 'Reward Claim Notification',
+        text: 'You are not allowed to claim the reward to HSO at this time.'
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent:', info.response);
+    } catch (error) {
+        console.log('Error sending email:', error);
     }
 };
 
