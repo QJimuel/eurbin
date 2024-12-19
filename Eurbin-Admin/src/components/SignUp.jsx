@@ -118,6 +118,8 @@ function SignUp() {
     type={modalType} 
     onClose={() => setIsModalVisible(false)} 
 />
+
+<style>{responsiveStyles}</style>
             <div style={styles.container}>
                 <div style={styles.formBox}>
                     <img src={logo} alt="Logo" style={{ width: '100px', height: '130px', marginTop: '-20px' }} />
@@ -254,14 +256,14 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        //background: 'linear-gradient(to bottom right, #800000, #f0f0f0)',
+        padding: '10px', // Add padding for smaller screens
     },
     formBox: {
-        padding: '30px',
+        padding: '20px',
         borderRadius: '18px',
         boxShadow: '0 6px 15px rgba(0, 0, 0, 0.2)',
         backgroundColor: 'white',
-        width: '20%',
+        width: '90%', // Default to a smaller percentage for mobile
         maxWidth: '400px',
         display: 'flex',
         flexDirection: 'column',
@@ -270,41 +272,41 @@ const styles = {
     header: {
         color: '#800000',
         fontFamily: 'Poppins, sans-serif',
-        fontSize: '25px',
+        fontSize: '24px',
         marginBottom: '10px',
         marginTop: '-10px',
         fontWeight: '700',
+        textAlign: 'center',
     },
     inputContainer: {
         width: '100%',
         marginBottom: '15px',
     },
     label: {
-        fontSize: '12px',
+        fontSize: '14px',
         fontWeight: '600',
         fontFamily: 'Poppins, sans-serif',
         marginBottom: '5px',
         display: 'block',
     },
     input: {
-        width: '18vw',
+        width: '100%', // Adjust width to fit container
         padding: '12px',
-        paddingLeft: '12px', 
         borderRadius: '8px',
         border: '1px solid #ddd',
         outline: 'none',
-        fontSize: '12px',
+        fontSize: '14px',
         fontFamily: 'Poppins, sans-serif',
         boxSizing: 'border-box',
     },
     inputActiveStyle: {
-        border: '1px solid #800000', 
-        boxShadow: '0 0 5px rgba(128, 0, 0, 0.5)', 
+        border: '1px solid #800000',
+        boxShadow: '0 0 5px rgba(128, 0, 0, 0.5)',
     },
     showPasswordButton: {
         position: 'absolute',
-        right: '3px',
-        top: '44%',
+        right: '10px',
+        top: '50%',
         transform: 'translateY(-50%)',
         background: 'none',
         border: 'none',
@@ -314,8 +316,8 @@ const styles = {
     },
     showConfirmPasswordButton: {
         position: 'absolute',
-        right: '3px',
-        top: '44%',
+        right: '10px',
+        top: '50%',
         transform: 'translateY(-50%)',
         background: 'none',
         border: 'none',
@@ -328,22 +330,21 @@ const styles = {
         backgroundColor: '#800000',
         color: 'white',
         padding: '12px',
-        width: '99%',
+        width: '100%',
         borderRadius: '8px',
         fontWeight: '600',
         fontFamily: 'Poppins, sans-serif',
         fontSize: '14px',
         cursor: 'pointer',
         border: 'none',
-        marginLeft: '0.5%',
+        marginTop: '10px',
         transition: 'background-color 0.3s ease',
     },
     checkboxContainer: {
         marginBottom: '20px',
-        marginTop: '-5px',
     },
     checkboxLabel: {
-        fontSize: '12px',
+        fontSize: '14px',
         fontFamily: 'Poppins, sans-serif',
         textAlign: 'left',
         display: 'flex',
@@ -351,19 +352,29 @@ const styles = {
     checkbox: {
         marginRight: '5px',
     },
-    checkedCheckbox: {
-        marginRight: '5px',
-        color: '#800000'  
-    },
     signUpBtnHover: {
         backgroundColor: '#A00000',
     },
     signUp: {
-        fontSize: '12px',
+        fontSize: '14px',
         fontFamily: 'Poppins, sans-serif',
         marginTop: '15px',
         textAlign: 'center',
-    }
+    },
 };
+
+// Add media queries
+const responsiveStyles = `
+    @media (min-width: 768px) {
+        .formBox {
+            width: 50%; /* Wider form on tablets */
+        }
+    }
+    @media (min-width: 1024px) {
+        .formBox {
+            width: 30%; /* Compact form on desktops */
+        }
+    }
+`;
 
 export default SignUp;

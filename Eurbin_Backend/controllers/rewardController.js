@@ -5,6 +5,7 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const multerS3 = require('multer-s3');
 const User = require('../models/user');
 const nodemailer = require('nodemailer'); 
+const Admin = require('../models/admin'); 
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com', // or your provider's host
@@ -214,12 +215,29 @@ exports.updateReward = async (req, res) => {
 
 
 
+const sendOutOfStockNotification = async (adminEmail, rewardName) => {
+    const message = {
+        from:'"Eurbin Team" <eurbinmmq@gmail.com>', // sender address
+        to: adminEmail, // admin's email
+        subject: "Reward Out of Stock Notification", // email subject
+        text: `The reward "${rewardName}" is now out of stock.`, // email body
+    };
+
+    try {
+        // Send email using the transporter
+        console.log(`Sending out-of-stock notification to: ${adminEmail}`);
+        await transporter.sendMail(message);
+        console.log('Out of stock notification sent to admin');
+    } catch (err) {
+        console.error('Error sending email:', err);
+    }
+};
+
 exports.updateReward2 = async (req, res) => {
     try {
         const { RewardName, Category, Quantity, Price } = req.body;
 
-      
-       
+        // Update the reward
         const reward = await Reward.findByIdAndUpdate(
             req.params.id,
             { RewardName, Category, Quantity, Price },
@@ -228,6 +246,18 @@ exports.updateReward2 = async (req, res) => {
         
         if (!reward) {
             return res.status(404).json({ message: 'Reward not found' });
+        }
+
+        // Check if quantity is 0 and notify the admin
+        if (Quantity === 0) {
+            const admin = await Admin.findById("6718b90d13acd2f5fe10ebb6"); // Use the actual admin's _id
+
+            if (admin) {
+                // Call the async function to send the email
+                await sendOutOfStockNotification(admin.email, RewardName);
+            } else {
+                console.error('Admin not found');
+            }
         }
 
         res.status(200).json(reward);

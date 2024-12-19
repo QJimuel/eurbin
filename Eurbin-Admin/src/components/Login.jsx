@@ -126,34 +126,34 @@ function Login() {
     );
 }
 
-
-
 const styles = {
     container: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-       
+        padding: '0 10px', // Add padding for smaller screens
     },
     loginBox: {
-        padding: '30px',
+        padding: '20px',
         borderRadius: '18px',
         boxShadow: '0 6px 15px rgba(0, 0, 0, 0.2)',
         backgroundColor: 'white',
-        width: '20%',
-        maxWidth: '400px',
+        width: '90%', // Default width for smaller screens
+        maxWidth: '400px', // Maximum width for larger screens
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        boxSizing: 'border-box',
     },
     header: {
         color: '#800000',
         fontFamily: 'Poppins, sans-serif',
-        fontSize: '25px',
+        fontSize: '20px', // Smaller default font size
         marginBottom: '10px',
         marginTop: '-10px',
         fontWeight: '700',
+        textAlign: 'center', // Ensure proper alignment
     },
     inputContainer: {
         width: '100%',
@@ -167,9 +167,8 @@ const styles = {
         display: 'block',
     },
     input: {
-        width: '18vw',
+        width: '100%', // Full width for better scaling
         padding: '12px',
-        paddingLeft: '12px', 
         borderRadius: '8px',
         border: '1px solid #ddd',
         outline: 'none',
@@ -178,13 +177,13 @@ const styles = {
         boxSizing: 'border-box',
     },
     inputActiveStyle: {
-        border: '1px solid #800000', 
-        boxShadow: '0 0 5px rgba(128, 0, 0, 0.5)', 
+        border: '1px solid #800000',
+        boxShadow: '0 0 5px rgba(128, 0, 0, 0.5)',
     },
     showPasswordButton: {
         position: 'absolute',
         right: '3px',
-        top: '44%',
+        top: '50%',
         transform: 'translateY(-50%)',
         background: 'none',
         border: 'none',
@@ -206,14 +205,14 @@ const styles = {
         backgroundColor: '#800000',
         color: 'white',
         padding: '12px',
-        width: '99%',
+        width: '100%', // Adjust to full width
         borderRadius: '8px',
         fontWeight: '600',
         fontFamily: 'Poppins, sans-serif',
         fontSize: '14px',
         cursor: 'pointer',
         border: 'none',
-        marginLeft: '0.5%',
+        margin: '10px 0',
         transition: 'background-color 0.3s ease',
     },
     loginBtnHover: {
@@ -227,5 +226,28 @@ const styles = {
         width: '100%',
     },
 };
+
+// Add responsive media queries
+const responsiveStyles = `
+    @media (min-width: 768px) {
+        .loginBox {
+            width: 60%;
+        }
+        .header {
+            font-size: 24px;
+        }
+    }
+    @media (min-width: 1024px) {
+        .loginBox {
+            width: 30%;
+        }
+    }
+`;
+
+// Inject media query styles dynamically
+const styleSheet = document.createElement("style");
+
+styleSheet.innerText = responsiveStyles;
+document.head.appendChild(styleSheet);
 
 export default Login;

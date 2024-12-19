@@ -26,7 +26,7 @@ function Layout() {
   useEffect(() => {
     const email = localStorage.getItem('username');
     if (email) {
-      setGreetingName(email);
+      setGreetingName(email); 
     }
   }, []);
   
@@ -204,6 +204,7 @@ const styles = {
     color: 'white',
     padding: '20px',
     paddingTop: '6vh',
+    
   },
   sidebarList: {
     listStyle: 'none',
@@ -255,6 +256,14 @@ const styles = {
   },
   title: {
     color: "darkred",
+  },
+  '@media (max-width: 768px)': {
+    hamburger: {
+      display: 'block', // Show hamburger on tablet
+    },
+    sidebar: {
+      display: 'none', // Hide sidebar
+    },
   },
 };
 
