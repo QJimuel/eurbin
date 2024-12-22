@@ -66,7 +66,7 @@ const [isLogoutConfirmationOpen, setIsLogoutConfirmationOpen] = useState(false);
 
 
       <div className="container">
-      <aside style={styles.sidebar}>
+      <aside className="sidebar">
         <div className="logoContainer">
           <img src={logo} alt="Logo" className="logo" />
         </div>

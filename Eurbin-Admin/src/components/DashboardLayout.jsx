@@ -20,6 +20,7 @@ import axios from 'axios';
 import EditProfileModal from "./EditProfileModal";
 import ChangePassModal from "./ChangePassModal";
 
+
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   LineChart, Line,
@@ -54,7 +55,7 @@ function DashboardLayout() {
   const [largeBottleCount, setLargeBottleCount] = useState(0);
   const [notBotlleCount, setNotBottle] = useState(0);
   const [hoverCollect, setHoverCollect] = useState(false);
-
+  const isMobile = window.innerWidth <= 768;
 
   const [selectedOption, setSelectedOption] = useState('perMonth');
   useEffect(() => {
@@ -448,7 +449,7 @@ const fetchCollectedData = async () => {
 
 
     <div className="container">
-    <aside style={styles.sidebar}>
+    <aside className="sidebar">
         <div className="logoContainer">
           <img src={logo} alt="Logo" className="logo" />
         </div>
@@ -733,62 +734,66 @@ const fetchCollectedData = async () => {
 
 
 
-          <div style={{ width: '60%', height: 300, justifyContent:'center', textAlign:'center'}}>
-            <h3>User Distribution by Department</h3>
-            <ResponsiveContainer>
-    <PieChart>
-        <Pie
+<div
+      style={{
+        width: isMobile ? '100%' : '60%',
+        height: isMobile ? 400 : 500,
+        justifyContent: 'center',
+        textAlign: 'center',
+      }}
+    >
+      <h3 style={{ fontSize: isMobile ? '16px' : '20px' }}>User Distribution by Department</h3>
+      <ResponsiveContainer>
+        <PieChart>
+          <Pie
             data={departmentData}
             cx="50%"
             cy="50%"
             labelLine={false}
             label={({ name, percent }) =>
-                percent > 0 ? `${name} ${(percent * 100).toFixed(0)}%` : ''
+              percent > 0 ? `${name} ${(percent * 100).toFixed(0)}%` : ''
             }
-            outerRadius={110}
+            outerRadius={isMobile ? 70 : 110} // Adjust outer radius for smaller screens
             dataKey="value"
             stroke="#ffffff" // White stroke for segment separation
             strokeWidth={2}
-        >
+          >
             {departmentData.map((entry, index) => (
-                <Cell
-                    key={`cell-${index}`}
-                    fill={[
-                        '#ff6384', // Red
-                        '#36a2eb', // Blue
-                        '#cc65fe', // Purple
-                        '#ffce56', // Yellow
-                        '#ff9f40', // Orange
-                        '#4bc0c0', // Teal
-                        '#9966ff', // Violet
-                        '#ff5a5e', // Coral Red
-                        '#5ad3d1', // Cyan
-                        '#ffd700', // Gold
-                    ][index % 10]} // Cycles through colors
-                />
+              <Cell
+                key={`cell-${index}`}
+                fill={[
+                  '#ff6384', // Red
+                  '#36a2eb', // Blue
+                  '#cc65fe', // Purple
+                  '#ffce56', // Yellow
+                  '#ff9f40', // Orange
+                  '#4bc0c0', // Teal
+                  '#9966ff', // Violet
+                  '#ff5a5e', // Coral Red
+                  '#5ad3d1', // Cyan
+                  '#ffd700', // Gold
+                ][index % 10]} // Cycles through colors
+              />
             ))}
-        </Pie>
-        <Tooltip />
-        <Legend
+          </Pie>
+          <Tooltip />
+          <Legend
             align="center"
-            verticalAlign="middle"
-            layout="vertical"
-            iconType="square" // Set legend icon to square
+            verticalAlign={isMobile ? 'bottom' : 'middle'}
+            layout={isMobile ? 'horizontal' : 'vertical'}
+            iconType="square"
             wrapperStyle={{
-                marginLeft: '-250px', // Reduces the gap between legend and chart
+              marginLeft: isMobile ? '0' : '-250px',
             }}
             formatter={(value, entry, index) => (
-                <span style={{ color: '#4a4a4a' }}>
-                    {departmentData[index]?.name || value}
-                </span>
+              <span style={{ color: '#4a4a4a' }}>
+                {departmentData[index]?.name || value}
+              </span>
             )}
-        />
-    </PieChart>
-</ResponsiveContainer>
-
-          </div>
-
-         
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
         
         
             </div>
@@ -872,7 +877,7 @@ const styles = {
   },
   sidebar: {
     width: '213px',       // Fixed width
-    minWidth: '213px',    // Ensures it cannot shrink below 230px
+    minWidth: '53px',    // Ensures it cannot shrink below 230px
     maxWidth: '213px',    // Ensures it cannot grow beyond 230px
     height: '100vh',
     backgroundColor: '#800000',

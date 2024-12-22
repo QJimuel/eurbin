@@ -132,6 +132,7 @@ body, h1, h2, p {
   .main-content {
     background-color: #800000; /* Slightly lighter red color */
     padding: 40px;
+   
     height: 4vh;
     width: 100%;
     /* border-radius: 0 0 20px 20px; Rounded corners for the bottom */
@@ -320,7 +321,8 @@ body, h1, h2, p {
 @media (max-width: 576px) {
   .table-container, 
   .table-container-analytics {
-    max-height: 250px; /* Further adjust height */
+    max-height: 200px; /* Further adjust height */
+    max-width: 400px;
   }
 
   thead th {
@@ -532,6 +534,9 @@ body, h1, h2, p {
     color: #2B0100;
     transition: 0.3s ease-in;
   }
+
+  
+  
   
   .active-page {
     color: white;
@@ -563,6 +568,7 @@ body, h1, h2, p {
     background-color: maroon;
     color: white;
     cursor: pointer;
+    font-size: 10px;
   }
 
   .edit-reward-button {
@@ -622,6 +628,7 @@ body, h1, h2, p {
   border-radius: 25px;
   border: none;
   font-size: 14px;
+
   transition: background-color 0.3s ease;
   cursor: pointer;
 }
@@ -1122,7 +1129,11 @@ body, h1, h2, p {
 .activityButton {
   margin-top: 1%;
   margin-bottom: 2%;
+ 
+ 
+ 
 }
+
 
 .activityLink {
   text-decoration: none; 
@@ -1728,24 +1739,120 @@ body, h1, h2, p {
   display: block;
 }
 
-
+.sidebar {
+  width: 213px; /* Fixed width */
+  min-width: 213px; /* Ensures it cannot shrink below 53px */
+  max-width: 213px; /* Ensures it cannot grow beyond 213px */
+  height: 100vh;
+  background-color: #800000;
+  color: white;
+  padding: 20px;
+  padding-top: 6vh;
+  transition: width 0.3s ease-in-out; /* Optional: smooth transition for width changes */
+}
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
+  .sidebar{
+   
+ min-width:40px;
+ max-width: 40px;
+ padding-left: 10px;
+ padding-right: 10px;
+ 
+   
+  }
+  .active-page{
+    width: 60%;
   }
 
-  aside {
-    display: none; /* Hide sidebar by default on small screens */
+  .logoutIcon{
+    width: 20px;
   }
+  .logo{
+    width: 60px;
+  }
+
+
+
+  .sidebarText {
+    display: none; /* Hide sidebar text */
+  }
+
+
 
   .main-content {
-    width: 100%;
+    width: 100%; /* Adjust main content width to fit next to slim sidebar */
+   /* Offset for the sidebar width */
+    transition: margin-left 0.3s ease-in-out; /* Smooth transition */
   }
 
+
   .hamburger {
-    display: block; /* Show hamburger menu */
+    display: none; /* Hide the hamburger menu if you don’t need it anymore */
   }
+
+  .search-container input {
+    margin-left: 0%;
+    font-size: 10px;
+    width: 100px;
+    padding: 5px ;
+    margin-top: 20px;
+  }
+
+  .sort-container {
+  
+    margin-left: 0px;
+    margin-top: 20px;
+
+   
+ 
+  }
+  
+  .sort-container label {
+
+    font-size: 10px;
+  }
+  
+  .sort-container select {
+
+    font-size: 10px;
+    
+  }
+  .active-btn {
+ 
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  .edit-reward-button {
+    background-color: maroon;
+    color: white;
+    cursor: pointer;
+  }
+
+  .inactive-btn {
+    font-size: 10px;
+    padding: 10px;
+    border-radius: 6px;
+  }
+  .hButton {
+    margin-top: 30px;
+  }
+  .activityButton {
+   
+    margin-left: -30px;
+   
+   
+  }
+  .activityButton button{
+    font-size: 10px;
+    padding: 5px;
+    border-radius: 5px;
+   
+  }
+  
 }
+
 
 @media (min-width: 769px) {
   .hamburger {

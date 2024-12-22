@@ -73,7 +73,7 @@ function Activity2() {
                     <thead>
                         <tr className="w3-light-grey">
                             <th>User</th>
-                            <th>Bottle</th>
+                          
                             <th>Size</th>
                             <th>Redeem Code</th>
                             <th>Date</th>
@@ -85,25 +85,7 @@ function Activity2() {
                             bottle.map((item) => (
                                 <tr key={item._id}>
                                     <td>{item.userId ? item.userId : "none"}</td>
-                                    <td>
-                                        <img
-                                            src={
-                                                item.Size === "Small" 
-                                                    ? smallPlastic 
-                                                    : item.Size === "Large" 
-                                                    ? largePlastic 
-                                                    : notBottle
-                                            }
-                                            alt={
-                                                item.Size === "Small" 
-                                                    ? "Small Bottle" 
-                                                    : item.Size === "Large" 
-                                                    ? "Large Bottle" 
-                                                    : "Not a Plastic Bottle"
-                                            }
-                                            style={{ width: '40px', height: '100px', borderRadius: '10px' }}
-                                        />
-                                    </td>
+                                  
                                     <td>{item.Size}</td>
                                     <td>{item.Code}</td>
                                     <td>{formatDate(item.date)}</td> {/* Format date */}
