@@ -59,7 +59,7 @@ function Layout2() {
     <>
 
       <div className="container">
-      <aside className="sidebard">
+      <aside className="sidebar">
         <div className="logoContainer">
           <img src={logo} alt="Logo" className="logo" />
         </div>

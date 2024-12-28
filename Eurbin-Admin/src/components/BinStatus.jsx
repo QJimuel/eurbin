@@ -216,7 +216,7 @@ function BinStatus() {
 
         <div style={{paddingTop: '10px'}} className="rmdHeaders">
         <div className="pasokLang">
-            <h1 className="dTitle">EURBin Status:</h1>
+            <h1 className="dTitle" >EURBin Status:</h1>
             <div style={styles.binLevelStyle}>
               <p style={styles.percent}>{percentComputation()}</p>
                 <div 

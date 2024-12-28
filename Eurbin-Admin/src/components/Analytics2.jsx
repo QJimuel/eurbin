@@ -61,6 +61,7 @@ import content from '../Images/content1.png'
     const [selectedYearLevel, setSelectedYearLevel] = useState("");
 
     const [selectedRole1, setSelectedRole1] = useState(null);
+    const isMobile = window.innerWidth <= 768; 
 
 
     const yearLevels = ["1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year"];
@@ -1012,7 +1013,7 @@ const processData = (data, year) => {
       <br />
               <h3>User Distribution by Department</h3>
 
-      <div style={{ display: 'flex', justifyContent: 'space-around', height: '300px', margin: '50px'}}>
+      <div style={{ display: 'flex', justifyContent: 'space-around', height: isMobile ?'300px': '300px', margin: '50px'}}>
       <div style={{ flex: 1 }}>
       <ResponsiveContainer>
     <PieChart>
