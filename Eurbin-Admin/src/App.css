@@ -319,10 +319,15 @@ body, h1, h2, p {
 }
 
 @media (max-width: 576px) {
+  .headings {
+ 
+    margin-top: 5%;
+    font-size: 1.5rem;
+  }
   .table-container, 
   .table-container-analytics {
     max-height: 200px; /* Further adjust height */
-    max-width: 400px;
+    max-width: 250px;
   }
 
   thead th {
@@ -332,7 +337,7 @@ body, h1, h2, p {
 
   .table-container tbody tr td, 
   .table-container-analytics tbody tr td {
-    padding: 4px;
+      padding: 4px;
     font-size: 8px; /* Minimized font size */
   }
 }
@@ -607,7 +612,7 @@ body, h1, h2, p {
 .header-button { /*CSS FOR ADD BUTTON IN CONTENT MANAGEMENT*/
   display: flex;
   gap: 10px; /* Consistent spacing between buttons */
-  justify-content: flex-end; /* Align buttons to the right */
+  justify-content: flex-start; /* Align buttons to the right */
   margin-top: 2%;
   margin-bottom: 0%;
   padding-right: 1%; /* Adjust spacing from the right side */
@@ -1093,6 +1098,45 @@ body, h1, h2, p {
   button {
     font-size: 0.9rem; /* Adjust button text size */
     padding: 10px 15px; /* Adjust padding */
+  }
+
+
+  .navList {
+    display: block;
+  }
+  
+  .navList li {
+    margin-top: 10px; 
+    
+  }
+
+  .navList li:first-child {
+    margin-left: 10px;
+  }
+
+  .header-buttons {
+   /* Consistent spacing between buttons */
+    justify-content: flex-start; /* Align buttons to the right */
+    /* Adjust spacing from the right side */
+  }
+
+  
+  /* Button common styles */
+  .hButton {
+    display: inline-block;
+    color: #FFF;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    /* padding: 12.5px 15px; */
+    padding-top: 10px;
+    padding-bottom: 8px;
+    padding-left: 9px;
+    padding-right: 8px;
+    border-radius: 25px;
+    border: none;
+    font-size: 8px;
+ 
   }
 }
 
@@ -1819,8 +1863,8 @@ body, h1, h2, p {
   }
   .active-btn {
  
-    font-size: 12px;
-    padding: 10px;
+    font-size: 8px;
+    padding: 5px;
     border-radius: 6px;
   }
 
@@ -1831,8 +1875,8 @@ body, h1, h2, p {
   }
 
   .inactive-btn {
-    font-size: 10px;
-    padding: 10px;
+    font-size: 8px;
+    padding: 5px;
     border-radius: 6px;
   }
   .hButton {
@@ -1859,3 +1903,6 @@ body, h1, h2, p {
     display: none; /* Hide hamburger menu on larger screens */
   }
 }
+
+
+
