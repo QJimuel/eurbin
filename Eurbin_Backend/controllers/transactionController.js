@@ -101,7 +101,7 @@ const sendEmail = async (recipientEmail, transactionName, referenceNo) => {
         from: 'eurbinmmq@gmail.com', // Sender address
         to: recipientEmail,          // Recipient's email address
         subject: 'Reward Claim Notification',
-        text: `You are not allowed to claim the reward to HSO at this time.\n\nTransaction Details:\nTransaction Name: ${transactionName}\nReference Number: ${referenceNo}`
+        text: `You are now allowed to claim the reward to HSO at this time.\n\nTransaction Details:\nTransaction Name: ${transactionName}\nReference Number: ${referenceNo}`
     };
     try {
         const info = await transporter.sendMail(mailOptions);
